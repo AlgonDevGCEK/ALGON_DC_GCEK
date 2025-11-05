@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   background: linear-gradient(rgba(7, 3, 34, 0.7), rgba(4, 2, 21, 0.7)),
-    url("C:/Users/alanj/Desktop/ADC/src/assets/hero/Coventic Webpage images/background.png");
+   url('../../assets/hero/Coventic-Webpage-images/background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
