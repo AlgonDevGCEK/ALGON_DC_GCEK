@@ -10,8 +10,11 @@ import UpcomingPrograms from './Components/Programs/UpcommingPrograms'
 const App = () => {
   return (
     <div>
+       <div className='nav-hero'>
       <Navbar></Navbar>
       <Hero></Hero>
+       </div>
+    
      <UpcomingPrograms></UpcomingPrograms>
         <AboutUs
         title="Our Vision"

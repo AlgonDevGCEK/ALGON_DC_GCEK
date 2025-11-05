@@ -3,15 +3,30 @@ nav{
     /* background: #0c0b0b; */
     color: #fff;
     padding: 4px 0;
-    position: fixed;
+
+   background-color: transparent ;
     top:0;
     left: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 10;
-
+    position: fixed;
+      background: transparent !important;
+  position: absolute; /* or fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(75, 144, 196, 0) !important;
+  backdrop-filter: blur(10px);
 }
+
+
+
+/* Optional: Add backdrop blur for better text readability */
+
+  
 .logo{
     width: 180px;
     

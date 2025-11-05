@@ -5,7 +5,14 @@
   box-sizing: border-box;
   font-family: "Outfit", sans-serif;
 }
-
+body{
+  background: #0a0a0a;
+}
+/* .nav-hero{
+  position: relative;
+   background: linear-gradient(rgba(7, 3, 34, 0.7), rgba(15, 5, 107, 0.7)),
+    url('/src/assets/hero/Coventic Webpage images/background.png');
+} */
 a{
   text-decoration: none;
   color: inherit;
