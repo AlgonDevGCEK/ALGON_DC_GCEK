@@ -1,0 +1,120 @@
+.card {
+  position: relative;
+  width: 80%;
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 60px 50px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, rgba(15, 35, 55, 0.85), rgba(25, 45, 75, 0.75));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 180, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(0, 150, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: white;
+  text-align: center;
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(0, 180, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(100, 180, 255, 0.25);
+}
+
+/* Logo section */
+.card-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 28px;
+  margin-bottom: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-logo .dot {
+  width: 3px;
+  height: 20px;
+  background: linear-gradient(180deg, #00bfff, #0080ff);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+
+.card-logo h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.card-logo p {
+  font-size: 11px;
+  margin: 0;
+  padding-left: 8px;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Title */
+.card-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #60b8ff;
+  text-shadow: 0 0 20px rgba(96, 184, 255, 0.3);
+  letter-spacing: -0.5px;
+}
+
+/* Text */
+.card-text {
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 750px;
+  margin: 0 auto;
+  color: #d0d8e0;
+  font-weight: 300;
+}
+
+/* Decorative elements */
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(100, 180, 255, 0.08);
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card::before {
+  top: -20px;
+  right: -20px;
+  transform: rotate(15deg);
+  background: radial-gradient(circle at top right, rgba(0, 150, 255, 0.03), transparent);
+}
+
+.card::after {
+  bottom: -20px;
+  left: -20px;
+  transform: rotate(-15deg);
+  background: radial-gradient(circle at bottom left, rgba(0, 150, 255, 0.03), transparent);
+}
+
+/* Ensure content stays above decorative elements */
+.card-logo,
+.card-title,
+.card-text {
+  position: relative;
+  z-index: 1;
+}

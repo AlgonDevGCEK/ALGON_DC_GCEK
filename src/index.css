@@ -6,9 +6,13 @@
   font-family: "Outfit", sans-serif;
 }
 body{
-  background: #F5F5F5;
-
+  background: #0a0a0a;
 }
+/* .nav-hero{
+  position: relative;
+   background: linear-gradient(rgba(7, 3, 34, 0.7), rgba(15, 5, 107, 0.7)),
+    url('/src/assets/hero/Coventic Webpage images/background.png');
+} */
 a{
   text-decoration: none;
   color: inherit;
@@ -28,4 +32,7 @@ a{
   cursor: pointer;
   border: 0;
   outline: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
