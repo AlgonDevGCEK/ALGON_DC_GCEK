@@ -1,40 +1,88 @@
-nav{
-    width: 100%;
-    /* background: #0c0b0b; */
-    color: #fff;
-    padding: 4px 0;
-
-   background-color: transparent ;
-    top:0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 10;
-    position: fixed;
-      background: transparent !important;
-  position: absolute; /* or fixed */
+nav {
+  width: 100%;
+  color: #fff;
+  padding: 6px 0;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   z-index: 100;
   background: rgba(75, 144, 196, 0) !important;
   backdrop-filter: blur(10px);
 }
 
-
-
-/* Optional: Add backdrop blur for better text readability */
-
-  
-.logo{
-    width: 180px;
-    
-
+nav ul li {
+  list-style: none;
+  margin: 8px 24px;
+  font-size: 18px;
+  display: inline-block;
 }
-nav ul li{
-    list-style: none;
-    margin: 5px 20px;
-    font-size: 16px;
-    display: inline-block;
+
+.hamburger {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 40px;
+    top: 10px;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 70%;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 10px 0;
+  }
+}
+
+/* Hover effects for nav links */
+nav ul li a {
+  color: #fff; /* keep your font color */
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Sliding underline effect */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: #4b90c4; /* accent color */
+  transition: width 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #189ee1; /* text glow color */
+}
+
+nav ul li a:hover::after {
+  width: 100%; /* underline slides in */
 }
