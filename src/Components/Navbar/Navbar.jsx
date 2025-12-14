@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect, useRef} from 'react';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef(null);
+   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsOpen(false); // close menu if click is outside
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <nav>
+    <nav ref = {navRef}>
       {/* Hamburger button (only visible on mobile) */}
       <button className="hamburger" onClick={() => setIsOpen(!isOpen)}>
         ☰
