@@ -34,7 +34,7 @@ nav ul li {
   .hamburger {
     display: block;
     position: absolute;
-    right: 40px;
+    right: 10px;
     top: 10px;
   }
 
@@ -44,8 +44,8 @@ nav ul li {
     position: absolute;
     top: 48px;
     right: 10px;
-    width: 70%;
-    background: rgba(0, 11, 15, 0.604);
+    width: 50%;
+    background: rgba(0, 11, 15, 0.752);
     padding: 1rem;
     text-align: center;
   }
