@@ -18,7 +18,7 @@ const Hero = () => {
     </p>
 
     <button className="btn">
-      Explore more <img src={dark_arrow} alt="" />
+      Join us <img src={dark_arrow} alt="" />
     </button>
   </div>
 </div>
