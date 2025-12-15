@@ -31,11 +31,11 @@ const Navbar = () => {
 
       {/* Navigation links */}
       <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#upcomming-programs">Programs</a></li>
-        <li><a href="#about">About us</a></li>
-        <li><a href="#campus">Gallery</a></li>
-        <li><a href="#testimonials">Contact us</a></li>
+        <li><a href="#home" onClick={() => setIsOpen(false)}>Home</a></li>
+        <li><a href="#upcomming-programs" onClick={() => setIsOpen(false)}>Programs</a></li>
+        <li><a href="#about" onClick={() => setIsOpen(false)}>About us</a></li>
+        <li><a href="#campus" onClick={() => setIsOpen(false)}>Gallery</a></li>
+        <li><a href="#testimonials" onClick={() => setIsOpen(false)}>Contact us</a></li>
         <li><button className="btn">Login</button></li>
       </ul>
     </nav>
