@@ -70,8 +70,8 @@ nav ul li {
     flex-direction: column;
     position: absolute;
     top: 48px;
-    right: 0px;
-    width: 100%;
+    right: 2px;
+    width: 99%;
     background: rgba(2, 6, 8, 0.871);
     padding: 1rem;
     text-align: center;
@@ -79,6 +79,7 @@ nav ul li {
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: 12px;
   }
 
   .nav-links.open {
