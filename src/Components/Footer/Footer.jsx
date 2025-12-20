@@ -12,7 +12,7 @@ const Footer = () => {
            <a href="https://instagram.com/algondc" target="_blank" rel="noopener noreferrer">
             <FaInstagram />
            </a>
-           <a href="https://github.com/algondc" target="_blank" rel="noopener noreferrer">
+           <a href="https://github.com/AlgonDevGCEK" target="_blank" rel="noopener noreferrer">
             <FaGithub />
           </a>
           <a href="https://linkedin.com/company/algondc" target="_blank" rel="noopener noreferrer">
