@@ -6,7 +6,7 @@ const AboutPage = () => {
     <>
     <div className="about-page">
 
-x
+
       <AboutUs
         title="Our Vision"
         content="To create an ecosystem where students can collaborate across disciplines, gain hands-on experience, and grow into industry-ready professionals through real-world projects and mentorship."
