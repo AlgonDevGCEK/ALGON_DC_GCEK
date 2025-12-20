@@ -15,7 +15,7 @@ const Footer = () => {
            <a href="https://github.com/AlgonDevGCEK" target="_blank" rel="noopener noreferrer">
             <FaGithub />
           </a>
-          <a href="https://linkedin.com/company/algondc" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/company/algon-dc-gcek/" target="_blank" rel="noopener noreferrer">
             <FaLinkedinIn />
           </a>
         </div>
