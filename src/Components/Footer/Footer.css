@@ -79,6 +79,24 @@
   color: #aab4c3;
 }
 
+.footer-btn {
+  margin-top: 12px;
+  padding: 10px 20px;
+  background-color: #ffffff;   
+  color: #0a192f;              
+  border: none;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.footer-btn:hover {
+  background-color: #60b8ff;   
+  color: #ffffff;
+}
+
 /* Mobile layout */
 @media (max-width: 600px) {
   .footer-top {

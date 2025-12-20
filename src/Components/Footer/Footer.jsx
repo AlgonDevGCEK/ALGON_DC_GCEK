@@ -24,11 +24,13 @@ const Footer = () => {
       {/* Main footer */}
       <div className="footer-content">
         <div className="footer-column">
-          <h4>ALGON DC</h4>
+          <h4>Algon Developer Community</h4>
           <p>
-            A student-driven tech community focused on learning, building,
-            and growing together through real-world projects.
+            Multidisciplinary platform integrating business, media, finance, fasion, development, marketing, coding, and more
           </p>
+          <br></br>
+          <a href="https://algondevelopercommunity.com/" className="footer-btn">Know more</a>
+
         </div>
 
         <div className="footer-column">
