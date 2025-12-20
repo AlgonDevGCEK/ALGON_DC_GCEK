@@ -28,6 +28,8 @@
   background: linear-gradient(90deg, #b4c1c7, #05b2eb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text; /* Firefox */
+  color: transparent; /* Fallback for other browsers */
   margin-bottom: 5px;
 }
 

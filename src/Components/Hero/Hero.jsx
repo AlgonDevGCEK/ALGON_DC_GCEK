@@ -8,7 +8,7 @@ const Hero = () => {
 <div id="home" className="hero container">
   <div className="hero-text">
     <h1 className="logo-title">ALGON DC</h1>
-    <p className="logo-subtitle">GCEK</p>
+    <h1 className="logo-subtitle">GCEK</h1>
 
     <h2>Our Vision</h2>
     <p>
