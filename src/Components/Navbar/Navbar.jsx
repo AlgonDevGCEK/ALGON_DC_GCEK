@@ -8,7 +8,7 @@ const Navbar = () => {
    useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
-        setIsOpen(false); // close menu if click is outside
+        setIsOpen(false); 
       }
     };
 
@@ -19,6 +19,7 @@ const Navbar = () => {
   }, []);
 
   return (
+    <>
     <nav ref = {navRef}>
       {/* Hamburger button */}
       <button
@@ -58,6 +59,12 @@ const Navbar = () => {
 </ul>
 
     </nav>
+    <div
+        className={`menu-overlay ${isOpen ? 'active' : ''}`}
+        onClick={() => setIsOpen(false)}
+      />
+    </>
+
   );
 };
 

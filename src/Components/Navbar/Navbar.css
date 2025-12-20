@@ -32,7 +32,7 @@ nav ul li {
   cursor: pointer;
   color: #fff;       
   font-size: 28px;   
-  z-index: 200;      
+  z-index: 300;      
 }
 
 .hamburger span {
@@ -70,8 +70,8 @@ nav ul li {
     flex-direction: column;
     position: absolute;
     top: 48px;
-    right: 0px;
-    width: 100%;
+    right: 2px;
+    width: 99%;
     background: rgba(2, 6, 8, 0.871);
     padding: 1rem;
     text-align: center;
@@ -79,6 +79,7 @@ nav ul li {
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: 12px;
   }
 
   .nav-links.open {
@@ -118,4 +119,20 @@ nav ul li a:hover {
 
 nav ul li a:hover::after {
   width: 100%; 
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(4px);   
+  background: rgba(0, 0, 0, 0.2); 
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 50; 
+}
+.menu-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
