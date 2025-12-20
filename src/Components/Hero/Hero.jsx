@@ -14,9 +14,10 @@ const Hero = () => {
     <br></br>
     <p>
       Take the leap from learning to doing — join us and shape tomorrow.
-      Together we build, collaborate, and innovate, turning ideas into real-world impact and preparing the next generation of changemakers.
+      Turning ideas into real-world impact and preparing the next generation of changemakers.
 
     </p>
+    <br></br>
 
     <button className="btn hero-btn">
         Join us <img src={dark_arrow} alt="" />
