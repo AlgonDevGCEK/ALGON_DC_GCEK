@@ -5,6 +5,9 @@ const Contact = () => {
   return (
     <div className="contact-section">
       <div className="contact-header">
+        <br />
+        <br />
+        <br />
         <h1>Get In Touch</h1>
         <p>
           Have questions? We'd love to hear from you. Send us a message and we'll
