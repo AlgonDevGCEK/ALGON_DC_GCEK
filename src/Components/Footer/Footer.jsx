@@ -65,7 +65,7 @@ const Footer = () => {
 
       {/* Bottom bar */}
       <div className="footer-bottom">
-        © {new Date().getFullYear()} ALGON DC • All Rights Reserved
+        © {new Date().getFullYear()} ALGON DC GCEK • All Rights Reserved
       </div>
     </footer>
   );
