@@ -63,7 +63,19 @@ const Footer = () => {
           <br></br>
           <p>✉️&nbsp;&nbsp;adcgcek25@gmail.com</p><br></br>
         </div>
+
+        <div className="footer-column">
+          <h4>Creators</h4>
+          <div className="creators">
+              <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer">
+              <img src="https://github.com/Amal-nellanhi.png" alt="Amal GitHub" className="creator-icon" />
+            </a>
+              <a href="https://github.com/alanaj77" target="_blank" rel="noopener noreferrer">
+              <img src="https://github.com/alanaj77.png" alt="Alan GitHub" className="creator-icon" />
+            </a>
+          </div>
       </div>
+    </div>
 
       {/* Bottom bar */}
       <div className="footer-bottom">
