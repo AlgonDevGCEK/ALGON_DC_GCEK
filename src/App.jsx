@@ -7,7 +7,7 @@ import './index.css'
 import AboutPage from "./pages/AboutPage";
 import Footer from "./Components/Footer/Footer";
 
-
+import Contact from './pages/Contact/Contact';
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,6 +27,7 @@ const App = () => {
       <Route path="/" element={<Hero />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
+      <Route path="/contact" element={<Contact />} />
     </Routes>
   </div>
      <Footer />
