@@ -28,18 +28,35 @@
   background: linear-gradient(90deg, #b4c1c7, #05b2eb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text; /* Firefox */
+  color: transparent; /* Fallback for other browsers */
   margin-bottom: 5px;
 }
 
 .logo-subtitle {
-  font-size: 18px;
-  color: #00b4db;
+  font-size: 37px;
+  font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 30px;
+
+  background: linear-gradient(90deg, #00b4db, #189ee1, #b4c1c7);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .hero-text h2 {
-  font-size: 36px;
+  font-size: 27px;
   margin-bottom: 15px;
   font-weight: 700;
   color: #fff;
@@ -75,7 +92,29 @@
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.hero-text h1,
+.hero-text h2,
+.hero-text p,
+.btn.hero-btn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s ease forwards;
+}
+
+.logo-title { animation-delay: 0.2s; }
+.logo-subtitle { animation-delay: 0.4s; }
+.hero-text h2 { animation-delay: 0.6s; }
+.hero-text p { animation-delay: 0.8s; }
+.btn { animation-delay: 1s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */
@@ -83,9 +122,12 @@
   .logo-title {
     font-size: 48px;
   }
+  .logo-subtitle {
+    font-size: 31px;
+  }
 
   .hero-text h2 {
-    font-size: 28px;
+    font-size: 23px;
   }
 
   .hero-text p {

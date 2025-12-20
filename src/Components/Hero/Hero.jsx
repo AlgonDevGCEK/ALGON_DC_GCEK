@@ -8,17 +8,19 @@ const Hero = () => {
 <div id="home" className="hero container">
   <div className="hero-text">
     <h1 className="logo-title">ALGON DC</h1>
-    <p className="logo-subtitle">GCEK</p>
+    <h1 className="logo-subtitle">GCEK</h1>
 
-    <h2>Our Vision</h2>
+    <h2>Build. Collaborate. Innovate.</h2>
+    <br></br>
     <p>
-      To create an ecosystem where students can collaborate across disciplines,
-      gain hands-on experience, and grow into industry-ready professionals
-      through real-world projects and mentorship.
-    </p>
+      Take the leap from learning to doing — join us and shape tomorrow.
+      Turning ideas into real-world impact and preparing the next generation of changemakers.
 
-    <button className="btn">
-      Join us <img src={dark_arrow} alt="" />
+    </p>
+    <br></br>
+
+    <button className="btn hero-btn">
+        Join us <img src={dark_arrow} alt="" />
     </button>
   </div>
 </div>
