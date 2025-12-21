@@ -3,7 +3,6 @@ import AboutUs from "../Components/AboutUs/Aboutus";
 import "./AboutPage.css";
 const AboutPage = () => {
   return (
-    <>
     <div className="about-page">
 
 
@@ -31,7 +30,6 @@ const AboutPage = () => {
         gradient="linear-gradient(135deg, rgba(179, 112, 82, 0.1), rgba(213, 12, 29, 0.3))"
       />
     </div>
-    </>
   );
 };
 

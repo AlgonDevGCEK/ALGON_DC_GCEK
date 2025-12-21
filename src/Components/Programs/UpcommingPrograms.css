@@ -1,7 +1,13 @@
 .upcoming-section {
   position: relative;
   padding: 6rem 1.5rem;
-  background: linear-gradient(to bottom, transparent, rgba(15, 23, 42, 0.5));
+    background: linear-gradient(
+  180deg,
+  #111827 0%,
+  #1e293b 50%,  
+  #020617 100%
+);
+
 }
 
 .upcoming-container {

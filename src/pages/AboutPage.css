@@ -1,6 +1,11 @@
 .about-page {
   padding-top: 100px;   /* navbar height */
   min-height: 100vh;
-
-  background: transparent; /* IMPORTANT */
+  padding-bottom: 20px;
+    background: linear-gradient(
+  180deg,
+  #111827 0%,
+  #1e293b 50%,  
+  #020617 100%
+);
 }

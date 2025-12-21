@@ -118,3 +118,52 @@
   position: relative;
   z-index: 1;
 }
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .card-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 27px;
+  margin-bottom: 30px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+    .card-logo p {
+  font-size: 11px;
+  margin: 0;
+  padding-left: 6px;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #60b8ff;
+  text-shadow: 0 0 20px rgba(96, 184, 255, 0.3);
+  letter-spacing: -0.5px;
+}
+
+.card-logo .dot {
+  width: 3px;
+  height: 20px;
+  background: linear-gradient(180deg, #00bfff, #0080ff);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  }
+
+.card-logo h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+}
+
+
