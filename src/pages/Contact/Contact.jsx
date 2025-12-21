@@ -1,13 +1,38 @@
-import React from 'react';
+// Add useState to your import
+import React, { useRef, useState } from 'react';
+
+// Inside the Contact component:
+const [status, setStatus] = useState(''); // Possible values: '', 'sending', 'success', 'error' 
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 const Contact = () => {
-  return (
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setStatus('sending'); // 1. Set to sending immediately
+   
+    emailjs
+      .sendForm('service_z4zrlqk', 'template_mmlgczt', form.current, {
+        publicKey: '51-aOGo6wqf0TGYvW',
+      })
+      .then(
+        () => {
+       setStatus('success');
+          e.target.reset(); // Clears the form after success
+          setTimeout(() => setStatus(''), 5000);
+        })
+        .catch((error) => {
+    setStatus('error'); // 3. Set to error if it fails
+    console.error('EmailJS Error:', error);       }
+      );
+  };
+
+return (
     <div className="contact-section">
       <div className="contact-header">
-        <br />
-        <br />
-        <br />
+        <br /><br /><br />
         <h1>Get In Touch</h1>
         <p>
           Have questions? We'd love to hear from you. Send us a message and we'll
@@ -18,16 +43,9 @@ const Contact = () => {
       <div className="contact-container">
         {/* Left Column: Contact Info Cards */}
         <div className="contact-info">
-          
-          {/* Address Card */}
           <div className="info-card">
             <div className="icon-wrapper">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="currentColor" 
-                className="icon"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
                 <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
               </svg>
             </div>
@@ -38,15 +56,9 @@ const Contact = () => {
             </p>
           </div>
 
-          {/* Email Card */}
           <div className="info-card">
             <div className="icon-wrapper">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="currentColor" 
-                className="icon"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="icon">
                 <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                 <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
               </svg>
@@ -59,29 +71,74 @@ const Contact = () => {
         {/* Right Column: Form */}
         <div className="contact-form-wrapper">
           <h2>Send Us a Message</h2>
-          <form className="contact-form">
+
+          {/* Feedback Messages */}
+          {status === 'success' && (
+            <div className="status-message success">
+              ✅ Message sent! We'll get back to you soon.
+            </div>
+          )}
+          {status === 'error' && (
+            <div className="status-message error">
+              ❌ Something went wrong. Please try again.
+            </div>
+          )}
+
+          <form ref={form} onSubmit={sendEmail} className="contact-form">
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="name">Name *</label>
-                <input type="text" id="name" placeholder="Your name" required />
+                <input 
+                  type="text" 
+                  name="user_name" 
+                  id="name" 
+                  placeholder="Your name" 
+                  required 
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email *</label>
-                <input type="email" id="email" placeholder="your.email@example.com" required />
+                <input 
+                  type="email" 
+                  name="user_email" 
+                  id="email" 
+                  placeholder="your.email@example.com" 
+                  required 
+                />
               </div>
             </div>
 
             <div className="form-group">
               <label htmlFor="subject">Subject</label>
-              <input type="text" id="subject" placeholder="What is this about?" />
+              <input 
+                type="text" 
+                name="subject" 
+                id="subject" 
+                placeholder="What is this about?" 
+              />
             </div>
 
             <div className="form-group">
               <label htmlFor="message">Message *</label>
-              <textarea id="message" rows="5" placeholder="Your message..." required></textarea>
+              <textarea 
+                name="message" 
+                id="message" 
+                rows="5" 
+                placeholder="Your message..." 
+                required
+              ></textarea>
             </div>
 
-            <button type="submit" className="submit-btn">Send Message</button>
+            {/* Dynamic Button Text */}
+            <button 
+              type="submit" 
+              className={`submit-btn ${status === 'sending' ? 'loading' : ''}`}
+              disabled={status === 'sending' || status === 'success'}
+            >
+              {status === 'sending' ? "Sending..." : 
+               status === 'success' ? "Sent Successfully! ✅" : 
+               "Send Message"}
+            </button>
           </form>
         </div>
       </div>
