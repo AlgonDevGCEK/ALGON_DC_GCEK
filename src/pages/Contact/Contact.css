@@ -1,6 +1,11 @@
 /* General Layout & Background */
 .contact-section {
-  background-color: #050505; /* Deep black/dark background */
+  background: linear-gradient(
+  180deg,
+  #111827 0%,
+  #1e293b 50%,  
+  #020617 100%
+);
   color: #ffffff;
   padding: 4rem 1.5rem;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -19,6 +24,7 @@
   margin-bottom: 0.5rem;
   color: #a855f7; /* Purple hint for title similar to image */
   background: linear-gradient(to right, #a855f7, #6366f1);
+  background-clip: text;  
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
