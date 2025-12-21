@@ -6,6 +6,8 @@ import UpcomingPrograms from './Components/Programs/UpcommingPrograms'
 import './index.css'
 import AboutPage from "./pages/AboutPage";
 import Footer from "./Components/Footer/Footer";
+import Login from "./pages/login-page/Login";
+
 
 import Contact from './pages/Contact/Contact';
 import {
@@ -28,6 +30,7 @@ const App = () => {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   </div>
      <Footer />

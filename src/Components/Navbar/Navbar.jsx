@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Navbar.css';
-import { NavLink } from "react-router-dom";
+import { NavLink ,useNavigate} from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef(null);
+  const navigate = useNavigate();
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -61,9 +62,16 @@ const Navbar = () => {
             <NavLink to="/contact">Contact Us</NavLink>
           </li>
 
+          {/* ✅ Button that navigates */}
           <li>
-            <button className="btn">Login</button>
+            <button 
+              className="btn" 
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
           </li>
+
         </ul>
       </nav>
 
