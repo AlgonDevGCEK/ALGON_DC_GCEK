@@ -1,17 +1,16 @@
-// Add useState to your import
-import React, { useRef, useState } from 'react';
-
-// Inside the Contact component:
-const [status, setStatus] = useState(''); // Possible values: '', 'sending', 'success', 'error' 
+import React, { useRef, useState } from 'react'; // Imports must be at the top
 import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 const Contact = () => {
   const form = useRef();
+  
+  // Status must be INSIDE the component function
+  const [status, setStatus] = useState(''); 
 
   const sendEmail = (e) => {
     e.preventDefault();
-    setStatus('sending'); // 1. Set to sending immediately
+    setStatus('sending'); 
    
     emailjs
       .sendForm('service_z4zrlqk', 'template_mmlgczt', form.current, {
@@ -19,17 +18,18 @@ const Contact = () => {
       })
       .then(
         () => {
-       setStatus('success');
-          e.target.reset(); // Clears the form after success
+          setStatus('success');
+          e.target.reset(); 
           setTimeout(() => setStatus(''), 5000);
-        })
-        .catch((error) => {
-    setStatus('error'); // 3. Set to error if it fails
-    console.error('EmailJS Error:', error);       }
+        },
+        (error) => {
+          setStatus('error');
+          console.error('EmailJS Error:', error);
+        }
       );
   };
 
-return (
+  return (
     <div className="contact-section">
       <div className="contact-header">
         <br /><br /><br />
@@ -41,7 +41,6 @@ return (
       </div>
 
       <div className="contact-container">
-        {/* Left Column: Contact Info Cards */}
         <div className="contact-info">
           <div className="info-card">
             <div className="icon-wrapper">
@@ -68,11 +67,9 @@ return (
           </div>
         </div>
 
-        {/* Right Column: Form */}
         <div className="contact-form-wrapper">
           <h2>Send Us a Message</h2>
 
-          {/* Feedback Messages */}
           {status === 'success' && (
             <div className="status-message success">
               ✅ Message sent! We'll get back to you soon.
@@ -88,48 +85,24 @@ return (
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="name">Name *</label>
-                <input 
-                  type="text" 
-                  name="user_name" 
-                  id="name" 
-                  placeholder="Your name" 
-                  required 
-                />
+                <input type="text" name="user_name" id="name" placeholder="Your name" required />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email *</label>
-                <input 
-                  type="email" 
-                  name="user_email" 
-                  id="email" 
-                  placeholder="your.email@example.com" 
-                  required 
-                />
+                <input type="email" name="user_email" id="email" placeholder="your.email@example.com" required />
               </div>
             </div>
 
             <div className="form-group">
               <label htmlFor="subject">Subject</label>
-              <input 
-                type="text" 
-                name="subject" 
-                id="subject" 
-                placeholder="What is this about?" 
-              />
+              <input type="text" name="subject" id="subject" placeholder="What is this about?" />
             </div>
 
             <div className="form-group">
               <label htmlFor="message">Message *</label>
-              <textarea 
-                name="message" 
-                id="message" 
-                rows="5" 
-                placeholder="Your message..." 
-                required
-              ></textarea>
+              <textarea name="message" id="message" rows="5" placeholder="Your message..." required></textarea>
             </div>
 
-            {/* Dynamic Button Text */}
             <button 
               type="submit" 
               className={`submit-btn ${status === 'sending' ? 'loading' : ''}`}
