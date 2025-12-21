@@ -9,6 +9,9 @@ import Footer from "./Components/Footer/Footer";
 import Login from "./pages/login-page/Login";
 import Signup from "./pages/signup-page/Signup";
 import Contact from './pages/Contact/Contact';
+import ForgotPassword from "./pages/password/ForgotPassword";
+import UpdatePassword from "./pages/password/UpdatePassword";
+
 import {
   BrowserRouter as Router,
   Routes,
