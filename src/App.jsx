@@ -7,8 +7,7 @@ import './index.css'
 import AboutPage from "./pages/AboutPage";
 import Footer from "./Components/Footer/Footer";
 import Login from "./pages/login-page/Login";
-
-
+import Signup from "./pages/signup-page/Signup";
 import Contact from './pages/Contact/Contact';
 import {
   BrowserRouter as Router,
@@ -31,6 +30,7 @@ const App = () => {
       <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   </div>
      <Footer />
