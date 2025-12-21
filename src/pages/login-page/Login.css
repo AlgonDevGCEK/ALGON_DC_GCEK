@@ -56,7 +56,8 @@
 }
 
 .login-btn:hover {
-  background: #9ad5ff;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
 }
 
 .error {
