@@ -1,6 +1,17 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { supabase } from "../../supabaseClient";
 import "./UpdatePassword.css";
+useEffect(() => {
+  const handleSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (!data.session) {
+      // Try to recover session from URL
+      await supabase.auth.getSessionFromUrl();
+    }
+  };
+  handleSession();
+}, []);
 
 const UpdatePassword = () => {
   const [newPassword, setNewPassword] = useState("");
