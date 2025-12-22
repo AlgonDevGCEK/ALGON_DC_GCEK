@@ -181,4 +181,6 @@
 @media (max-width: 768px) {
   .dashboard-hero { flex-direction: column; text-align: center; gap: 20px; }
   .dashboard-grid { grid-template-columns: 1fr; }
+  .close-modal-btn { position: absolute; top: -35px; right: 0; background: none; border: none; color: white; cursor: pointer; }
+
 }
