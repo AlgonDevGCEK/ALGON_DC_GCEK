@@ -6,16 +6,16 @@ const Footer = () => {
   return (
     <footer className="footer">
       {/* Top social bar */}
-      <div className="footer-top">
+      <div className="footer-top animate-fade-in">
         <span>Get connected with us on social networks:</span>
         <div className="social-icons">
-           <a href="https://www.instagram.com/algondc_gcek/" target="_blank" rel="noopener noreferrer">
+           <a href="https://www.instagram.com/algondc_gcek/" target="_blank" rel="noopener noreferrer" className="social-icon-link" style={{ animationDelay: '0.1s' }}>
             <FaInstagram />
            </a>
-           <a href="https://github.com/AlgonDevGCEK" target="_blank" rel="noopener noreferrer">
+           <a href="https://github.com/AlgonDevGCEK" target="_blank" rel="noopener noreferrer" className="social-icon-link" style={{ animationDelay: '0.2s' }}>
             <FaGithub />
           </a>
-          <a href="https://www.linkedin.com/company/algon-dc-gcek/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/company/algon-dc-gcek/" target="_blank" rel="noopener noreferrer" className="social-icon-link" style={{ animationDelay: '0.3s' }}>
             <FaLinkedinIn />
           </a>
         </div>
@@ -23,17 +23,16 @@ const Footer = () => {
 
       {/* Main footer */}
       <div className="footer-content">
-        <div className="footer-column">
+        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <h4>Algon Developer Community</h4>
           <p>
             Multidisciplinary platform integrating business, media, finance, fasion, development, marketing, coding, and more
           </p>
           <br></br>
           <a href="https://algondevelopercommunity.com/" className="footer-btn">Know more</a>
-
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <h4>Programs</h4>
           <ul>
             <li>Workshops</li>
@@ -43,7 +42,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.4s' }}>
           <h4>Useful Links</h4>
           <ul>
             <li>About Us</li>
@@ -53,7 +52,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.5s' }}>
           <h4>Contact</h4>
           <p>📍 Government College of Engineering Kannur</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mangattuparamba</p>
@@ -64,13 +63,13 @@ const Footer = () => {
           <p>✉️&nbsp;&nbsp;adcgcek25@gmail.com</p><br></br>
         </div>
 
-        <div className="footer-column">
+        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.6s' }}>
           <h4>Creators</h4>
           <div className="creators">
-              <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.7s' }}>
               <img src="https://github.com/Amal-nellanhi.png" alt="Amal GitHub" className="creator-icon" />
             </a>
-              <a href="https://github.com/alanaj77" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/alanaj77" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.8s' }}>
               <img src="https://github.com/alanaj77.png" alt="Alan GitHub" className="creator-icon" />
             </a>
           </div>
@@ -78,7 +77,7 @@ const Footer = () => {
     </div>
 
       {/* Bottom bar */}
-      <div className="footer-bottom">
+      <div className="footer-bottom animate-fade-in" style={{ animationDelay: '0.9s' }}>
         © {new Date().getFullYear()} ALGON DC GCEK • All Rights Reserved
       </div>
     </footer>
