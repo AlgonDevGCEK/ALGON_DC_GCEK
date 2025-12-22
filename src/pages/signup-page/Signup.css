@@ -1,3 +1,5 @@
+/* Signup.css */
+
 .signup-wrapper {
   display: flex;
   justify-content: center;
@@ -41,13 +43,38 @@
   margin-bottom: 18px;
 }
 
-.input-group input {
+/* Updated: Applied same style to 'select' as 'input' */
+.input-group input,
+.input-group select {
   width: 100%;
   padding: 12px;
   border: none;
   border-radius: 6px;
   outline: none;
   font-size: 14px;
+}
+
+/* New: Fix for the Checkbox alignment */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-size: 13px;
+  color: #d0d8e0;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* New: Override the 100% width specifically for the checkbox input */
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
 .signup-btn {

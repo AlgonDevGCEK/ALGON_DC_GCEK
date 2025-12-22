@@ -60,8 +60,11 @@ const Login = () => {
 
         {/* 🔑 Forgot Password link */}
         <div className="login-footer">
-          <a href="/forgot-password">Forgot Password?</a>
-        </div>
+          <br></br>
+        <a href="/forgot-password">Forgot Password?</a>
+        <br></br><br></br>
+        <span>Not a member?</span><a href="/signup">Join us</a>
+      </div>
       </div>
     </div>
   );

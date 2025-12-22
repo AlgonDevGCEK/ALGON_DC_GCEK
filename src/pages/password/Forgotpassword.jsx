@@ -9,8 +9,9 @@ const ForgotPassword = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/update-password",
-    });
+  // Automatically becomes 'http://localhost:5173' or 'https://your-site.com'
+  redirectTo: `${window.location.origin}/update-password`,
+});
 
     if (error) {
       setMessage(error.message);

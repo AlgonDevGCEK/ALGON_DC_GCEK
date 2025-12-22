@@ -9,26 +9,34 @@ const Signup = () => {
     phone: "",
     department: "",
     year: "",
+    course: "",
     password: "",
     confirmPassword: "",
+    college: false,
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
     }
+    if (!formData.college) {
+      setErrorMessage("You must confirm your college affiliation.");
+      return;
+    }
 
-    // Supabase signup with email + password
     const { data: { user }, error } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -38,24 +46,32 @@ const Signup = () => {
       setErrorMessage(error.message);
       setSuccessMessage("");
     } else {
-      // Insert into members table
       const { error: insertError } = await supabase
-        .from("members")
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            department: formData.department,
-            year: parseInt(formData.year),
-          },
-        ]);
+  .from("members")
+  .insert([
+    {
+      // 👇 ADD THIS LINE FOR REAL 👇
+      user_id: user.id, 
+      
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      department: formData.department,
+      year: formData.year,
+      course: formData.course,
+      college: formData.college
+        ? "Government College of Engineering Kannur"
+        : null,
+    },
+  ]);
 
       if (insertError) {
         setErrorMessage(insertError.message);
         setSuccessMessage("");
       } else {
-        setSuccessMessage("Registration successful! Please check your email to confirm.");
+        setSuccessMessage(
+          "Registration successful! Please check your email to confirm."
+        );
         setErrorMessage("");
         setFormData({
           name: "",
@@ -63,8 +79,10 @@ const Signup = () => {
           phone: "",
           department: "",
           year: "",
+          course: "",
           password: "",
           confirmPassword: "",
+          college: false,
         });
       }
     }
@@ -74,7 +92,9 @@ const Signup = () => {
     <div className="signup-wrapper">
       <div className="signup-card">
         <h2 className="signup-title">Join Our Community 🚀</h2>
-        <p className="signup-subtitle">Create your member account and stay connected</p>
+        <p className="signup-subtitle">
+          Create your member account and stay connected
+        </p>
 
         {errorMessage && <p className="error">{errorMessage}</p>}
         {successMessage && <p className="success">{successMessage}</p>}
@@ -109,27 +129,52 @@ const Signup = () => {
               placeholder="Phone Number"
               value={formData.phone}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="input-group">
-            <input
-              type="text"
+            <select
               name="department"
-              placeholder="Department"
               value={formData.department}
               onChange={handleChange}
-            />
+              required
+            >
+              <option value="">Select Department</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+            </select>
           </div>
 
           <div className="input-group">
-            <input
-              type="number"
+            <select
               name="year"
-              placeholder="Year of Study"
               value={formData.year}
               onChange={handleChange}
-            />
+              required
+            >
+              <option value="">Select Year of Study</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <select
+              name="course"
+              value={formData.course}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Course</option>
+              <option value="B.Tech">B.Tech</option>
+              <option value="M.Tech">M.Tech</option>
+            </select>
           </div>
 
           <div className="input-group">
@@ -154,7 +199,22 @@ const Signup = () => {
             />
           </div>
 
-          <button type="submit" className="signup-btn">Sign Up</button>
+          {/* Moved Checkbox Here */}
+          <div className="input-group checkbox-group">
+            <label>
+              <input
+                type="checkbox"
+                name="college"
+                checked={formData.college}
+                onChange={handleChange}
+              />
+              I belong to Government College of Engineering Kannur
+            </label>
+          </div>
+
+          <button type="submit" className="signup-btn">
+            Sign Up
+          </button>
         </form>
 
         <div className="signup-footer">

@@ -11,6 +11,7 @@ import Signup from "./pages/signup-page/Signup";
 import Contact from './pages/Contact/Contact';
 import ForgotPassword from "./pages/password/ForgotPassword";
 import UpdatePassword from "./pages/password/UpdatePassword";
+import Dashboard from "./pages/dashboard-page/Dashboard";
 
 import {
   BrowserRouter as Router,
@@ -36,6 +37,7 @@ const App = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/update-password" element={<UpdatePassword />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   </div>
      <Footer />
