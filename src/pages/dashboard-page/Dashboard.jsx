@@ -5,6 +5,7 @@ import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 import { Edit2, Check, X, Download, Calendar, Bell, Camera, LogOut } from "lucide-react";
 import "./Dashboard.css";
+import clubLogo from "../../assets/club-logo.jpeg";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Dashboard = () => {
   const [editingField, setEditingField] = useState(null); 
   const [tempValue, setTempValue] = useState("");
   const [uploading, setUploading] = useState(false);
-
+  
   const idCardRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -23,11 +24,23 @@ const Dashboard = () => {
   }, [navigate]);
 
   const fetchMemberData = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { navigate("/login"); return; }
-    const { data, error } = await supabase.from("members").select("*").eq("user_id", user.id).single();
-    if (error) console.error(error); else setMember(data);
-    setLoading(false);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate("/login"); return; }
+      
+      const { data, error } = await supabase
+        .from("members")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+
+      if (error) throw error;
+      setMember(data);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = async () => {
@@ -35,28 +48,31 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  // --- IMAGE UPLOAD ---
   const handleAvatarClick = () => fileInputRef.current.click();
 
   const handleImageUpload = async (event) => {
     try {
       const file = event.target.files[0];
       if (!file) return;
-      if (file.size > 500 * 1024) { alert("File too big (Max 500KB)"); return; }
-
+      if (file.size > 500 * 1024) { alert("File too big! Keep under 500KB."); return; }
+      
       setUploading(true);
       const fileExt = file.name.split(".").pop();
       const fileName = `${member.user_id}_${Date.now()}.${fileExt}`;
       const filePath = `${fileName}`;
 
+      // UPLOAD to 'avatar' bucket (Singular)
       const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, file, { upsert: true });
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage.from("avatar").getPublicUrl(filePath);
+      
       const { error: updateError } = await supabase.from("members").update({ profile_pic: publicUrl }).eq("user_id", member.user_id);
       if (updateError) throw updateError;
 
       setMember({ ...member, profile_pic: publicUrl });
-      alert("Photo updated!");
+      alert("Profile picture updated!");
     } catch (error) {
       alert("Error: " + error.message);
     } finally {
@@ -64,29 +80,50 @@ const Dashboard = () => {
     }
   };
 
+  // --- INLINE EDITING ---
   const startEditing = (field, val) => { setEditingField(field); setTempValue(val); };
   const cancelEditing = () => { setEditingField(null); setTempValue(""); };
-  
   const saveEditing = async (field) => {
      const { error } = await supabase.from("members").update({ [field]: tempValue }).eq("user_id", member.user_id);
      if (error) alert("Error updating");
      else { setMember({...member, [field]: tempValue}); setEditingField(null); }
   };
 
+  // --- DOWNLOAD ID ---
   const downloadImage = async () => {
     if (!idCardRef.current) return;
-    const canvas = await html2canvas(idCardRef.current, { backgroundColor: "#ffffff", scale: 3, useCORS: true });
+    const canvas = await html2canvas(idCardRef.current, {
+      backgroundColor:null, // Ensure white background
+      scale: 3, 
+      useCORS: true, 
+    });
     const image = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = image;
-    link.download = `${member.name}_ID.png`;
+    link.download = `${member.name.replace(/\s+/g, '_')}_ID.png`;
     link.click();
   };
 
   if (loading) return <div className="dashboard-wrapper"><div className="loader"></div></div>;
 
+  // Pending Screen
+  if (member && member.status === 'pending') {
+    return (
+       <div className="dashboard-wrapper">
+         <div className="info-card" style={{textAlign:'center', padding:'40px'}}>
+            <h2>⏳ Verification Pending</h2>
+            <p>We are verifying your payment Ref: {member.payment_ref}</p>
+            <button onClick={handleLogout} className="logout-btn-danger">Log Out</button>
+         </div>
+       </div>
+    );
+  }
+
   const verificationLink = `${window.location.origin}/verify/${member.user_id}`;
-  const validTill = `March ${new Date().getFullYear() + 1}`;
+  // Use database date or default to 'N/A'
+  const validTillDate = member.valid_till 
+    ? new Date(member.valid_till).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) 
+    : "N/A";
 
   return (
     <div className="dashboard-wrapper">
@@ -95,7 +132,6 @@ const Dashboard = () => {
       {/* HERO SECTION */}
       <div className="dashboard-hero">
         <div className="hero-content">
-          {/* Clickable Avatar */}
           <div className="avatar-container" onClick={handleAvatarClick}>
             <div className="avatar-large">
                {member.profile_pic ? <img src={member.profile_pic} alt="Profile" /> : <span>{member.name.charAt(0)}</span>}
@@ -114,19 +150,12 @@ const Dashboard = () => {
       </div>
 
       <div className="dashboard-grid">
-        {/* PROFILE CARD */}
+        {/* PROFILE DETAILS */}
         <div className="info-card">
           <h3>Personal Details</h3>
+          <div className="detail-row locked"><label>Email:</label><div className="value">{member.email}</div></div>
+          <div className="detail-row locked"><label>Name:</label><div className="value">{member.name}</div></div>
           
-          <div className="detail-row locked">
-            <label>Email:</label> <div className="value">{member.email}</div>
-          </div>
-          
-          <div className="detail-row locked">
-             <label>Full Name:</label> <div className="value">{member.name}</div>
-          </div>
-
-          {/* Phone Edit */}
           <div className="detail-row">
             <label>Phone:</label>
             {editingField === "phone" ? (
@@ -136,38 +165,27 @@ const Dashboard = () => {
                 <button onClick={cancelEditing} className="cancel-icon"><X size={18}/></button>
               </div>
             ) : (
-              <div className="value-group">
-                <span>{member.phone}</span>
-                <button onClick={() => startEditing("phone", member.phone)} className="edit-icon"><Edit2 size={16}/></button>
-              </div>
+              <div className="value-group"><span>{member.phone}</span><button onClick={() => startEditing("phone", member.phone)} className="edit-icon"><Edit2 size={16}/></button></div>
             )}
           </div>
 
-          {/* Year Edit */}
           <div className="detail-row">
             <label>Year:</label>
             {editingField === "year" ? (
               <div className="edit-mode">
                  <select value={tempValue} onChange={(e) => setTempValue(e.target.value)}>
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
+                    <option value="1st Year">1st Year</option><option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option><option value="4th Year">4th Year</option>
                  </select>
                  <button onClick={() => saveEditing("year")} className="save-icon"><Check size={18}/></button>
                  <button onClick={cancelEditing} className="cancel-icon"><X size={18}/></button>
               </div>
             ) : (
-              <div className="value-group">
-                <span>{member.year}</span>
-                <button onClick={() => startEditing("year", member.year)} className="edit-icon"><Edit2 size={16}/></button>
-              </div>
+              <div className="value-group"><span>{member.year}</span><button onClick={() => startEditing("year", member.year)} className="edit-icon"><Edit2 size={16}/></button></div>
             )}
           </div>
 
-          <button onClick={handleLogout} className="logout-btn-danger">
-            <LogOut size={18} style={{marginRight:'8px'}}/> Log Out
-          </button>
+          <button onClick={handleLogout} className="logout-btn-danger"><LogOut size={18} style={{marginRight:'8px'}}/> Log Out</button>
         </div>
 
         {/* UPDATES COLUMN */}
@@ -176,34 +194,45 @@ const Dashboard = () => {
             <div className="card-header"><Calendar size={20} className="icon-blue"/> <h4>Upcoming Events</h4></div>
             <div className="empty-state"><p>No events scheduled for this week.</p><button className="small-btn">View Calendar</button></div>
           </div>
-          <div className="placeholder-card">
-            <div className="card-header"><Bell size={20} className="icon-yellow"/> <h4>Announcements</h4></div>
-            <div className="empty-state"><p>Welcome to the new Student Portal!</p></div>
-          </div>
         </div>
       </div>
 
-      {/* ID CARD MODAL */}
+      {/* --- ID CARD MODAL --- */}
       {showIdModal && (
         <div className="modal-overlay" onClick={() => setShowIdModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal-btn" onClick={() => setShowIdModal(false)}><X size={24}/></button>
+            
             <div className="digital-id-card-light" ref={idCardRef}>
-               <div className="id-header-light">ALGON DC GCEK</div>
+               {/* 1. UPDATED HEADER TITLE */}
+               <div className="id-header-light">ALGON DC ID</div>
+               
                <div className="id-body-light">
-                 <img src="/club-logo.png" alt="Logo" className="id-club-logo" onError={(e) => e.target.style.display='none'}/>
+                 {/* 2. CLUB LOGO (Make sure club-logo.png is in public folder) */}
+                 <img src={clubLogo} alt="Club Logo" className="club-logo-img"onError={(e) => e.target.style.display='none'} />
+
+                 {/* USER PHOTO */}
                  <div className="id-photo-frame">
-                   {member.profile_pic ? <img src={member.profile_pic} crossOrigin="anonymous" alt="Member" /> : <div className="initials">{member.name.charAt(0)}</div>}
+                   {member.profile_pic ? (
+                     <img src={member.profile_pic} alt="Profile" crossOrigin="anonymous" />
+                   ) : (
+                     <div className="initials">{member.name.charAt(0)}</div>
+                   )}
                  </div>
+                 
                  <h2>{member.name}</h2>
                  <p className="role">Student Member</p>
+                 
+                 {/* 3. ADDED DETAILS (College & Validity) */}
                  <div className="id-meta">
                    <p><strong>ID:</strong> {member.user_id.slice(0, 8).toUpperCase()}</p>
-                   <p><strong>Dept:</strong> {member.department}</p>
-                   <p className="validity">Valid Till: {validTill}</p>
+                   <p><strong>Dept:</strong> {member.department} &bull; <strong>Year:</strong> {member.year}</p>
+                   <p><strong>College:</strong> GCE Kannur</p>
+                   <p className="validity">Valid Till: <span style={{color:'#dc2626'}}>{validTillDate}</span></p>
                  </div>
+
                  <div className="qr-box">
-                    <QRCode value={verificationLink} size={64} fgColor="#000" bgColor="transparent"/>
+                    <QRCode value={verificationLink} size={60} bgColor="transparent" fgColor="#000000" />
                  </div>
                </div>
             </div>
@@ -214,4 +243,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;
