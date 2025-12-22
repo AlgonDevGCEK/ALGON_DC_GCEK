@@ -1,11 +1,12 @@
 /* Signup.css */
 
+/* --- MAIN LAYOUT --- */
 .signup-wrapper {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 120px; 
-  padding-bottom: 150px;
+  align-items: flex-start; /* Aligns to top so scrolling works on tall forms */
+  padding-top: 80px; 
+  padding-bottom: 100px;
   min-height: 100vh;
   background: linear-gradient(
     180deg,
@@ -17,119 +18,175 @@
 }
 
 .signup-card {
-  background: rgba(90, 171, 233, 0.088);
-  backdrop-filter: blur(12px);
-  padding: 70px 50px;
-  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.7); /* Slightly darker for better contrast */
+  backdrop-filter: blur(16px);
+  padding: 40px;
+  border-radius: 16px;
   width: 100%;
-  max-width: 600px;
-  color: #d0d8e0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  max-width: 500px; /* Kept compact */
+  color: #e2e8f0;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+/* --- TEXT & HEADERS --- */
+.signup-title {
+  color: #f8fafc;
+  margin-bottom: 5px;
+  font-size: 24px;
+  font-weight: 700;
   text-align: center;
 }
 
-.signup-title {
-  color: #d4dde4;
-  margin-bottom: 8px;
-}
-
 .signup-subtitle {
-  font-size: 15px;
-  margin-bottom: 20px;
-  color: #b0b8c0;
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #94a3b8;
+  text-align: center;
 }
 
+/* --- INPUTS & SELECTS --- */
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
-/* Updated: Applied same style to 'select' as 'input' */
+/* Apply consistent styling to Inputs and Selects */
 .input-group input,
 .input-group select {
   width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
+  padding: 12px 15px;
+  background: #0f172a; /* Dark background for inputs */
+  border: 1px solid #334155;
+  border-radius: 8px;
   outline: none;
   font-size: 14px;
+  color: white;
+  transition: border-color 0.2s;
 }
 
-/* New: Fix for the Checkbox alignment */
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Placeholder Color */
+.input-group input::placeholder {
+  color: #64748b;
+}
+
+/* Side-by-Side Inputs (Year & Course) */
+.row-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* --- CHECKBOX --- */
 .checkbox-group {
   display: flex;
   align-items: center;
-  text-align: left;
+  margin-bottom: 20px;
   font-size: 13px;
-  color: #d0d8e0;
+  color: #cbd5e1;
 }
 
 .checkbox-group label {
   display: flex;
   align-items: center;
   cursor: pointer;
-  width: 100%;
+  user-select: none;
 }
 
-/* New: Override the 100% width specifically for the checkbox input */
 .checkbox-group input[type="checkbox"] {
-  width: auto;
+  width: 16px;
+  height: 16px;
   margin-right: 10px;
+  accent-color: #3b82f6; /* Makes the checkbox blue */
   cursor: pointer;
 }
 
+/* --- BUTTONS --- */
 .signup-btn {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #3b82f6, #a855f7);
+  padding: 12px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .signup-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
 }
 
+.signup-btn:active {
+  transform: translateY(0);
+}
+
+/* --- ALERTS --- */
 .error {
-  color: #ff6b6b;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
   font-size: 13px;
-  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .success {
+  background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
   font-size: 13px;
-  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
+/* --- FOOTER --- */
 .signup-footer {
-  margin-top: 16px;
+  margin-top: 20px;
   font-size: 13px;
+  text-align: center;
+  color: #94a3b8;
 }
 
 .signup-footer a {
-  color: #60b8ff;
+  color: #60a5fa;
   text-decoration: none;
-  margin-left: 6px;
+  font-weight: 600;
+  margin-left: 5px;
 }
 
 .signup-footer a:hover {
-  color: #9ad5ff;
+  text-decoration: underline;
+  color: #93c5fd;
 }
 
-/* Mobile tweaks */
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 600px) {
   .signup-card {
-    width: 90%;
-    padding: 50px 20px;
+    width: 95%;
+    padding: 30px 20px;
   }
-
-  .signup-btn {
-    font-size: 16px;
-    padding: 14px;
+  
+  /* Stack the side-by-side inputs on mobile */
+  .row-group {
+    flex-direction: column;
+    gap: 0;
   }
 }
