@@ -1,41 +1,43 @@
 import React, { useState } from "react";
-import { supabase } from "../../supabaseClient"; 
+import { supabase } from "../../supabaseClient";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const { data: { user }, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: formData.email,
+      password: formData.password,
     });
 
     if (error) {
       setErrorMessage(error.message);
     } else {
-      console.log("Logged in:", user);
+      navigate("/dashboard"); // redirect after login
     }
   };
 
   return (
     <div className="login-wrapper">
       <div className="login-card">
-        <h2 className="login-title">Welcome Back ! </h2>
-        <p className="login-subtitle">Log in to your member account and stay connected</p>
-
-        {errorMessage && <p className="error">{errorMessage}</p>}
-
+        <h2 className="login-title">Welcome Back !</h2>
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <input
               type="email"
+              name="email"
               placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -43,19 +45,22 @@ const Login = () => {
           <div className="input-group">
             <input
               type="password"
+              name="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>
 
-          <button type="submit" className="login-btn">Login</button>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+
+          <button type="submit" className="login-btn">Log In</button>
         </form>
 
+        {/* 🔑 Forgot Password link */}
         <div className="login-footer">
-          <span>Not a member yet?</span>
-          <a href="/signup"> Join us today</a>
+          <a href="/forgot-password">Forgot Password?</a>
         </div>
       </div>
     </div>
