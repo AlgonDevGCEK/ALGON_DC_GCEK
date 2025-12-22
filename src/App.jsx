@@ -12,6 +12,7 @@ import Contact from './pages/Contact/Contact';
 import ForgotPassword from "./pages/password/ForgotPassword";
 import UpdatePassword from "./pages/password/UpdatePassword";
 import Dashboard from "./pages/dashboard-page/Dashboard";
+import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 
 import {
   BrowserRouter as Router,
@@ -38,6 +39,7 @@ const App = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/update-password" element={<UpdatePassword />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/verify/:userId" element={<VerifyUser />} />
     </Routes>
   </div>
      <Footer />
