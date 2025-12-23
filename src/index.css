@@ -45,3 +45,12 @@ a{
   align-items: center;
   justify-content: center;
 }
+
+html, body {
+  width: 100%;
+  max-width: 100vw; 
+  overflow-x: hidden; /* Cut off anything that sticks out sideways */
+  position: relative; 
+  margin: 0;
+  padding: 0;
+}
