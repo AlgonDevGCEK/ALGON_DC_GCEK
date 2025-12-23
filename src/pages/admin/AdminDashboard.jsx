@@ -54,7 +54,7 @@ const AdminDashboard = () => {
       <div className="hub-grid">
         
         {/* CARD 1: PAYMENTS & MEMBERS */}
-        <Link to="/admin/payments" className="hub-card purple-card">
+        <Link to="/admin-member-manager" className="hub-card purple-card">
           <div className="card-icon-box">
             <Users size={32} />
           </div>
