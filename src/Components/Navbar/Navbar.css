@@ -1,7 +1,7 @@
 nav {
   width: 100%;
   color: #fff;
-  padding: 6px 0;
+  padding: 15px 0; /* Slightly increased for better vertical centering */
   position: absolute;
   top: 0;
   left: 0;
@@ -9,18 +9,88 @@ nav {
   align-items: center;
   justify-content: flex-end;
   z-index: 100;
-  background: rgba(75, 144, 196, 0) ;
+  background: rgba(75, 144, 196, 0);
   backdrop-filter: blur(10px);
 }
 
 nav ul li {
   list-style: none;
-  margin: 8px 24px;
-  font-size: 18px;
+  margin: 0 15px; /* Reduced margin slightly to fit more items */
+  font-size: 17px;
   display: inline-block;
 }
 
-/* Hamburger bars */
+/* --- LINKS STYLING --- */
+nav ul li a {
+  color: #fff; 
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 5px 0;
+}
+
+/* Sliding underline effect (Standard Links) */
+nav ul li a:not(.nav-admin-link):not(.btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #4b90c4; 
+  transition: width 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #189ee1; 
+}
+
+nav ul li a:not(.nav-admin-link):not(.btn):hover::after {
+  width: 100%; 
+}
+
+/* Active State (React Router adds 'active' class automatically) */
+nav ul li a.active:not(.nav-admin-link):not(.btn) {
+  color: #4b90c4;
+}
+nav ul li a.active:not(.nav-admin-link):not(.btn)::after {
+  width: 100%;
+}
+
+/* --- 👑 NEW: ADMIN BUTTON STYLE --- */
+.nav-admin-link {
+  background: linear-gradient(135deg, #8b5cf6, #d946ef); /* Purple Gradient */
+  color: white !important; /* Force white text */
+  padding: 8px 18px !important;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-admin-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.5);
+  color: white !important;
+}
+
+/* --- 🚪 NEW: LOGOUT BUTTON STYLE --- */
+.logout-btn {
+  padding: 7px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  background: #ef4444 !important;
+  color: white !important;
+}
+
+/* --- HAMBURGER MENU --- */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -47,92 +117,102 @@ nav ul li {
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
-
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
-
 .hamburger.open span:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -8px);
 }
-
-/* Mobile styles */
-@media (max-width: 768px) {
+  
+  /* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 900px) {
   .hamburger {
     display: flex;
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 25px;
   }
 
   .nav-links {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 48px;
-    right: 2px;
-    width: 99%;
-    background: rgba(2, 6, 8, 0.871);
-    padding: 1rem;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: 12px;
+    align-items: center; 
+    justify-content: flex-start;
+    
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 280px; 
+    background: linear-gradient(to bottom, #0f172a 50%, #1e1b4b 100%);    
+    padding-top: 100px; 
+    padding-bottom: 40px;
+    
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 200;
   }
 
   .nav-links.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
     pointer-events: auto;
   }
 
   .nav-links li {
-    margin: 10px 0;
+    width: 100%; 
+    margin: 12px 0;
+    display: flex;      
+    justify-content: center;
+    font-size: 17px;
+  }
+
+  /* --- BUTTON STYLING --- */
+  .nav-admin-link, 
+  .logout-btn,
+  .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;        
+    min-width: 140px;   
+    max-width: 80%;      
+    padding: 10px 24px;  
+    margin: 0 auto;      
+    font-size: 16px;
+  }
+
+  .btn {
+    background: #3b82f6;
+    color: white;
+    border-radius: 30px; 
   }
 }
 
-
-nav ul li a {
-  color: #fff; 
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-/* Sliding underline effect */
-nav ul li a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 2px;
-  background: #4b90c4; 
-  transition: width 0.3s ease;
-}
-
-nav ul li a:hover {
-  color: #189ee1; 
-}
-
-nav ul li a:hover::after {
-  width: 100%; 
-}
-
+/* --- OVERLAY (The Blur Effect Behind Menu) --- */
 .menu-overlay {
   position: fixed;
   inset: 0;
-  backdrop-filter: blur(4px);   
-  background: rgba(0, 0, 0, 0.2); 
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(12, 12, 12, 0); 
+  
+  /* Start with NO blur */
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: all 0.4s ease;
   z-index: 50; 
 }
+
 .menu-overlay.active {
   opacity: 1;
   pointer-events: auto;
+  
+  /* 👇 THIS IS WHERE THE BLUR HAPPENS */
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px); /* Required for Safari/iPhone */
+  
+  /* Darken the background */
+  background: rgba(0, 0, 0, 0.4); 
 }
