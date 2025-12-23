@@ -56,7 +56,7 @@ const Dashboard = () => {
     try {
       const file = event.target.files[0];
       if (!file) return;
-      if (file.size > 500 * 1024) { alert("File too big! Keep under 500KB."); return; }
+      if (file.size > 75 * 1024) { alert("File too big! Keep under 75KB."); return; }
       
       setUploading(true);
       const fileExt = file.name.split(".").pop();
