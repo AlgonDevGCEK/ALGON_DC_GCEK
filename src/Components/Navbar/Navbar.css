@@ -15,7 +15,7 @@ nav {
 
 nav ul li {
   list-style: none;
-  margin: 0 15px; /* Reduced margin slightly to fit more items */
+  margin: 0 23px; /* Reduced margin slightly to fit more items */
   font-size: 17px;
   display: inline-block;
 }
