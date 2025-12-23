@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabaseClient";
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
-import { Edit2, Check, X, Download, Calendar, Bell, Camera, LogOut } from "lucide-react";
+import { Edit2, Check, X, Download, Calendar, Camera, LogOut ,ShieldCheck,Info} from "lucide-react";
 import "./Dashboard.css";
 import clubLogo from "../../assets/club-logo.jpeg";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ const Dashboard = () => {
     try {
       const file = event.target.files[0];
       if (!file) return;
-      if (file.size > 500 * 1024) { alert("File too big! Keep under 500KB."); return; }
+      if (file.size > 75 * 1024) { alert("File too big! Keep under 75KB."); return; }
       
       setUploading(true);
       const fileExt = file.name.split(".").pop();
@@ -152,6 +153,14 @@ const Dashboard = () => {
       <div className="dashboard-grid">
         {/* PROFILE DETAILS */}
         <div className="info-card">
+          {member?.role === 'admin' && (
+            <div className="admin-access-section">
+              <Link to="/admin" className="admin-access-btn">
+                <ShieldCheck size={20} />
+                <span>Open Admin Command Center</span>
+              </Link>
+            </div>
+          )}
           <h3>Personal Details</h3>
           <div className="detail-row locked"><label>Email:</label><div className="value">{member.email}</div></div>
           <div className="detail-row locked"><label>Name:</label><div className="value">{member.name}</div></div>
@@ -189,12 +198,30 @@ const Dashboard = () => {
         </div>
 
         {/* UPDATES COLUMN */}
-        <div className="updates-column">
-          <div className="placeholder-card">
-            <div className="card-header"><Calendar size={20} className="icon-blue"/> <h4>Upcoming Events</h4></div>
-            <div className="empty-state"><p>No events scheduled for this week.</p><button className="small-btn">View Calendar</button></div>
-          </div>
-        </div>
+        {/* UPDATES COLUMN (Now Instructions) */}
+<div className="updates-column">
+  <div className="instruction-card">
+    <div className="card-header">
+      <Info size={20} className="icon-blue" /> 
+      <h4>Instructions</h4>
+    </div>
+    
+    <ul className="instruction-list">
+      <li>
+        <strong>Update Photo:</strong> Click on your profile picture circle to upload a new image.
+      </li>
+      <li>
+        <strong>Photo Type:</strong> Please use a formal <em>Passport Size</em> photo for your ID card.
+      </li>
+      <li>
+        <strong>Size Limit:</strong> The image file must be less than <span style={{color:'#ef4444', fontWeight:'bold'}}>75 KB</span>.
+      </li>
+      <li>
+        <strong>Corrections:</strong> Name and Email are locked. If you need to fix them, please use the <Link to="/contact">Contact Page</Link>.
+      </li>
+    </ul>
+  </div>
+</div>
       </div>
 
       {showIdModal && (

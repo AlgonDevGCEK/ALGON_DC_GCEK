@@ -83,7 +83,7 @@
 .cancel-icon { background: #ef4444; color: white; border: none; border-radius: 4px; padding: 6px; cursor: pointer; }
 
 /* --- AVATAR UPLOAD --- */
-.avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; border-radius: 50%; transition: transform 0.2s; }
+.avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; border-radius: 50%; transition: transform 0.2s;flex-shrink: 0; }
 .avatar-container:hover { transform: scale(1.05); }
 
 .avatar-large {
@@ -107,7 +107,57 @@
   border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white;
   border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;
 }
+/* --- INSTRUCTIONS CARD --- */
+.instruction-card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(59, 130, 246, 0.2); /* Subtle Blue Border */
+  border-radius: 16px;
+  padding: 25px;
+  height: fit-content;
+}
 
+.instruction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instruction-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #cbd5e1; /* Soft grey text */
+  line-height: 1.6;
+}
+
+/* Add a custom bullet point */
+.instruction-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #3b82f6; /* Blue bullet */
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.instruction-list strong {
+  color: white;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.instruction-list a {
+  color: #60a5fa;
+  text-decoration: none;
+  border-bottom: 1px dotted #60a5fa;
+}
+
+.instruction-list a:hover {
+  color: white;
+  border-bottom-style: solid;
+}
 /* --- ID CARD DESIGN (POLISHED) --- */
 .digital-id-card-light {
   width: 320px;
@@ -151,6 +201,32 @@
 .id-meta p { margin: 2px 0; }
 .validity { margin-top: 5px !important; font-weight: 600; }
 
+.admin-access-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-access-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #7c3aed, #d946ef); 
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+  transition: all 0.3s ease;
+}
+
+.admin-access-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+}
+
 .qr-box { margin-top: 5px; padding: 8px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; }
 
 /* --- MODAL (POPUP) --- */
@@ -178,9 +254,57 @@
 @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-@media (max-width: 768px) {
-  .dashboard-hero { flex-direction: column; text-align: center; gap: 20px; }
-  .dashboard-grid { grid-template-columns: 1fr; }
-  .close-modal-btn { position: absolute; top: -35px; right: 0; background: none; border: none; color: white; cursor: pointer; }
+/* Update the Mobile Media Query at the bottom of Dashboard.css */
 
+@media (max-width: 768px) {
+  /* 1. Reduce top padding so it doesn't feel empty */
+  .dashboard-wrapper {
+    padding-top: 85px; 
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* 2. Stack the Main Hero Section */
+  .dashboard-hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 25px;
+    padding: 25px 20px;
+  }
+
+  /* 3. 👇 FIX: Stack Avatar on top of Name */
+  .hero-content {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: center;    /* Center everything */
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* 4. Center the Badges */
+  .badges {
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping if text is long */
+    padding-top: 9px;
+  }
+
+  /* 5. Stack the Grid (Info Cards) */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* 6. Fix Close Button Position on Mobile Modal */
+  .close-modal-btn {
+    top: -45px;
+    right: -9px; 
+    background: rgba(0,0,0,0.5); /* Add background so it's visible over content */
+    border-radius: 50%;
+    padding: 5px;
+    width: 40px;
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

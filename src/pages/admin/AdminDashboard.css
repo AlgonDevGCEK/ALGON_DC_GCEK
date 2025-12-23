@@ -1,0 +1,182 @@
+.admin-hub-container {
+  min-height: 100vh;
+  background: #0f172a; /* Dark Navy Background */
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+}
+
+/* --- HEADER --- */
+.hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+  padding-bottom: 20px;
+  padding-top: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-welcome {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-avatar {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.admin-welcome h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-welcome p {
+  margin: 5px 0 0 0;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* --- GRID LAYOUT --- */
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- CARD STYLES --- */
+.hub-card {
+  position: relative;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  text-decoration: none;
+  color: white;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.hub-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Icon Box */
+.card-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.card-content p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding-top: 8px;
+}
+
+.card-arrow {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: #475569;
+  transition: transform 0.3s;
+}
+
+.hub-card:hover .card-arrow {
+  transform: translateX(5px);
+  color: white;
+}
+
+/* --- THEME COLORS --- */
+
+/* Purple (Payments) */
+.purple-card:hover {
+  box-shadow: 0 20px 50px -12px rgba(139, 92, 246, 0.25);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+.purple-card .card-icon-box { background: rgba(139, 92, 246, 0.1); color: #a78bfa; }
+
+/* Blue (Gallery) */
+.blue-card:hover {
+  box-shadow: 0 20px 50px -12px rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+.blue-card .card-icon-box { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
+
+/* Pink (Programs) */
+.pink-card:hover {
+  box-shadow: 0 20px 50px -12px rgba(236, 72, 153, 0.25);
+  border-color: rgba(236, 72, 153, 0.4);
+}
+.pink-card .card-icon-box { background: rgba(236, 72, 153, 0.1); color: #f472b6; }
+
+/* --- MOBILE RESPONSIVENESS --- */
+
+@media (max-width: 768px) {
+  /* 1. Reduce container padding */
+  .admin-hub-container {
+    padding: 30px 15px;
+    padding-bottom: 120px;
+  }
+
+  /* 2. Stack the Header (Welcome Top, Logout Bottom) */
+  .hub-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+ 
+  /* 4. Force cards into a single column */
+  .hub-grid {
+    grid-template-columns: 1fr; 
+    gap: 60px;
+  }
+
+  /* 5. Adjust Font Sizes */
+  .admin-welcome h1 {
+    font-size: 1.5rem;
+  }
+  
+  .admin-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .hub-card:hover {
+    transform: none;
+  }
+}

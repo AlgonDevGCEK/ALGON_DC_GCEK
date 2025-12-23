@@ -1,25 +1,65 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate } from "react-router-dom";
+import { supabase } from "../../supabaseClient"; // Ensure path is correct
 import './Navbar.css';
-import { NavLink ,useNavigate} from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [session, setSession] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  
   const navRef = useRef(null);
   const navigate = useNavigate();
 
-  // Close menu when clicking outside
+  // --- 1. HANDLE CLICK OUTSIDE (Mobile Menu) ---
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // --- 2. AUTHENTICATION CHECK ---
+  useEffect(() => {
+    // Check active session immediately
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      if (session) checkUserRole(session.user.id);
+    });
+
+    // Listen for changes (Login/Logout events)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) {
+        checkUserRole(session.user.id);
+      } else {
+        setIsAdmin(false); // Reset admin status on logout
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Check if user is an Admin
+  const checkUserRole = async (userId) => {
+    const { data } = await supabase
+      .from('members')
+      .select('role')
+      .eq('user_id', userId)
+      .single();
+    
+    if (data?.role === 'admin') setIsAdmin(true);
+  };
+
+  // Logout Handler
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsOpen(false); // Close menu on mobile
+    navigate("/");    // Redirect to home
+  };
 
   return (
     <>
@@ -34,48 +74,63 @@ const Navbar = () => {
           <span></span>
         </button>
 
-        {/* 👇 CHANGE MADE HERE:
-            Added onClick={() => setIsOpen(false)} to the ul. 
-            Now, clicking ANY child (Link or Button) will close the menu.
-        */}
+        {/* Menu Links */}
         <ul 
           className={`nav-links ${isOpen ? 'open' : ''}`} 
-          onClick={() => setIsOpen(false)} 
+          onClick={() => setIsOpen(false)} // Closes menu when any link is clicked
         >
-          <li>
-            <NavLink to="/" end>Home</NavLink>
-          </li>
+          <li><NavLink to="/" end>Home</NavLink></li>
+          <li><NavLink to="/upcoming-programs">Programs</NavLink></li>
+          <li><NavLink to="/about">About Us</NavLink></li>
+          <li><NavLink to="/gallery">Gallery</NavLink></li>
+          <li><NavLink to="/contact">Contact Us</NavLink></li>
 
-          <li>
-            <NavLink to="/upcoming-programs">Programs</NavLink>
-          </li>
+          {/* 👇 DYNAMIC AUTH BUTTONS 👇 */}
+          {session ? (
+            <>
+              {/* 👑 ADMIN LINK (Only for Admins) */}
+              {isAdmin && (
+                <li>
+                  <NavLink to="/admin" className="nav-admin-link" style={{color: '#d8b4fe'}}>
+                    Admin Hub
+                  </NavLink>
+                </li>
+              )}
 
-          <li>
-            <NavLink to="/about">About Us</NavLink>
-          </li>
+              {/* DASHBOARD */}
+              <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
 
-          <li>
-            <NavLink to="/gallery">Gallery</NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/contact">Contact Us</NavLink>
-          </li>
-
-          {/* ✅ Button that navigates */}
-          <li>
-            <button 
-              className="btn" 
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-          </li>
-
+              {/* LOGOUT */}
+              <li>
+                <button 
+                  className="btn logout-btn" 
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent bubbling if needed, though ul onClick handles closure
+                    handleLogout();
+                  }}
+                  style={{background: 'transparent', border: '1px solid #ef4444', color: '#ef4444'}}
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            // NOT LOGGED IN? SHOW LOGIN
+            <li>
+              <button 
+                className="btn" 
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </button>
+            </li>
+          )}
         </ul>
       </nav>
 
-      {/* Overlay to close menu when clicking the background dim area */}
+      {/* Overlay */}
       <div
         className={`menu-overlay ${isOpen ? 'active' : ''}`}
         onClick={() => setIsOpen(false)}
