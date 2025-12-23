@@ -11,17 +11,18 @@ import Contact from './pages/Contact/Contact';
 import ForgotPassword from "./pages/password/ForgotPassword";
 import UpdatePassword from "./pages/password/UpdatePassword";
 import Dashboard from "./pages/dashboard-page/Dashboard";
+import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 
-// Import the new AdminUpload component
-// Make sure the file exists at this path!
+// Gallery Components
 import AdminUpload from './Components/gallery/AdminUpload'; 
+import Gallery from './Components/gallery/Gallery';
 
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from "react-router-dom";
-import Gallery from './Components/gallery/Gallery';
+
 
 const App = () => {
   return (
@@ -38,7 +39,8 @@ const App = () => {
           <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/gallery" element={<Gallery />} />
-          
+          <Route path="/verify/:userId" element={<VerifyUser />} />
+
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

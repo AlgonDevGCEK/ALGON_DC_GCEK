@@ -1,0 +1,104 @@
+.verify-container {
+  min-height: 100vh;
+  background: #0f172a; /* Deep dark background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.verify-card {
+  background: #1e293b; /* Card background */
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- TEXT STYLES --- */
+.status-title {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.user-name {
+  color: #f8fafc;
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.user-detail {
+  color: #94a3b8;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* --- PROFILE IMAGE --- */
+.verify-photo-frame {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 25px auto;
+  border: 4px solid; /* Color set by dynamic class below */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.verify-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- STATUS COLORS --- */
+
+/*  VALID */
+.status-valid { color: #4ade80; }
+.border-valid { border-color: #4ade80; }
+.bg-valid {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+/*  EXPIRED */
+.status-expired { color: #facc15; }
+.border-expired { border-color: #facc15; }
+
+/* NOT ACTIVE (Pending) */
+.status-pending { color: #fb923c; }
+
+/*  INVALID */
+.status-invalid { color: #ef4444; }
+
+/* Loading State */
+.loading-text {
+  color: #94a3b8;
+  font-size: 18px;
+  letter-spacing: 2px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
