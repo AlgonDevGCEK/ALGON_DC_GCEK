@@ -399,19 +399,19 @@
   letter-spacing: 1px;
 }
 
-/* Gallery Grid */
-.gallery-section {
+/* Admin Gallery Grid */
+.admin-upload-section .gallery-section {
   margin-top: 40px;
 }
 
-.gallery-grid {
+.admin-upload-section .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
 }
 
-/* Gallery Card */
-.gallery-card {
+/* Admin Gallery Card */
+.admin-upload-section .gallery-card {
   background: rgba(30, 41, 59, 0.6);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -421,13 +421,13 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.gallery-card:hover {
+.admin-upload-section .gallery-card:hover {
   transform: translateY(-8px);
   border-color: rgba(139, 92, 246, 0.5);
   box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
 }
 
-.gallery-image-wrapper {
+.admin-upload-section .gallery-image-wrapper {
   position: relative;
   width: 100%;
   padding-bottom: 100%;
@@ -436,7 +436,7 @@
   cursor: pointer;
 }
 
-.gallery-image-wrapper img {
+.admin-upload-section .gallery-image-wrapper img {
   position: absolute;
   top: 0;
   left: 0;
@@ -446,12 +446,12 @@
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.gallery-card:hover .gallery-image-wrapper img {
+.admin-upload-section .gallery-card:hover .gallery-image-wrapper img {
   transform: scale(1.1);
 }
 
 /* Shine Effect */
-.gallery-shine {
+.admin-upload-section .gallery-shine {
   position: absolute;
   top: -50%;
   left: -50%;
@@ -468,12 +468,12 @@
   pointer-events: none;
 }
 
-.gallery-card:hover .gallery-shine {
+.admin-upload-section .gallery-card:hover .gallery-shine {
   transform: translateX(100%) translateY(100%) rotate(45deg);
 }
 
 /* Gallery Info */
-.gallery-info {
+.admin-upload-section .gallery-info {
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -481,11 +481,11 @@
   gap: 15px;
 }
 
-.info-content {
+.admin-upload-section .info-content {
   flex: 1;
 }
 
-.event-type-badge {
+.admin-upload-section .event-type-badge {
   display: inline-block;
   padding: 4px 12px;
   background: rgba(99, 102, 241, 0.2);
@@ -499,7 +499,7 @@
   margin-bottom: 8px;
 }
 
-.gallery-quote {
+.admin-upload-section .gallery-quote {
   font-size: 0.9rem;
   color: #cbd5e1;
   line-height: 1.5;
@@ -535,8 +535,8 @@
   cursor: not-allowed;
 }
 
-/* Lightbox */
-.lightbox {
+/* Lightbox - Scoped to Admin */
+.admin-upload-section .lightbox {
   position: fixed;
   top: 0;
   left: 0;
@@ -552,14 +552,14 @@
   cursor: zoom-out;
 }
 
-.lightbox-content {
+.admin-upload-section .lightbox-content {
   position: relative;
   max-width: 90vw;
   max-height: 90vh;
   cursor: default;
 }
 
-.lightbox-content img {
+.admin-upload-section .lightbox-content img {
   width: 100%;
   height: 100%;
   max-width: 1200px;
@@ -569,7 +569,7 @@
   box-shadow: 0 25px 100px rgba(0, 0, 0, 0.5);
 }
 
-.lightbox-close {
+.admin-upload-section .lightbox-close {
   position: absolute;
   top: -50px;
   right: 0;
@@ -588,12 +588,12 @@
   z-index: 10001;
 }
 
-.lightbox-close:hover {
+.admin-upload-section .lightbox-close:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: rotate(90deg);
 }
 
-.lightbox-caption {
+.admin-upload-section .lightbox-caption {
   position: absolute;
   bottom: -60px;
   left: 0;
@@ -607,7 +607,7 @@
   border-radius: 8px;
 }
 
-.lightbox-delete-btn {
+.admin-upload-section .lightbox-delete-btn {
   position: absolute;
   bottom: -60px;
   right: 0;
@@ -625,15 +625,14 @@
   backdrop-filter: blur(10px);
 }
 
-.lightbox-delete-btn:hover {
+.admin-upload-section .lightbox-delete-btn:hover {
   background: rgba(239, 68, 68, 0.4);
   border-color: rgba(239, 68, 68, 0.6);
   transform: translateY(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
-  .gallery-grid {
+  .admin-upload-section .gallery-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }
@@ -666,17 +665,17 @@
     grid-template-columns: 1fr;
   }
 
-  .gallery-grid {
+  .admin-upload-section .gallery-grid {
     grid-template-columns: 1fr;
   }
 
-  .lightbox-close {
+  .admin-upload-section .lightbox-close {
     top: 10px;
     right: 10px;
   }
 
-  .lightbox-caption,
-  .lightbox-delete-btn {
+  .admin-upload-section .lightbox-caption,
+  .admin-upload-section .lightbox-delete-btn {
     position: static;
     margin-top: 20px;
   }
