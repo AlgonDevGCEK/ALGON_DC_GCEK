@@ -141,7 +141,7 @@ const EventRegistration = () => {
                 <MessageCircle size={20} /> Join WhatsApp Group
               </a>
             )}
-            <p className="small-note">Please check your email for the ticket.</p>
+            <p className="small-note">Updates will be shared in the group.</p>
             <button onClick={() => navigate('/upcoming-programs')} className="secondary-btn">
               Explore More Events
             </button>
