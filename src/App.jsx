@@ -11,7 +11,7 @@ import Navbar from './Components/Navbar/Navbar';
 import Hero from './Components/Hero/Hero';
 import Footer from "./Components/Footer/Footer";
 import Gallery from './Components/gallery/Gallery';
-import AdminUpload from './Components/gallery/AdminUpload';
+import AdminUpload from './pages/admin/AdminUpload';
 import AdminMemberManager from './Components/Admin/AdminMemberManager'; // From Snippet 1
 import UpcomingPrograms from './Components/Programs/UpcomingPrograms';
 import EventRegistration from './Components/Programs/EventRegistration'; // From Snippet 1
