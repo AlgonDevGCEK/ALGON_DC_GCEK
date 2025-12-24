@@ -28,7 +28,7 @@ const EventRegistration = () => {
     email: ''
   });
 
-  // --- 1. FETCH DATA ---
+ // --- 1. FETCH DATA (FINAL FIX) ---
   useEffect(() => {
     const fetchData = async () => {
       // A. Get Event Details
@@ -49,10 +49,10 @@ const EventRegistration = () => {
       const { data: { session } } = await supabase.auth.getSession();
       
       if (session) {
-        setCurrentUser(session.user); // Store for submission later
+        setCurrentUser(session.user);
         setIsMember(true);
         
-        // Fetch Member Data for Autofill
+        // Fetch Member Data
         const { data: memberData } = await supabase
           .from('members')
           .select('*')
@@ -62,9 +62,12 @@ const EventRegistration = () => {
         setFormData(prev => ({
           ...prev,
           email: session.user.email,
-          full_name: memberData?.full_name || '',
-          branch: memberData?.branch || '',
-          phone_number: memberData?.phone_number || ''
+          
+          //  MAPPING DATABASE COLUMNS TO FORM FIELDS 
+          full_name: memberData?.name || '',          // DB: name -> Form: full_name
+          branch: memberData?.department || '',       // DB: department -> Form: branch
+          year: memberData?.year || '1st Year',       // DB: year -> Form: year
+          phone_number: memberData?.phone || ''       // DB: phone -> Form: phone_number
         }));
       }
       setLoading(false);
@@ -91,7 +94,7 @@ const EventRegistration = () => {
     // 1. Prepare Payload
     const submissionData = {
       event_id: id,
-      user_id: currentUser ? currentUser.id : null, // Critical Link for Dashboard
+      user_id: currentUser ? currentUser.id : null,
       full_name: formData.full_name,
       email: formData.email,
       phone_number: formData.phone_number,
@@ -133,7 +136,6 @@ const EventRegistration = () => {
             <h2>You're In! 🎉</h2>
             <p>Registration confirmed for <strong>{event.title}</strong>.</p>
             
-            {/* Dynamic WhatsApp Link from Database */}
             {event.whatsapp_link && (
               <a href={event.whatsapp_link} target="_blank" rel="noopener noreferrer" className="whatsapp-btn">
                 <MessageCircle size={20} /> Join WhatsApp Group
@@ -222,13 +224,24 @@ const EventRegistration = () => {
                 </div>
 
                 <div className="row-group">
+                  {/* 👇 UPDATED: Branch is now a Dropdown 👇 */}
                   <div className="input-group">
                     <label>Branch</label>
-                    <input 
-                      type="text" name="branch" required placeholder="Ex: CSE"
-                      value={formData.branch} onChange={handleChange}
-                    />
+                    <select 
+                      name="branch" 
+                      required 
+                      value={formData.branch} 
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled>Select Branch</option>
+                      <option value="CSE">CSE</option>
+                      <option value="ECE">ECE</option>
+                      <option value="EEE">EEE</option>
+                      <option value="ME">ME</option>
+                      <option value="CE">CE</option>
+                    </select>
                   </div>
+
                   <div className="input-group">
                     <label>Year</label>
                     <select name="year" value={formData.year} onChange={handleChange}>
