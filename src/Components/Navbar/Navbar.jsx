@@ -22,6 +22,24 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      // Lock scrolling on both body and html
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      // Unlock scrolling (clear inline styles)
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+
+    // Cleanup: Ensure scroll is restored if component unmounts
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [isOpen]);
+
   // --- 2. AUTHENTICATION CHECK ---
   useEffect(() => {
     // Check active session immediately
