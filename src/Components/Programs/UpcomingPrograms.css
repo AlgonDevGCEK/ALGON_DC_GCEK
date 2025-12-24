@@ -545,20 +545,19 @@
 
 .modal-register-btn {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   border: none;
-  border-radius: 12px;
+  border-radius: 18px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
 }
 
 .modal-register-btn:hover:not(:disabled) {
