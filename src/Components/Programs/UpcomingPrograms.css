@@ -390,6 +390,9 @@
   max-height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain; /* Stops scroll from leaking to background */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Modal Hero Image */
