@@ -326,6 +326,7 @@
 
 .secondary-btn {
   margin-top: 25px;
+  margin-left: -10px;
   background: transparent;
   color: #94a3b8;
   border: none;
@@ -358,15 +359,60 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-/* --- MOBILE RESPONSIVE --- */
 @media (max-width: 600px) {
-  .reg-container { width: 100%; }
+  .reg-page-wrapper {
+    align-items: flex-start; /* Prevent centering clipping on small screens */
+    padding: 15px; /* Less outer padding */
+  }
+
+  .reg-container {
+    padding-top: 70px; /* Reduced top space */
+    padding-bottom: 60px;
+  }
+
+  .form-card, .success-card {
+    padding: 24px 20px; /* Tighter padding inside card */
+    border-radius: 20px;
+  }
   
+  /* Make Header smaller */
   .form-header h1 { font-size: 1.5rem; }
+  .header-meta { font-size: 0.85rem; gap: 10px; }
   
-  .row-group { flex-direction: column; gap: 0; }
-  
-  .form-actions { flex-direction: column-reverse; }
-  
-  .edit-btn, .submit-reg-btn { width: 100%; }
+  /* Stack Rows Vertically */
+  .row-group { 
+    flex-direction: column; 
+    gap: 0; 
+  }
+
+  /* Prevent iOS Zoom on Focus (Critical) */
+  .input-group input, 
+  .input-group select {
+    font-size: 16px; 
+  }
+
+  /* Safe Back Button Position */
+  .back-nav-btn {
+    position: relative; /* Not absolute anymore */
+    top: 0;
+    margin-bottom: 15px;
+    padding: 5px 0;
+  }
+
+  /* Stack Action Buttons on Mobile */
+  .form-actions {
+    flex-direction: column-reverse; /* Submit on top, Edit below */
+    gap: 15px;
+  }
+
+  .edit-btn, .submit-reg-btn {
+    width: 100%; /* Full width buttons */
+    padding: 16px; /* Fat finger friendly */
+  }
+
+  .secondary-btn {
+    padding: 15px; /* Easier to tap link */
+    display: block;
+    margin-left: 75px;
+  }
 }
