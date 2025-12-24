@@ -33,6 +33,24 @@
   display: flex; align-items: center; gap: 6px; 
   font-size: 12px; color: #94a3b8;
 }
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #10b981; /* Green */
+  color: white;
+  border: none;
+  padding: 0 16px; /* Matches search box height */
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  height: 42px; /* Force same height as input */
+}
+
+.btn-export:hover {
+  background: #059669;
+}
 
 /* Status Dot */
 .status-dot { font-size: 12px; font-weight: 600; text-transform: capitalize; }

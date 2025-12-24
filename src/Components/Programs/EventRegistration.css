@@ -1,0 +1,80 @@
+.reg-page-wrapper {
+  min-height: 100vh;
+  display: flex; justify-content: center; align-items: center;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  padding: 20px; font-family: 'Poppins', sans-serif;
+}
+
+.reg-container { width: 100%; max-width: 500px; position: relative; }
+
+.back-nav-btn {
+  position: absolute; top: -50px; left: 0;
+  background: transparent; border: none; color: #94a3b8;
+  display: flex; align-items: center; gap: 5px; cursor: pointer;
+}
+.back-nav-btn:hover { color: white; }
+
+.loading-screen { color: white; font-size: 1.2rem; }
+
+/* --- FORM CARD --- */
+.form-card, .success-card {
+  background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+  padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.form-header { text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+.event-type-tag { font-size: 0.8rem; color: #a855f7; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.form-header h1 { color: white; font-size: 1.8rem; margin: 5px 0 10px; }
+.header-meta { display: flex; justify-content: center; gap: 15px; color: #94a3b8; font-size: 0.9rem; }
+
+/* Inputs */
+.input-group { margin-bottom: 15px; display: flex; flex-direction: column; text-align: left; }
+.input-group label { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 6px; font-weight: 500; }
+.input-group input, .input-group select {
+  background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px; border-radius: 8px; color: white; outline: none; transition: border 0.2s;
+}
+.input-group input:focus, .input-group select:focus { border-color: #3b82f6; }
+.row-group { display: flex; gap: 15px; }
+.row-group .input-group { flex: 1; }
+
+/* Locked Input (Member) */
+.locked-input {
+  background: rgba(16, 185, 129, 0.05) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #94a3b8 !important; cursor: not-allowed;
+}
+
+.member-privilege-badge {
+  background: rgba(16, 185, 129, 0.15); color: #34d399;
+  padding: 10px; border-radius: 8px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: 0.9rem; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.submit-reg-btn {
+  width: 100%; padding: 14px; margin-top: 10px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 1rem;
+  cursor: pointer; transition: transform 0.2s;
+}
+.submit-reg-btn:hover { transform: scale(1.02); }
+
+/* --- SUCCESS STATE --- */
+.success-card { text-align: center; }
+.success-icon { margin-bottom: 20px; }
+.success-card h2 { color: white; margin-bottom: 10px; }
+.success-card p { color: #cbd5e1; margin-bottom: 25px; }
+
+.whatsapp-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #25D366; color: white; padding: 12px; border-radius: 10px;
+  text-decoration: none; font-weight: 600; transition: transform 0.2s;
+}
+.whatsapp-btn:hover { transform: scale(1.03); background: #22c35e; }
+.small-note { font-size: 0.8rem; color: #64748b; margin-top: 15px; }
+
+@media (max-width: 600px) {
+  .reg-container { width: 95%; }
+}

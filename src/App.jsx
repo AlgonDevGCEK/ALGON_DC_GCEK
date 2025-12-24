@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 // Components
 import Navbar from './Components/Navbar/Navbar';
 import Hero from './Components/Hero/Hero';
-import UpcomingPrograms from './Components/Programs/UpcommingPrograms';
+
 import Footer from "./Components/Footer/Footer";
 import Gallery from './Components/gallery/Gallery';
 import AdminUpload from './Components/gallery/AdminUpload';
@@ -20,6 +20,16 @@ import UpdatePassword from "./pages/password/UpdatePassword";
 import Dashboard from "./pages/dashboard-page/Dashboard";
 import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import UpcomingPrograms from './Components/Programs/UpcomingPrograms';
+import EventRegistration from './Components/Programs/EventRegistration'; 
+
+// Inside <Routes>
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 import './index.css';
 
@@ -38,7 +48,8 @@ const App = () => {
           <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/gallery" element={<Gallery />} />
-          
+          <Route path="/verify/:userId" element={<VerifyUser />} />
+
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
