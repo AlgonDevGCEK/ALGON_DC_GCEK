@@ -14,19 +14,19 @@ const AboutPage = () => {
 
       <AboutUs
         title="Community Focus"
-        content="ADC focuses on creating an inclusive space where members can enhance their technical skills, develop problem-solving abilities, and connect with like-minded peers."
+        content="Algon DC GCEK focuses on accelerating the next generation of changemakers. Through hands-on projects and collaborative problem-solving, we transform GCEK's brightest minds into agile developers and visionary tech leaders."
         gradient="linear-gradient(135deg, rgba(2, 28, 200, 0.1), rgba(20, 20, 170, 0.3))"
       />
 
       <AboutUs
         title="What We Do"
-        content="The Algon Developer Community (ADC) is a student-driven tech community that brings together developers, innovators, and enthusiasts to learn, build, and grow together."
+        content="Algon DC serves as the ultimate ecosystem for GCEK’s innovators. We curate immersive learning experiences across development, design, and marketing—bridging the gap between student projects and industry-standard products through a culture of peer-to-peer mentorship."
         gradient="linear-gradient(135deg, rgba(37, 81, 81, 0.1), rgba(57, 57, 143, 0.3))"
       />
 
       <AboutUs
         title="Our Mission"
-        content="A space for curious minds, builders & innovators! From workshops to hackathons, we're here to learn, create & grow together."
+        content="Our mission is to democratize technology and innovation. We are dedicated to building a supportive community of lifelong learners who empower each other through shared knowledge, collective building, and a relentless drive to shape the future together."
         gradient="linear-gradient(135deg, rgba(179, 112, 82, 0.1), rgba(213, 12, 29, 0.3))"
       />
     </div>

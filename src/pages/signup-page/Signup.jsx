@@ -6,7 +6,8 @@ import "./Signup.css";
 const Signup = () => {
   const [step, setStep] = useState(1);
   const [fees, setFees] = useState([]); 
-  
+  const [qrCode, setQrCode] = useState(""); // Added for dynamic QR
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -43,7 +44,20 @@ const Signup = () => {
         }));
       }
     };
+
+    // --- Added: Fetch QR Code URL ---
+    const fetchQR = async () => {
+      const { data } = await supabase
+        .from('payment_config')
+        .select('qr_url')
+        .limit(1)
+        .single();
+      
+      if (data) setQrCode(data.qr_url);
+    };
+
     fetchFees();
+    fetchQR();
   }, []);
 
   const handleChange = (e) => {
@@ -93,8 +107,6 @@ const Signup = () => {
 
     setErrorMessage("Submitting application...");
 
-    // PHASE 1: Insert into the Temporary 'pending_members' table
-    // This table allows public inserts (RLS enabled for insert only)
     const { error: insertError } = await supabase.from("pending_members").insert([{
       name: formData.name,
       email: formData.email,
@@ -104,7 +116,7 @@ const Signup = () => {
       course: formData.course,
       payment_ref: formData.paymentRef,
       duration: formData.durationLabel,
-      amount_paid: formData.amountToPay // Log the amount fetched from fees
+      amount_paid: formData.amountToPay 
     }]);
 
     if (insertError) {
@@ -112,8 +124,6 @@ const Signup = () => {
       return;
     }
 
-    // PHASE 2: Trigger Supabase Auth signup
-    // This sends the verification email to the user
     const { error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
@@ -122,7 +132,7 @@ const Signup = () => {
     if (authError) {
       setErrorMessage("Auth Error: " + authError.message);
     } else {
-      setStep(3); // Success Screen
+      setStep(3); 
       setErrorMessage("");
     }
   };
@@ -209,8 +219,13 @@ const Signup = () => {
               </div>
 
               <div style={{margin:'20px 0', padding:'15px', background:'white', borderRadius:'10px', textAlign:'center'}}>
-                 <div style={{width:'150px', height:'150px', background:'#e2e8f0', margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'center', color:'black', borderRadius:'8px'}}>
-                    QR CODE
+                 <div style={{width:'150px', height:'150px', margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'center', color:'black', borderRadius:'8px'}}>
+                    {/* --- Updated QR Display --- */}
+                    {qrCode ? (
+                      <img src={qrCode} alt="QR Code" style={{maxWidth: '100%', maxHeight: '100%'}} />
+                    ) : (
+                      <span style={{fontSize: '12px', color: '#64748b'}}>Loading QR...</span>
+                    )}
                  </div>
               </div>
 

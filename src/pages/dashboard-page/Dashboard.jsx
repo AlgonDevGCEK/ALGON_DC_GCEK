@@ -101,7 +101,7 @@ const Dashboard = () => {
   const downloadImage = async () => {
     if (!idCardRef.current) return;
     const canvas = await html2canvas(idCardRef.current, {
-      backgroundColor:null, // Ensure white background
+      backgroundColor:null, 
       scale: 3, 
       useCORS: true, 
     });
@@ -181,7 +181,7 @@ const Dashboard = () => {
                 <button onClick={cancelEditing} className="cancel-icon"><X size={18}/></button>
               </div>
             ) : (
-              <div className="value-group"><span>{member.phone}</span><button onClick={() => startEditing("phone", member.phone)} className="edit-icon"><Edit2 size={16}/></button></div>
+              <div className="value-group"><span>{member.phone}</span></div>
             )}
           </div>
 
@@ -197,7 +197,7 @@ const Dashboard = () => {
                  <button onClick={cancelEditing} className="cancel-icon"><X size={18}/></button>
               </div>
             ) : (
-              <div className="value-group"><span>{member.year}</span><button onClick={() => startEditing("year", member.year)} className="edit-icon"><Edit2 size={16}/></button></div>
+              <div className="value-group"><span>{member.year}</span></div>
             )}
           </div>
 
@@ -224,7 +224,7 @@ const Dashboard = () => {
         <strong>Size Limit:</strong> The image file must be less than <span style={{color:'#ef4444', fontWeight:'bold'}}>75 KB</span>.
       </li>
       <li>
-        <strong>Corrections:</strong> Name and Email are locked. If you need to fix them, please use the <Link to="/contact">Contact Page</Link>.
+        <strong>Corrections:</strong> You can't edit your details. If you need to correct them, kindly use the <Link to="/contact">Contact Page</Link>.
       </li>
     </ul>
   </div>
