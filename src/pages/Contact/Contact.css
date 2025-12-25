@@ -142,8 +142,8 @@
 }
 
 .info-card {
-  background-color: #111827;
-  border: 1px solid #1f2937;
+  background-color: #15213b10;
+  border: 0.5px solid #a855f7;
   border-radius: 12px;
   padding: 2rem;
   display: flex;
@@ -171,7 +171,9 @@
 }
 
 .info-card:hover .icon-wrapper {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.1);
+  border: 0.5px solid #a855f7;
+
 }
 
 .icon {
@@ -194,15 +196,17 @@
 
 /* --- Right Column: Form --- */
 .contact-form-wrapper {
-  background-color: #111827;
-  border: 1px solid #1f2937;
+  background-color: #15213b10;
+  border: 0.5px solid #a855f7;
   border-radius: 12px;
   padding: 2.5rem;
   transition: all 0.3s ease;
 }
 
 .contact-form-wrapper:hover {
-  border-color: #374151;
+    border: 0.5px solid #a855f7;
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
+
 }
 
 .contact-form-wrapper h2 {
