@@ -1,8 +1,12 @@
 /* --- CONTAINER --- */
 .admin-console {
-  background: rgba(30, 41, 59, 0.4);
+ background: linear-gradient(
+    180deg,
+    #111827 0%,
+    #1e293b 50%,  
+    #020617 100%
+  );
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
   padding: 25px;
   color: #e2e8f0;
   width: 100%;
