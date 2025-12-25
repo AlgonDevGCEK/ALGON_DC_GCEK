@@ -43,7 +43,7 @@ const VerifyUser = () => {
         const today = new Date();
         const validTill = new Date(data.valid_till);
 
-        if (data.status !== 'active') {
+        if (data.status !== 'approved') {
              setStatus("not_active"); // User exists but Admin hasn't approved yet
         } else if (validTill < today) {
              setStatus("expired");
