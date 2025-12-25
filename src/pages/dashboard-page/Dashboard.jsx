@@ -60,16 +60,23 @@ const Dashboard = () => {
       
       setUploading(true);
       const fileExt = file.name.split(".").pop();
-      const fileName = `${member.user_id}_${Date.now()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${member.user_id}/${fileName}`; 
 
-      // UPLOAD to 'avatar' bucket (Singular)
-      const { error: uploadError } = await supabase.storage.from("avatar").upload(filePath, file, { upsert: true });
+      // UPLOAD to 'avatar' bucket
+      const { error: uploadError } = await supabase.storage
+        .from("avatar")
+        .upload(filePath, file); // Removed { upsert: true } as new filenames won't collide
+
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage.from("avatar").getPublicUrl(filePath);
       
-      const { error: updateError } = await supabase.from("members").update({ profile_pic: publicUrl }).eq("user_id", member.user_id);
+      const { error: updateError } = await supabase
+        .from("members")
+        .update({ profile_pic: publicUrl })
+        .eq("user_id", member.user_id);
+
       if (updateError) throw updateError;
 
       setMember({ ...member, profile_pic: publicUrl });
