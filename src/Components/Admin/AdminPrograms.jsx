@@ -239,7 +239,7 @@ const AdminPrograms = () => {
     setUploading(true);
     const { error: uploadError } = await supabase.storage
       .from('Event-images')
-      .upload(filePath, imageFile);
+      .upload(filePath, imageFile, { upsert: true });
 
     if (uploadError) {
       alert("Image upload failed: " + uploadError.message);
