@@ -57,7 +57,7 @@ const EventRegistration = () => {
           .from('members')
           .select('*')
           .eq('user_id', session.user.id)
-          .single();
+          .maybeSingle();
 
         setFormData(prev => ({
           ...prev,
