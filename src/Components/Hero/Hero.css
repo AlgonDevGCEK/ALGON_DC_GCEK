@@ -59,7 +59,7 @@
   font-size: 27px;
   margin-bottom: 15px;
   font-weight: 700;
-  color: #fff;
+  color: #ffffffbd;
 }
 
 .hero-text p {
@@ -67,6 +67,7 @@
   line-height: 1.6;
   max-width: 700px;
   margin: 0 auto 30px;
+  color: #ffffffbd;
 }
 
 /* Button styling */
