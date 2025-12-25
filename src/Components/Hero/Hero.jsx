@@ -20,11 +20,11 @@ const navigate = useNavigate();
 
     </p>
     <br></br>
-
+    <div className="hero-btn-wrapper">
     <button className="btn hero-btn" onClick={() => navigate("/signup")}>
         Join us <img src={dark_arrow} alt="" />
     </button>
-       
+    </div>
   
   </div>
 </div>
