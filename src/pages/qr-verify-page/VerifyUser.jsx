@@ -29,8 +29,8 @@ const VerifyUser = () => {
 
       // 1. Fetch Member Details
       const { data, error } = await supabase
-        .from("members")
-        .select("name, department, year, profile_pic, status, valid_till, user_id")
+        .from("member_public_info")
+        .select("*")
         .eq("user_id", userId)
         .single();
 
