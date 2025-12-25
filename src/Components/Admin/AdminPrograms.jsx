@@ -137,7 +137,7 @@ const AdminPrograms = () => {
 
       // Logo
       try {
-        doc.addImage(clubLogo, 'JPEG', 14, 14, 39, 18); 
+        doc.addImage(clubLogo, 'JPEG', 12, 12, 41, 18); 
       } catch (err) {
         console.warn("Logo failed to load:", err);
       }
@@ -239,7 +239,7 @@ const AdminPrograms = () => {
     setUploading(true);
     const { error: uploadError } = await supabase.storage
       .from('Event-images')
-      .upload(filePath, imageFile);
+      .upload(filePath, imageFile, { upsert: true });
 
     if (uploadError) {
       alert("Image upload failed: " + uploadError.message);

@@ -59,7 +59,7 @@
   font-size: 27px;
   margin-bottom: 15px;
   font-weight: 700;
-  color: #fff;
+  color: #ffffffbd;
 }
 
 .hero-text p {
@@ -67,6 +67,7 @@
   line-height: 1.6;
   max-width: 700px;
   margin: 0 auto 30px;
+  color: #ffffffbd;
 }
 
 /* Button styling */
@@ -94,11 +95,55 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
+.hero-btn {
+  /* ... keep your existing background and border-radius ... */
+  background: #efeeeee9;
+  color: rgb(8, 8, 8);
+  border-radius: 50px;
+  padding: 15px 35px;
+  display: inline-flex;
+  align-items: center;
+  
+  /* Apply both animations: 3s for floating, 2s for glowing */
+  animation: 
+    constantFloat 3s ease-in-out infinite, 
+    subtleGlow 2s ease-in-out infinite;
+    
+  transition: all 0.3s ease;
+}
+
+/* 1. Constant Floating (Y-Axis) */
+@keyframes constantFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px); /* Moves up 8px */
+  }
+}
+
+/* 2. Subtle Breathing Glow */
+@keyframes subtleGlow {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(5, 178, 235, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(5, 178, 235, 0.6); /* Glow expands */
+  }
+}
+
+/* Keep the hover effect to 'freeze' the float and pop more */
+.hero-btn:hover {
+  animation-play-state: paused; /* Optional: stops floating when user hovers */
+  transform: scale(1.05) translateY(-10px); 
+  filter: brightness(1.1);
+  box-shadow: 0 10px 30px rgba(5, 178, 235, 0.7);
+}
 
 .hero-text h1,
 .hero-text h2,
 .hero-text p,
-.btn.hero-btn {
+.hero-btn-wrapper {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 1s ease forwards;

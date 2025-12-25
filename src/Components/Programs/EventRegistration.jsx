@@ -23,7 +23,7 @@ const EventRegistration = () => {
   const [formData, setFormData] = useState({
     full_name: '',
     branch: '',
-    year: '1st Year',
+    year: '',
     phone_number: '',
     email: ''
   });
@@ -57,7 +57,7 @@ const EventRegistration = () => {
           .from('members')
           .select('*')
           .eq('user_id', session.user.id)
-          .single();
+          .maybeSingle();
 
         setFormData(prev => ({
           ...prev,
@@ -245,6 +245,7 @@ const EventRegistration = () => {
                   <div className="input-group">
                     <label>Year</label>
                     <select name="year" value={formData.year} onChange={handleChange}>
+                      <option value="" disabled>Select Year</option>
                       <option>1st Year</option>
                       <option>2nd Year</option>
                       <option>3rd Year</option>

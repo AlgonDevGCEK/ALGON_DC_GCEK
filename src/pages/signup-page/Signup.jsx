@@ -5,7 +5,7 @@ import "./Signup.css";
 
 const Signup = () => {
   const [step, setStep] = useState(1);
-  const [fees, setFees] = useState([]); // Stores price options from DB
+  const [fees, setFees] = useState([]); 
   
   const [formData, setFormData] = useState({
     name: "",
@@ -18,15 +18,14 @@ const Signup = () => {
     confirmPassword: "",
     college: false,
     paymentRef: "", 
-    duration: 1,      // Default 1 Year (Integer)
-    amountToPay: 0,   // Default Price
-    durationLabel: "1 Year Membership" // To save in DB nicely
+    duration: 1,      
+    amountToPay: 0,   
+    durationLabel: "" 
   });
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // 1. FETCH PRICES FROM SUPABASE ON LOAD
   useEffect(() => {
     const fetchFees = async () => {
       const { data, error } = await supabase
@@ -36,7 +35,6 @@ const Signup = () => {
       
       if (data && data.length > 0) {
         setFees(data);
-        // Set default selection to the first option
         setFormData(prev => ({ 
           ...prev, 
           duration: data[0].years, 
@@ -48,13 +46,11 @@ const Signup = () => {
     fetchFees();
   }, []);
 
-  // Handle standard input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
 
-  // Handle Dropdown Change (Updates Price automatically)
   const handleDurationChange = (e) => {
     const selectedYears = parseInt(e.target.value);
     const selectedPlan = fees.find(f => f.years === selectedYears);
@@ -69,10 +65,8 @@ const Signup = () => {
     }
   };
 
-  // Validate Step 1
   const handleNext = (e) => {
     e.preventDefault();
-    
     if (!formData.name || !formData.email || !formData.phone || !formData.department || !formData.password) {
       setErrorMessage("Please fill in all personal details first.");
       return;
@@ -85,12 +79,10 @@ const Signup = () => {
       setErrorMessage("You must confirm your college affiliation.");
       return;
     }
-    
     setErrorMessage("");
-    setStep(2); // Move to Payment Step
+    setStep(2);
   };
 
-  // Final Submission
   const handleSignup = async (e) => {
     e.preventDefault();
     
@@ -99,40 +91,39 @@ const Signup = () => {
       return;
     }
 
-    // 1. Sign Up User
-    const { data: { user }, error } = await supabase.auth.signUp({
+    setErrorMessage("Submitting application...");
+
+    // PHASE 1: Insert into the Temporary 'pending_members' table
+    // This table allows public inserts (RLS enabled for insert only)
+    const { error: insertError } = await supabase.from("pending_members").insert([{
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      department: formData.department,
+      year: formData.year,
+      course: formData.course,
+      payment_ref: formData.paymentRef,
+      duration: formData.durationLabel,
+      amount_paid: formData.amountToPay // Log the amount fetched from fees
+    }]);
+
+    if (insertError) {
+      setErrorMessage("Data Error: " + insertError.message);
+      return;
+    }
+
+    // PHASE 2: Trigger Supabase Auth signup
+    // This sends the verification email to the user
+    const { error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
     });
 
-    if (error) {
-      setErrorMessage(error.message);
+    if (authError) {
+      setErrorMessage("Auth Error: " + authError.message);
     } else {
-      // 2. Insert Member Data
-      const { error: insertError } = await supabase.from("members").insert([{
-        user_id: user.id,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        department: formData.department,
-        year: formData.year,
-        course: formData.course,
-        college: "Government College of Engineering Kannur",
-        
-        // Payment Details
-        payment_ref: formData.paymentRef,
-        duration: formData.durationLabel, // Saves "1 Year Membership" etc.
-        status: 'pending',
-        position: 'Student Member'
-      }]);
-
-      if (insertError) {
-        setErrorMessage(insertError.message);
-      } else {
-        setSuccessMessage("Registration successful!");
-        setErrorMessage("");
-        setStep(3); // Move to Success Screen
-      }
+      setStep(3); // Success Screen
+      setErrorMessage("");
     }
   };
 
@@ -140,21 +131,19 @@ const Signup = () => {
     <div className="signup-wrapper">
       <div className="signup-card">
         
-        {/* PROGRESS BAR */}
         {step < 3 && (
-          <div style={{display:'flex', gap:'5px', marginBottom:'20px'}}>
+          <div className="progress-bar" style={{display:'flex', gap:'5px', marginBottom:'20px'}}>
             <div style={{height:'4px', flex:1, borderRadius:'2px', background: step >= 1 ? '#3b82f6' : '#334155'}}></div>
             <div style={{height:'4px', flex:1, borderRadius:'2px', background: step >= 2 ? '#3b82f6' : '#334155'}}></div>
           </div>
         )}
 
         <h2 className="signup-title">
-          {step === 1 ? "Create Account " : step === 2 ? "Select Membership " : "Welcome! 🎉"}
+          {step === 1 ? "Create Account" : step === 2 ? "Select Membership" : "Success! 🎉"}
         </h2>
         
         {errorMessage && <p className="error">{errorMessage}</p>}
 
-        {/* --- STEP 1: PERSONAL DETAILS --- */}
         {step === 1 && (
           <form onSubmit={handleNext}>
             <div className="input-group"><input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required /></div>
@@ -188,29 +177,21 @@ const Signup = () => {
             <div className="toggle-group">
                 <span className="toggle-label">I belong to Government College of Engineering Kannur</span>
                 <label className="switch">
-              <input 
-                  type="checkbox" 
-                  name="college" 
-                  checked={formData.college} 
-                    onChange={handleChange} 
-                />
-              <span className="slider"></span>
-         </label>
-        </div>
+                    <input type="checkbox" name="college" checked={formData.college} onChange={handleChange} />
+                    <span className="slider"></span>
+                </label>
+            </div>
 
             <button type="submit" className="signup-btn">Next <ArrowRight size={18} style={{marginLeft:'8px'}}/></button>
             <div className="signup-footer"><span>Already a member?</span><a href="/login"> Log in</a></div>
           </form>
         )}
 
-        {/* --- STEP 2: PAYMENT & DURATION --- */}
         {step === 2 && (
           <form onSubmit={handleSignup}>
             <div className="payment-box" style={{background:'#1e293b', padding:'20px', borderRadius:'12px', border:'1px solid #334155'}}>
               
               <label style={{color:'#94a3b8', fontSize:'13px'}}>Choose Duration:</label>
-              
-              {/* DYNAMIC DROPDOWN FETCHED FROM DB */}
               <select 
                 name="duration" 
                 value={formData.duration} 
@@ -218,9 +199,7 @@ const Signup = () => {
                 style={{width:'100%', padding:'12px', marginTop:'5px', background:'#0f172a', border:'1px solid #3b82f6', color:'white', borderRadius:'8px'}}
               >
                 {fees.map((fee) => (
-                  <option key={fee.id} value={fee.years}>
-                    {fee.label} - ₹{fee.amount}
-                  </option>
+                  <option key={fee.id} value={fee.years}>{fee.label} - ₹{fee.amount}</option>
                 ))}
               </select>
 
@@ -230,7 +209,6 @@ const Signup = () => {
               </div>
 
               <div style={{margin:'20px 0', padding:'15px', background:'white', borderRadius:'10px', textAlign:'center'}}>
-                 {/* QR CODE PLACEHOLDER */}
                  <div style={{width:'150px', height:'150px', background:'#e2e8f0', margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'center', color:'black', borderRadius:'8px'}}>
                     QR CODE
                  </div>
@@ -238,7 +216,7 @@ const Signup = () => {
 
               <div className="input-group">
                 <input 
-                  type="text" name="paymentRef" placeholder="Enter UPI Transaction ID (UTR)" 
+                  type="text" name="paymentRef" placeholder="UPI Transaction ID (UTR)" 
                   value={formData.paymentRef} onChange={handleChange} required 
                   style={{textAlign:'center', letterSpacing:'1px', borderColor:'#f59e0b'}}
                 />
@@ -250,21 +228,20 @@ const Signup = () => {
                 <ArrowLeft size={18}/>
               </button>
               <button type="submit" className="signup-btn" style={{width:'70%'}}>
-                Complete Registration
+                Submit Application
               </button>
             </div>
           </form>
         )}
 
-        {/* --- STEP 3: SUCCESS --- */}
         {step === 3 && (
           <div style={{textAlign:'center', padding:'20px'}}>
             <CheckCircle size={60} color="#34d399" style={{margin:'0 auto 20px'}}/>
             <h3 style={{color:'white'}}>Application Submitted!</h3>
             <p style={{color:'#94a3b8', fontSize:'14px', lineHeight:'1.6', marginTop:'10px'}}>
-              We have received your payment details.<br/>
-              Please check your email to verify your account.<br/>
-              Once verified, the admin will approve your ID card.
+              1. Check your email to verify your account.<br/>
+              2. Once verified, the Admin will check your payment.<br/>
+              3. You will be able to log in after Admin approval.
             </p>
             <a href="/login" className="signup-btn" style={{display:'block', textDecoration:'none', marginTop:'30px'}}>Go to Login</a>
           </div>

@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 // Components
 import Navbar from './Components/Navbar/Navbar';
@@ -12,9 +7,10 @@ import Hero from './Components/Hero/Hero';
 import Footer from "./Components/Footer/Footer";
 import Gallery from './Components/gallery/Gallery';
 import AdminUpload from './pages/admin/AdminUpload';
-import AdminMemberManager from './Components/Admin/AdminMemberManager'; // From Snippet 1
+import AdminMemberManager from './Components/Admin/AdminMemberManager';
 import UpcomingPrograms from './Components/Programs/UpcomingPrograms';
-import EventRegistration from './Components/Programs/EventRegistration'; // From Snippet 1
+import EventRegistration from './Components/Programs/EventRegistration';
+import AdminGuard from './Components/Admin/AdminGuard'; 
 
 // Pages
 import AboutPage from "./pages/AboutPage";
@@ -30,56 +26,57 @@ import AdminPrograms from './Components/Admin/AdminPrograms';
 
 import './index.css';
 
-/**
- * Utility Component: Resets scroll to top on every route change
- * (From Snippet 2)
- */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-
   useEffect(() => {
-    // Moves the window back to the top-left corner
     window.scrollTo(0, 0);
-  }, [pathname]); // Fires every time the URL path changes
-
+  }, [pathname]);
   return null;
 };
 
 const App = () => {
   return (
     <Router>
-      {/* This must be inside <Router> to work */}
       <ScrollToTop /> 
-
       <div className='nav-hero'>
         <Navbar />
       </div>
 
       <div>
         <Routes>
-          {/* Public Routes */}
+          {/* --- 1. PUBLIC ROUTES (Anyone can see) --- */}
           <Route path="/" element={<Hero />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/upcoming-programs" element={<UpcomingPrograms />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/register/:id" element={<EventRegistration />} />
+          <Route path="/verify/:userId" element={<VerifyUser />} />
           
-          {/* Auth Routes */}
+          {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/update-password" element={<UpdatePassword />} />
           
-          {/* Protected / App Routes */}
+          {/* --- 3. MEMBER ROUTES (Logged-in Users) --- */}
+          {/* Note: You could add a UserGuard here later if you want to force login */}
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin-upload" element={<AdminUpload />} />
-          <Route path="/verify/:userId" element={<VerifyUser />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/programs" element={<AdminPrograms />} />
           
-          {/* Extra Routes from Snippet 1 */}
-          <Route path="/admin-member-manager" element={<AdminMemberManager />} />
-          <Route path="/register/:id" element={<EventRegistration />} />
+          {/* --- 4. ADMIN ROUTES --- */}
+          {/* These 4 routes are now fully protected */}
+          <Route path="/admin" element={
+            <AdminGuard><AdminDashboard /></AdminGuard>
+          } />
+          <Route path="/admin/programs" element={
+            <AdminGuard><AdminPrograms /></AdminGuard>
+          } />
+          <Route path="/admin-upload" element={
+            <AdminGuard><AdminUpload /></AdminGuard>
+          } />
+          <Route path="/admin-member-manager" element={
+            <AdminGuard><AdminMemberManager /></AdminGuard>
+          } />
         </Routes>
       </div>
 
