@@ -1,17 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft , FileText} from 'lucide-react';
+import { ArrowLeft, FileText } from 'lucide-react';
 import './TermsModal.css';
 
 const TermsModal = () => {
   const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    // Navigate back to JoinInfo with hash
+    navigate('/join-us#policy-review', { replace: false });
+  };
 
   return (
     <div className="terms-page-wrapper">
       <div className="terms-container">
         {/* Navigation Header */}
         <header className="terms-header">
-          <button className="back-link" onClick={() => navigate(-1)}>
+          <button className="back-link" onClick={handleBackClick}>
             <ArrowLeft size={18} /> Back
           </button>
           <div className="header-info">
@@ -39,7 +44,7 @@ const TermsModal = () => {
 
           <section>
             <h3>4. Events & Programs</h3>
-            <p>Event details, schedules, and availability are subject to change. Registration for an event does not guarantee participation unless explicitly confirmed by the club. The club’s decision regarding event conduct shall be final.</p>
+            <p>Event details, schedules, and availability are subject to change. Registration for an event does not guarantee participation unless explicitly confirmed by the club. The club's decision regarding event conduct shall be final.</p>
           </section>
 
           <section>
