@@ -23,6 +23,7 @@ import Dashboard from "./pages/dashboard-page/Dashboard";
 import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPrograms from './Components/Admin/AdminPrograms';
+import TermsModal from './pages/Terms_and_conditions/TermsModal';
 
 import './index.css';
 
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/register/:id" element={<EventRegistration />} />
           <Route path="/verify/:userId" element={<VerifyUser />} />
+          <Route path="/terms-and-conditions" element={<TermsModal />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
