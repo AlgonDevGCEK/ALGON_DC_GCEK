@@ -1,0 +1,115 @@
+/* Styling remains identical to your other policy pages for consistency */
+.policy-page-wrapper {
+  background: linear-gradient(
+    180deg,
+    #111827 0%,
+    #1e293b 50%,  
+    #020617 100%
+  );
+  min-height: 100vh;
+  padding: 100px 20px 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.policy-container {
+  max-width: 800px;
+  width: 100%;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  padding: 40px;
+  height: fit-content;
+}
+
+.policy-header {
+  border-bottom: 1px solid #334155;
+  padding-bottom: 25px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.header-info h1 {
+  color: #f8fafc;
+  font-size: 2rem;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-info p {
+  color: #94a3b8;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.policy-body section {
+  margin-bottom: 30px;
+}
+
+.policy-body h3 {
+  color: #f1f5f9;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.policy-body p, .policy-list li {
+  color: #cbd5e1;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.policy-list {
+  margin: 10px 0 15px 20px;
+}
+
+.danger-zone {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+  padding: 15px 20px;
+  border-radius: 8px;
+}
+
+.danger-zone p {
+  color: #fca5a5;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.policy-footer {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #334155;
+  text-align: center;
+}
+
+.policy-footer p {
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 640px) {
+  .policy-container {
+    padding: 25px;
+    border-radius: 16px;
+  }
+  .header-info h1 { font-size: 1.5rem; }
+  .header-info p { font-size: 0.8rem; }
+  .policy-footer p { font-size: 0.85rem; }
+}
