@@ -93,7 +93,7 @@
   font-size: 1.1rem;
 }
 
-/* Responsive Tweak matching your Terms setup */
+/* Responsive */
 @media (max-width: 640px) {
   .policy-container {
     padding: 25px;
