@@ -1,0 +1,295 @@
+.join-info-wrapper {
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  min-height: 100vh;
+  padding: 120px 20px 80px;
+  display: flex;
+  justify-content: center;
+  color: #f8fafc;
+}
+
+.join-content {
+  max-width: 1000px;
+  width: 100%;
+}
+
+/* --- Hero --- */
+.join-hero { text-align: center; margin-bottom: 60px; }
+.join-hero h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 800; letter-spacing: -1px; }
+.join-hero p { color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin: 0 auto;padding-top: 20px; }
+.join-hero .logo-heading h1{
+  margin: 0; 
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.highlight {
+  background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* --- Benefits Grid with Hover Effects --- */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 70px;
+}
+
+.benefit-card {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: left;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* HOVER EFFECT: Lift up and Glow */
+.benefit-card:hover {
+  transform: translateY(-8px);
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.3);
+}
+
+.benefit-card h3 { font-size: 1.25rem; margin: 15px 0 10px; color: #f1f5f9; }
+.benefit-card p { font-size: 0.95rem; color: #94a3b8; line-height: 1.6; }
+
+/* Icon Styling */
+.icon-box {
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 15px;
+}
+.icon-box.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.icon-box.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.icon-box.amber { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.icon-box.pink { background: rgba(236, 72, 153, 0.1); color: #ec4899; }
+
+/* --- Membership Fee Section (UPDATED) --- */
+.fee-section { text-align: center; margin-bottom: 70px; }
+.fee-section h2 { margin-bottom: 10px; font-size: 2rem; }
+
+.section-subtitle {
+  color: #94a3b8;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.fee-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* New Fee Plan Card Styling */
+.fee-plan-card {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  width: 300px;
+  text-align: left;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.fee-plan-card:hover {
+  transform: translateY(-10px);
+  border-color: #a855f7; /* Purple glow on hover */
+  box-shadow: 0 20px 40px -10px rgba(168, 85, 247, 0.2);
+}
+
+.plan-header {
+  background: rgba(15, 23, 42, 0.4);
+  padding: 30px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.plan-header h3 {
+  color: #f8fafc;
+  font-size: 1.2rem;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.price-tag {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: #3b82f6;
+  margin-bottom: 10px;
+}
+
+.currency {
+  font-size: 1.5rem;
+  margin-top: 5px;
+  margin-right: 2px;
+  color: #94a3b8;
+}
+
+.amount {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #f8fafc;
+}
+
+.plan-duration {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.plan-features {
+  padding: 30px;
+  flex-grow: 1;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.plan-features li:last-child {
+  margin-bottom: 0;
+}
+
+.loading-state {
+  text-align: center;
+  color: #64748b;
+  width: 100%;
+  padding: 40px;
+}
+
+.spinner { animation: spin 1s linear infinite; margin: 0 auto 15px; display: block; }
+
+/* --- Policy Section --- */
+.policy-review {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid #334155;
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 50px;
+}
+.policy-alert { display: flow-root; align-items: center; gap: 12px; margin-bottom: 15px; }
+.policy-alert h1 {
+    display: flex;
+    justify-content: center;padding-bottom: 18px;}
+.policy-alert h3 { margin: 0; font-size: 1.8rem; color: #25ec57; text-align: center;}
+
+.policy-links { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 20px; }
+
+/* Updated Policy Buttons */
+.policy-btn {
+  background: #2e4b88ec;
+  color: #fefefe;
+  border: 1px solid #334155;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.policy-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* --- Buttons --- */
+.proceed-btn {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.proceed-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+}
+
+.action-area { text-align: center; }
+.disclaimer { color: #64748b; font-size: 0.8rem; margin-top: 15px; }
+.policy-review p{
+    color: #94a3b8;
+    font-size: 1rem;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+
+/* Animations */
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.animate-fade-in { animation: fadeIn 0.8s ease-out; }
+.animate-slide-up { animation: slideUp 0.8s ease-out forwards; opacity: 0; animation-delay: 0.3s; }
+.delay-1 { animation: slideUp 0.6s ease-out forwards; opacity: 0; animation-delay: 0.1s; }
+.delay-2 { animation: slideUp 0.6s ease-out forwards; opacity: 0; animation-delay: 0.2s; }
+.delay-3 { animation: slideUp 0.6s ease-out forwards; opacity: 0; animation-delay: 0.3s; }
+.delay-4 { animation: slideUp 0.6s ease-out forwards; opacity: 0; animation-delay: 0.4s; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .join-hero h1 { font-size: 2rem; }
+  .join-hero .logo-heading h1{
+  margin: 0; 
+  font-size: 2.7rem;
+  line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+  .fee-grid-container { flex-direction: column; align-items: center; }
+  .fee-plan-card { width: 100%; max-width: 340px; }
+  .amount { font-size: 3rem; }
+
+.policy-alert { display: grid; align-items: center; gap: 19px; margin-bottom: 15px;}
+.policy-alert h3 { margin: 0; font-size: 1.1rem; color: #25ec57; text-align: center;}
+.policy-alert h1 {
+    display: flex;
+    justify-content: center;}
+}
