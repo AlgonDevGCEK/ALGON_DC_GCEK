@@ -26,6 +26,7 @@ import AdminPrograms from './Components/Admin/AdminPrograms';
 import TermsModal from './pages/Terms_and_conditions/TermsModal';
 import PrivacyPolicy from './pages/Privacypolicy-page/PrivacyPolicy';
 import RefundPolicy from './pages/Refund-policy-page/RefundPolicy';
+import CodeOfConduct from './pages/Code-of-conduct-page/CodeofConduct';
 import './index.css';
 
 const ScrollToTop = () => {
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/terms-and-conditions" element={<TermsModal />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/code-of-conduct" element={<CodeOfConduct />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
