@@ -21,7 +21,7 @@ const navigate = useNavigate();
     </p>
     <br></br>
     <div className="hero-btn-wrapper">
-    <button className="btn hero-btn" onClick={() => navigate("/signup")}>
+    <button className="btn hero-btn" onClick={() => navigate("/join-us")}>
         Join us <img src={dark_arrow} alt="" />
     </button>
     </div>
