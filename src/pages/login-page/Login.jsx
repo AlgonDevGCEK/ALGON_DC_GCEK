@@ -63,7 +63,7 @@ const Login = () => {
           <br></br>
         <a href="/forgot-password">Forgot Password?</a>
         <br></br><br></br>
-        <span>Not a member?</span><a href="/signup">Join us</a>
+        <span>Not a member?</span><a href="/join-us">Join us</a>
       </div>
       </div>
     </div>
