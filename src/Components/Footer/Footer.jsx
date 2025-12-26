@@ -26,7 +26,7 @@ const Footer = () => {
         <div className="footer-column animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <h4>Algon Developer Community</h4>
           <p>
-            Multidisciplinary platform integrating business, media, finance, fasion, development, marketing, coding, and more
+            Multidisciplinary platform integrating business, media, finance, fashion, development, marketing, coding, and more
           </p>
           <br></br>
           <a href="https://algondevelopercommunity.com/" className="footer-btn">Know more</a>
