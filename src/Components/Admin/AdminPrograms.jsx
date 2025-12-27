@@ -8,7 +8,7 @@ import {
   Plus, Edit2, Trash2, Users, X, Save, 
   Download, FileSpreadsheet, FileText,
   Image as ImageIcon, Link as LinkIcon, MessageCircle,
-  ArrowUp, ArrowDown, UserMinus // Added UserMinus icon
+  ArrowUp, ArrowDown, UserMinus, CheckCircle, AlertCircle // Added CheckCircle/AlertCircle
 } from 'lucide-react';
 import './AdminPrograms.css';
 
@@ -35,7 +35,9 @@ const AdminPrograms = () => {
     total_seats: 60,
     whatsapp_link: '',
     external_link: '',
-    display_order: 0 // 👈 NEW: Priority Order
+    display_order: 0,
+    is_paid: false,   // 👈 NEW: Paid Flag
+    fee_amount: 0     // 👈 NEW: Fee Amount
   });
   
   const [imageFile, setImageFile] = useState(null);
@@ -48,7 +50,6 @@ const AdminPrograms = () => {
 
   const fetchPrograms = async () => {
     setLoading(true);
-    // 👇 UPDATED: Sort by Custom Order first, then Date
     const { data, error } = await supabase
       .from('programs')
       .select('*')
@@ -97,7 +98,25 @@ const AdminPrograms = () => {
     setRegLoading(false);
   };
 
-  // --- IMPLEMENTED: INDIVIDUAL DELETE FOR USERS ---
+  // --- NEW: VERIFY PAYMENT HANDLER ---
+  const handleVerifyPayment = async (regId) => {
+    if(!window.confirm("Confirm payment receipt? This will mark the user as Approved.")) return;
+
+    const { error } = await supabase
+        .from('registrations')
+        .update({ payment_status: 'confirmed' })
+        .eq('id', regId);
+
+    if(error) {
+        alert("Update failed: " + error.message);
+    } else {
+        // Update local state instantly
+        setRegistrations(prev => prev.map(r => 
+            r.id === regId ? { ...r, payment_status: 'confirmed' } : r
+        ));
+    }
+  };
+
   const handleDeleteRegistration = async (regId) => {
     if (!window.confirm("Remove this student from the registration list?")) return;
 
@@ -109,7 +128,6 @@ const AdminPrograms = () => {
     if (error) {
       alert("Error deleting user: " + error.message);
     } else {
-      // Refresh local list
       setRegistrations(prev => prev.filter(r => r.id !== regId));
     }
   };
@@ -122,7 +140,9 @@ const AdminPrograms = () => {
       "Phone": r.phone_number,
       "Branch": r.branch,
       "Year": r.year,
-      "Status": r.is_member ? "Member" : "Guest"
+      "Status": r.is_member ? "Member" : "Guest",
+      "Payment Status": r.payment_status,  // 👈 NEW
+      "UTR / Ref": r.payment_ref || '-'    // 👈 NEW
     }));
 
     const ws = XLSX.utils.json_to_sheet(sheetData);
@@ -134,15 +154,12 @@ const AdminPrograms = () => {
   const exportToPDF = () => {
     try {
       const doc = new jsPDF();
-
-      // Logo
       try {
         doc.addImage(clubLogo, 'JPEG', 12, 12, 41, 18); 
       } catch (err) {
         console.warn("Logo failed to load:", err);
       }
 
-      // Title
       doc.setTextColor(0, 0, 0); 
       doc.setFontSize(19);
       doc.text(`${selectedProgram.title} - Attendance`, 120, 20, { align: 'center' });
@@ -150,16 +167,14 @@ const AdminPrograms = () => {
       doc.setFontSize(10);
       doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 120, 27, { align: 'center' });
       
-      // Table
-      const tableColumn = ["SI No", "Name", "Branch", "Year", "Phone", "Status", "Sign"];
+      const tableColumn = ["SI No", "Name", "Branch", "Phone", "Pay Status", "Sign"];
       
       const tableRows = registrations.map((r, index) => [
         index + 1,
         r.full_name,
-        r.branch || '-',
-        r.year || '-',
+        `${r.branch} (${r.year})`,
         r.phone_number,
-        r.is_member ? "Member" : "Guest",
+        r.payment_status === 'confirmed' ? 'Paid' : 'Pending', // 👈 Show status on PDF
         "" 
       ]);
 
@@ -168,31 +183,11 @@ const AdminPrograms = () => {
         body: tableRows,
         startY: 40,
         theme: 'grid',
-        styles: { 
-          fontSize: 9,
-          textColor: [0, 0, 0], 
-          halign: 'center',
-          valign: 'middle',
-          cellPadding: 3,
-          lineColor: [0, 0, 0],
-          lineWidth: 0.1
-        },
-        headStyles: { 
-          fillColor: [230, 230, 230], 
-          textColor: [0, 0, 0],
-          fontStyle: 'bold',
-          lineWidth: 0.1
-        },
-        columnStyles: {
-          0: { cellWidth: 15 },
-          1: { cellWidth: 40 },
-          4: { cellWidth: 30 },
-          6: { cellWidth: 35 }
-        }
+        styles: { fontSize: 9, textColor: [0, 0, 0], halign: 'center', valign: 'middle', cellPadding: 3 },
+        headStyles: { fillColor: [230, 230, 230], textColor: [0, 0, 0], fontStyle: 'bold' },
       });
 
       doc.save(`${selectedProgram.title}_Attendance_Sheet.pdf`);
-
     } catch (error) {
       console.error("PDF Generation Error:", error);
       alert("Failed to generate PDF. Check console.\nError: " + error.message);
@@ -213,7 +208,9 @@ const AdminPrograms = () => {
       total_seats: prog.total_seats || 60,
       whatsapp_link: prog.whatsapp_link || '',
       external_link: prog.external_link || '',
-      display_order: prog.display_order || 0 //  Load existing order
+      display_order: prog.display_order || 0,
+      is_paid: prog.is_paid || false, // 👈 Load existing setting
+      fee_amount: prog.fee_amount || 0 // 👈 Load existing fee
     });
     setSelectedProgram(prog);
     setView('edit');
@@ -226,12 +223,14 @@ const AdminPrograms = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    const { name, value, type, checked } = e.target;
+    // Handle Checkbox vs Normal Input
+    const val = type === 'checkbox' ? checked : value;
+    setFormData({...formData, [name]: val});
   };
 
   const handleImageUpload = async () => {
     if (!imageFile) return formData.image_url;
-
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
@@ -246,39 +245,24 @@ const AdminPrograms = () => {
       setUploading(false);
       return null;
     }
-
     const { data } = supabase.storage.from('Event-images').getPublicUrl(filePath);
     setUploading(false);
     return data.publicUrl;
   };
 
-  // --- IMPLEMENTED: CASCADING DELETE (CLEAR STUDENTS -> DELETE PROGRAM) ---
   const handleDelete = async (id, imageUrl) => {
     if (!window.confirm("WARNING: This will delete ALL registrations for this event and the event itself. Proceed?")) return;
-
     setLoading(true);
 
-    // 1. Delete all registrations linked to this event first
-    const { error: regError } = await supabase
-      .from('registrations')
-      .delete()
-      .eq('event_id', id);
+    const { error: regError } = await supabase.from('registrations').delete().eq('event_id', id);
+    if (regError) { alert("Error clearing registrations: " + regError.message); setLoading(false); return; }
 
-    if (regError) {
-      alert("Error clearing registrations: " + regError.message);
-      setLoading(false);
-      return;
-    }
-
-    // 2. Delete the image from storage if it exists
     if (imageUrl) {
       const path = imageUrl.split('/Event-images/')[1];
       if (path) await supabase.storage.from('Event-images').remove([path]);
     }
 
-    // 3. Finally, delete the program itself
     const { error: progError } = await supabase.from('programs').delete().eq('id', id);
-    
     if (progError) alert("Error deleting event: " + progError.message);
     else fetchPrograms();
     
@@ -297,7 +281,9 @@ const AdminPrograms = () => {
       image_url: imageUrl,
       whatsapp_link: formData.whatsapp_link || null,
       external_link: formData.external_link || null,
-      display_order: parseInt(formData.display_order) // Ensure it's a number
+      display_order: parseInt(formData.display_order),
+      is_paid: formData.is_paid,           // 👈 Save Paid Status
+      fee_amount: formData.is_paid ? formData.fee_amount : 0 // 👈 Save Fee (0 if free)
     };
 
     if (view === 'create') {
@@ -315,6 +301,7 @@ const AdminPrograms = () => {
 
   // --- VIEWS ---
 
+  // A. REGISTRATIONS VIEW (Updated with Payment Columns)
   if (view === 'registrations') return (
     <div className="admin-console">
       <div className="console-header">
@@ -329,18 +316,54 @@ const AdminPrograms = () => {
         {regLoading ? <div className="loading-txt">Loading data...</div> : (
           <table className="admin-table">
             <thead>
-              <tr><th>Name</th><th>Branch & Year</th><th>Contact</th><th>Status</th><th>Action</th></tr>
+              <tr>
+                <th>Name</th>
+                <th>Details</th>
+                <th>Payment Status</th> {/* 👈 NEW COLUMN */}
+                <th>Action</th>
+              </tr>
             </thead>
             <tbody>
               {registrations.length === 0 ? (
-                <tr><td colSpan="5" style={{textAlign:'center'}}>No registrations yet.</td></tr>
+                <tr><td colSpan="4" style={{textAlign:'center'}}>No registrations yet.</td></tr>
               ) : (
                 registrations.map(reg => (
                   <tr key={reg.id}>
-                    <td>{reg.full_name} <br/><span className="sub-text">{reg.email}</span></td>
-                    <td>{reg.branch} <br/><span className="sub-text">{reg.year}</span></td>
-                    <td>{reg.phone_number}</td>
-                    <td>{reg.is_member ? <span className="badge-member">✅ Member</span> : <span className="badge-guest">Guest</span>}</td>
+                    <td>
+                        {reg.full_name} 
+                        <br/><span className="sub-text">{reg.phone_number}</span>
+                    </td>
+                    <td>
+                        {reg.branch} - {reg.year}
+                        <br/>
+                        {reg.is_member ? <span className="badge-member">✅ Member</span> : <span className="badge-guest">Guest</span>}
+                    </td>
+                    
+                    {/* 👇 NEW: Payment Verification Cell */}
+                    <td>
+                        {reg.payment_status === 'confirmed' ? (
+                            <span className="badge-paid" style={{color:'#10b981', fontWeight:'bold', display:'flex', alignItems:'center', gap:'5px'}}>
+                                <CheckCircle size={14}/> Paid
+                            </span>
+                        ) : (
+                            <div className="pending-box">
+                                <span style={{color:'#f59e0b', fontSize:'12px', display:'flex', alignItems:'center', gap:'4px'}}>
+                                    <AlertCircle size={12}/> Pending
+                                </span>
+                                {reg.payment_ref && (
+                                    <div className="utr-code">UTR: {reg.payment_ref}</div>
+                                )}
+                                <button 
+                                    onClick={() => handleVerifyPayment(reg.id)}
+                                    className="approve-btn"
+                                    title="Verify & Approve Payment"
+                                >
+                                    Approve
+                                </button>
+                            </div>
+                        )}
+                    </td>
+
                     <td>
                       <button onClick={() => handleDeleteRegistration(reg.id)} title="Delete Attendee" className="icon-btn red">
                         <UserMinus size={18}/>
@@ -356,7 +379,7 @@ const AdminPrograms = () => {
     </div>
   );
 
-  // B. CREATE / EDIT FORM
+  // B. CREATE / EDIT FORM (Updated with Payment Fields)
   if (view === 'create' || view === 'edit') return (
     <div className="admin-console">
       <div className="console-header">
@@ -391,17 +414,42 @@ const AdminPrograms = () => {
             <label>Time</label>
             <input type="text" name="time" placeholder="e.g. 10:00 AM" value={formData.time} onChange={handleInputChange} required />
           </div>
-          
-          {/* 👇 NEW: Priority Order Field */}
           <div className="form-group" style={{maxWidth: '100px'}}>
              <label title="Lower numbers show first">Priority</label>
              <input type="number" name="display_order" value={formData.display_order} onChange={handleInputChange} />
           </div>
-
           <div className="form-group" style={{maxWidth: '100px'}}>
             <label>Seats</label>
             <input type="number" name="total_seats" value={formData.total_seats} onChange={handleInputChange} />
           </div>
+        </div>
+
+        {/* 👇 NEW: Payment Configuration Section */}
+        <div className="form-row" style={{background: 'rgba(59, 130, 246, 0.1)', padding:'10px', borderRadius:'8px', border:'1px solid rgba(59, 130, 246, 0.3)'}}>
+             <div className="form-group" style={{display:'flex', alignItems:'center', gap:'10px'}}>
+                 <input 
+                    type="checkbox" 
+                    name="is_paid" 
+                    id="paidCheck"
+                    checked={formData.is_paid} 
+                    onChange={handleInputChange} 
+                    style={{width:'20px', height:'20px'}}
+                 />
+                 <label htmlFor="paidCheck" style={{marginBottom:0, cursor:'pointer'}}>Is this a Paid Event?</label>
+             </div>
+             
+             {formData.is_paid && (
+                 <div className="form-group animate-fade-in">
+                     <label>Fee Amount (₹)</label>
+                     <input 
+                        type="number" 
+                        name="fee_amount" 
+                        value={formData.fee_amount} 
+                        onChange={handleInputChange}
+                        placeholder="150"
+                     />
+                 </div>
+             )}
         </div>
 
         <div className="form-group">
@@ -455,7 +503,7 @@ const AdminPrograms = () => {
     </div>
   );
 
-  // C. LIST VIEW
+  // C. LIST VIEW (Unchanged mainly, added paid badge)
   return (
     <div className="admin-console">
       <div className="console-header">
@@ -463,9 +511,9 @@ const AdminPrograms = () => {
         <button onClick={() => {
           setFormData({ 
             title: '', date: '', time: '', location: '', description: '', 
-            full_details: '', 
-            type: 'Workshop', image_url: '', total_seats: 60, whatsapp_link: '', external_link: '',
-            display_order: 0 // Reset Order
+            full_details: '', type: 'Workshop', image_url: '', total_seats: 60, 
+            whatsapp_link: '', external_link: '', display_order: 0,
+            is_paid: false, fee_amount: 0 
           });
           setImageFile(null);
           setView('create');
@@ -483,17 +531,16 @@ const AdminPrograms = () => {
             <tbody>
               {programs.map(prog => (
                 <tr key={prog.id}>
-                  {/* 👇 NEW: Display Order Column */}
                   <td>
-                    <span style={{ 
-                      background: '#334155', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', color: 'white'
-                    }}>
+                    <span style={{ background: '#334155', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', color: 'white' }}>
                       {prog.display_order}
                     </span>
                   </td>
                   <td className="main-col">
                     <strong>{prog.title}</strong>
-                    <br/><span className="sub-text">{prog.type}</span>
+                    <br/>
+                    <span className="sub-text">{prog.type}</span>
+                    {prog.is_paid && <span className="badge-paid-tag">Paid: ₹{prog.fee_amount}</span>}
                   </td>
                   <td>{prog.date}</td>
                   <td className="actions-col">

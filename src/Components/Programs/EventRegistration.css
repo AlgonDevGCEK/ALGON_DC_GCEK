@@ -160,6 +160,56 @@
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+/* --- Payment Section Styles --- */
+.fee-badge {
+  background: #22c55e;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.payment-section {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.pay-instruction {
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+.qr-box {
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile UPI Button */
+.upi-app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #3b82f6; /* Blue */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* UTR Input specific override */
+.payment-section input {
+  text-align: center;
+  font-family: monospace;
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+
 /* --- BUTTONS --- */
 .review-btn {
   width: 100%;
@@ -271,6 +321,38 @@
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
+.verify-btn {
+  width: 100%;
+  max-width: 300px; 
+  margin: 20px auto 0 auto; 
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669); /* Green for Verification */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.verify-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.5);
+}
+
+.verify-btn:disabled {
+  background: #475569;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
 /* --- SUCCESS STATE (STEP 3) --- */
 .success-card {
   text-align: center;
@@ -319,7 +401,7 @@
 
 .secondary-btn {
   margin-top: 25px;
-  margin-left: -10px;
+  margin-left: 0px;
   background: transparent;
   color: #94a3b8;
   border: none;
@@ -333,6 +415,106 @@
   color: white;
 }
 
+/* 1. The Card Container */
+.status-card.error-glow {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 10, 10, 0.9));
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Red Border */
+  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.1), 
+              0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 40px 30px;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+/* 2. Red Ambient Light at the top */
+.status-card.error-glow::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 100px;
+  background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* 3. The Icon Wrapper */
+.status-icon-wrapper.red-theme {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444; /* Bright Red Icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px auto;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.15);
+}
+
+/* 4. Typography */
+.status-card h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 15px;
+  letter-spacing: -0.5px;
+}
+
+.status-card p {
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+/* 5. Highlight Event Title */
+.highlight-event {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.1rem;
+  color: #fca5a5; /* Light Red Text */
+  font-weight: 600;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 6. The "Back to Events" Button (Specific to this card) */
+.primary-action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* 7. Action Container */
+.status-actions {
+  display: flex;
+  justify-content: center;
+}
 /* --- ANIMATIONS --- */
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out;
@@ -340,6 +522,23 @@
 
 .animate-scale-in {
   animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* --- QR Black Box --- */
+.qr-box-black {
+  background: #000000;
+  padding: 20px;
+  border-radius: 16px;
+  display: inline-block;
+  margin: 15px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+}
+
+/* Mobile Layout Fix */
+.mobile-pay-options {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
 }
 
 @keyframes fadeIn {
@@ -357,7 +556,6 @@
     align-items: flex-start; /* Prevent centering clipping on small screens */
     padding: 15px; /* Less outer padding */
   }
-
   .reg-container {
     padding-top: 70px; /* Reduced top space */
     padding-bottom: 60px;
@@ -406,6 +604,9 @@
   .secondary-btn {
     padding: 15px; /* Easier to tap link */
     display: block;
-    margin-left: 75px;
+    margin-left: 90px;
+  }
+  .qr-box-black {
+    padding: 15px; /* Slightly smaller on mobile */
   }
 }
