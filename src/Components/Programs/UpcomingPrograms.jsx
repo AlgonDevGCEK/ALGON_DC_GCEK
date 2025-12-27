@@ -42,18 +42,18 @@ const UpcomingPrograms = () => {
 
       if (progError) throw progError;
 
-      // Count 'pending' too, to prevent overbooking while admin verifies
-      const { data: regData, error: regError } = await supabase
-        .from('registrations')
-        .select('event_id');
+      const { data: seatData, error: seatError } = await supabase
+        .rpc('get_booked_seat_counts');
 
-      if (regError) throw regError;
+      if (seatError) throw seatError;
 
-      // 3. Calculate Counts
+      // 3. Create a Map for fast lookup
       const seatCounts = {};
-      regData.forEach(reg => {
-        seatCounts[reg.event_id] = (seatCounts[reg.event_id] || 0) + 1;
-      });
+      if (seatData) {
+          seatData.forEach(item => {
+              seatCounts[item.event_id] = item.count;
+          });
+      }
 
       // 4. Merge Data
       const mergedPrograms = programsData.map(prog => {
