@@ -1,22 +1,35 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ShieldCheck , X } from 'lucide-react';
 import './PrivacyPolicy.css';
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      navigate(-1); 
+    } else {
+      window.close(); 
+    }
+  };
 
   return (
     <div className="privacy-page-wrapper">
       <div className="privacy-container">
         {/* Navigation Header */}
         <header className="privacy-header">
-          <button className="back-link" onClick={() => navigate(-1)}>
-            <ArrowLeft size={18} /> Back
+          <button className="back-link" onClick={handleBack}>
+             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
+             {window.history.length > 2 ? (
+                <><ArrowLeft size={18} /> Back</>
+             ) : (
+                <><X size={20} /> Close</>
+             )}
           </button>
           <div className="header-info">
             <div>
-                <h1>Privacy Policy <ShieldCheck size={28} color="#34d399" /></h1>
+                <h1>Privacy Policy &nbsp;<ShieldCheck size={28} color="#34d399" /></h1>
                 
             </div>
             <p>ALGON DC GCEK • Last updated: December 26, 2025</p>
