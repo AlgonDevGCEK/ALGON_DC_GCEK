@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../supabaseClient'; 
-import { X, Clock, MapPin, Calendar, Users, ArrowRight, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { X, Clock, MapPin, Calendar, Users, ArrowRight, ImageIcon, Banknote, } from 'lucide-react'; 
 import './UpcomingPrograms.css';
 
 const UpcomingPrograms = () => {
@@ -14,19 +14,15 @@ const UpcomingPrograms = () => {
     fetchPrograms();
   }, []);
 
-  // Fix for Sticky Scroll
+  // Sticky Scroll Fix
   useEffect(() => {
     if (selectedProgram) {
-      // LOCK: Stop scrolling on both body and html
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
-      // UNLOCK: Clear the inline style so CSS takes over
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }
-
-    // CLEANUP: Ensure scroll is restored if you leave the page
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
@@ -36,16 +32,37 @@ const UpcomingPrograms = () => {
   const fetchPrograms = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+
+      // 1. Fetch Programs
+      const { data: programsData, error: progError } = await supabase
         .from('programs')
         .select('*')
-        // 1. Sort by Priority (Smallest number first: 1, 2, 3...)
         .order('display_order', { ascending: true }) 
-        // 2. Then sort by Date for events with the same priority
         .order('date', { ascending: true });
 
-      if (error) throw error;
-      setPrograms(data);
+      if (progError) throw progError;
+
+      // Count 'pending' too, to prevent overbooking while admin verifies
+      const { data: regData, error: regError } = await supabase
+        .from('registrations')
+        .select('event_id');
+
+      if (regError) throw regError;
+
+      // 3. Calculate Counts
+      const seatCounts = {};
+      regData.forEach(reg => {
+        seatCounts[reg.event_id] = (seatCounts[reg.event_id] || 0) + 1;
+      });
+
+      // 4. Merge Data
+      const mergedPrograms = programsData.map(prog => {
+        const booked = seatCounts[prog.id] || 0;
+        const left = Math.max(0, prog.total_seats - booked);
+        return { ...prog, seats_left: left };
+      });
+
+      setPrograms(mergedPrograms);
     } catch (error) {
       console.error("Error fetching programs:", error);
     } finally {
@@ -63,6 +80,14 @@ const UpcomingPrograms = () => {
     return { label: 'Upcoming', style: 'badge-upcoming' };
   };
 
+  //  Seat Color Logic 
+  const getSeatColor = (left, total) => {
+    if (left === 0) return '#ef4444'; 
+    const ratio = left / total;
+    if (ratio < 0.25 || left < 10) return '#f97316'; 
+    return '#10b981'; 
+  };
+
   const handleCardClick = (program, e) => {
     e.stopPropagation();
     setSelectedProgram(program);
@@ -71,10 +96,6 @@ const UpcomingPrograms = () => {
   const handleCloseModal = (e) => {
     e.stopPropagation();
     setSelectedProgram(null);
-  };
-
-  const handleModalClick = (e) => {
-    e.stopPropagation();
   };
 
   return (
@@ -96,59 +117,77 @@ const UpcomingPrograms = () => {
         <div className="upcoming-grid">
           {programs.map((program, index) => {
             const status = getEventStatus(program.date);
+            const isPaid = program.is_paid;
+            const isFull = program.seats_left === 0;
+            const seatColor = getSeatColor(program.seats_left, program.total_seats);
 
             return (
               <div 
                 key={program.id} 
-                className="program-card animate-slide-up" 
+                className={`program-card animate-slide-up ${isPaid ? 'paid-card' : ''}`} 
                 onClick={(e) => handleCardClick(program, e)}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                {/* --- NEW: Image Section --- */}
                 <div className="card-image-container">
                   <span className={`program-badge ${status.style}`}>
                     {status.label}
                   </span>
-                  {program.image_url ? (
-                    <img 
-                      src={program.image_url} 
-                      alt={program.title} 
-                      className="card-img" 
-                      loading="lazy"
-                    />
-                  ) : (
-                    // Fallback if no image is provided
-                    <div className="card-img-placeholder">
-                      <ImageIcon size={40} opacity={0.3} />
+                  
+                  {isPaid && (
+                    <span className="paid-badge">
+                        <Banknote size={12} /> ₹{program.fee_amount}
+                    </span>
+                  )}
+
+                  {/* FULL BADGE OVERLAY */}
+                  {isFull && (
+                    <div className="full-overlay">
+                        HOUSE FULL
                     </div>
+                  )}
+
+                  {program.image_url ? (
+                    <img src={program.image_url} alt={program.title} className="card-img" loading="lazy" />
+                  ) : (
+                    <div className="card-img-placeholder"><ImageIcon size={40} opacity={0.3} /></div>
                   )}
                   <div className="card-overlay"></div>
                 </div>
 
-                {/* --- Content Section --- */}
                 <div className="card-content">
-                  <h3 className="program-title">{program.title}</h3>
+                  <h3 className="program-title">
+                    {program.title}
+                  </h3>
                   <p className="program-description">{program.description}</p>
 
                   <div className="program-meta">
-                    <div className="meta-item">
-                      <Calendar size={16}/>
-                      <span>{program.date}</span>
-                    </div>
-                    <div className="meta-item">
-                      <Clock size={16}/>
-                      <span>{program.time}</span>
-                    </div>
+                    <div className="meta-item"><Calendar size={16}/><span>{program.date}</span></div>
+                    <div className="meta-item"><Clock size={16}/><span>{program.time}</span></div>
                   </div>
 
                   <div className="program-footer">
-                    <div className="program-seats">
-                      <span className="seats-indicator"></span>
-                      <span>{program.total_seats} Seats</span>
+                    {/* --- DYNAMIC SEATS --- */}
+                    <div className="program-seats" style={{ color: isFull ? '#ef4444' : '#94a3b8' }}>
+                      <span 
+                        className="seats-indicator" 
+                        style={{ 
+                            backgroundColor: seatColor,
+                            boxShadow: `0 0 8px ${seatColor}` 
+                        }}
+                      ></span>
+                      <span>
+                        {isFull ? "Sold Out" : `${program.seats_left} Seats Left`}
+                      </span>
                     </div>
-                    <button className="register-btn">
-                      View
-                      <ArrowRight size={16} />
+                    
+                    {/* --- BUTTON LOGIC --- */}
+                    <button 
+                        className={`register-btn ${isPaid ? 'btn-paid' : ''}`}
+                        disabled={isFull}
+                        style={isFull ? { opacity: 0.5, cursor: 'not-allowed', filter: 'grayscale(1)' } : {}}
+                    >
+                      {isFull ? "Full" : (isPaid ? "View" : "View")} 
+                      {!isFull && <ArrowRight size={16} />}
                     </button>
                   </div>
                 </div>
@@ -158,20 +197,12 @@ const UpcomingPrograms = () => {
         </div>
       </div>
 
+      {/* --- MODAL --- */}
       {selectedProgram && (
-        <div 
-          className="program-modal-overlay animate-fade-in" 
-          onClick={handleCloseModal}
-        >
-          <div 
-            className="program-modal animate-scale-in" 
-            onClick={handleModalClick}
-          >
-            <button className="modal-close" onClick={handleCloseModal}>
-              <X size={24} />
-            </button>
+        <div className="program-modal-overlay animate-fade-in" onClick={handleCloseModal}>
+          <div className="program-modal animate-scale-in" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={handleCloseModal}><X size={24} /></button>
 
-            {/* Optional: Show Image in Modal Header too */}
             {selectedProgram.image_url && (
               <div className="modal-hero-image">
                  <img src={selectedProgram.image_url} alt={selectedProgram.title} />
@@ -180,27 +211,23 @@ const UpcomingPrograms = () => {
 
             <div className="modal-content">
               <div className="modal-header">
-                <span className="modal-type-badge">{selectedProgram.type}</span>
+                <div className="modal-badges">
+                    <span className="modal-type-badge">{selectedProgram.type}</span>
+                    {selectedProgram.is_paid && <span className="modal-paid-badge">Paid Event</span>}
+                </div>
                 <h2>{selectedProgram.title}</h2>
               </div>
               
               <div className="modal-grid">
                 <div className="modal-info">
+                  <div className="info-row"><Calendar className="icon"/><span>{selectedProgram.date}</span></div>
+                  <div className="info-row"><Clock className="icon"/><span>{selectedProgram.time}</span></div>
+                  <div className="info-row"><MapPin className="icon"/><span>{selectedProgram.location}</span></div>
                   <div className="info-row">
-                    <Calendar className="icon"/>
-                    <span>{selectedProgram.date}</span>
-                  </div>
-                  <div className="info-row">
-                    <Clock className="icon"/>
-                    <span>{selectedProgram.time}</span>
-                  </div>
-                  <div className="info-row">
-                    <MapPin className="icon"/>
-                    <span>{selectedProgram.location}</span>
-                  </div>
-                  <div className="info-row">
-                    <Users className="icon"/>
-                    <span>{selectedProgram.total_seats} Capacity</span>
+                      <Users className="icon"/>
+                      <span style={{ color: getSeatColor(selectedProgram.seats_left, selectedProgram.total_seats) }}>
+                          {selectedProgram.seats_left} / {selectedProgram.total_seats} Seats Available
+                      </span>
                   </div>
                 </div>
                 
@@ -213,22 +240,27 @@ const UpcomingPrograms = () => {
               <div className="modal-description">
                 <h3>About the Event</h3>
                 <p>{selectedProgram.full_details || selectedProgram.description}</p>
+                {selectedProgram.is_paid && (
+                    <div className="fee-notice">
+                        <strong>Registration Fee:</strong> ₹{selectedProgram.fee_amount}
+                    </div>
+                )}
               </div>
 
               <div className="modal-actions">
                 <button 
                   className="modal-register-btn"
                   onClick={() => navigate(`/register/${selectedProgram.id}`)}
-                  disabled={getEventStatus(selectedProgram.date).label === 'Ended'}
+                  disabled={getEventStatus(selectedProgram.date).label === 'Ended' || selectedProgram.seats_left === 0}
                 >
-                  {getEventStatus(selectedProgram.date).label === 'Ended' ? (
-                    'Event Closed'
-                  ) : (
-                    <>
-                      Proceed to Registration
-                      <ArrowRight size={18} />
-                    </>
-                  )}
+                  {selectedProgram.seats_left === 0 
+                     ? 'Registrations Closed (House Full)' 
+                     : (getEventStatus(selectedProgram.date).label === 'Ended' 
+                        ? 'Event Closed' 
+                        : (selectedProgram.is_paid ? `Proceed to Registration` : 'Proceed to Registration')
+                       )
+                  }
+                  {selectedProgram.seats_left > 0 && <ArrowRight size={18} />}
                 </button>
               </div>
             </div>
