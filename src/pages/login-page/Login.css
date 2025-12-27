@@ -1,100 +1,174 @@
+/* --- Login.css --- */
+
+/* 1. Main Layout */
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background: linear-gradient(
-  180deg,
-  #111827 0%,
-  #1e293b 50%,  
-  #020617 100%
-);
+    180deg,
+    #111827 0%,
+    #1e293b 50%,   
+    #020617 100%
+  );
   font-family: 'Poppins', sans-serif;
 }
 
+/* 2. Glassmorphism Card */
 .login-card {
-  background: rgba(90, 171, 233, 0.088);
+  background: rgba(30, 41, 59, 0.7); /* Darker, more professional tint */
   backdrop-filter: blur(12px);
   padding: 50px 30px;
-  border-radius: 12px;
+  border-radius: 20px; /* Smoother corners */
+  border: 1px solid #334155; /* Subtle border */
   width: 100%;
   max-width: 400px;
-  color: #d0d8e0;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  color: #f8fafc;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   text-align: center;
 }
 
 .login-title {
-  color: #d4dde4;
-  margin-bottom: 20px;
+  color: #f8fafc;
+  margin-bottom: 30px;
+  font-size: 26px;
+  font-weight: 700;
 }
 
-.login-subtitle {
-  font-size: 15px;
-  margin-bottom: 20px;
-  color: #b0b8c0;
-}
-
+/* 3. Inputs (Updated to Dark Theme) */
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
+  padding: 14px 18px;
+  background: #0f172a; /* Dark Input Background */
+  border: 1px solid #334155; /* Dark Border */
+  border-radius: 12px;
   outline: none;
-  font-size: 14px;
+  font-size: 15px;
+  color: #f8fafc; /* Light Text */
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Critical for padding to work */
 }
 
+.input-group input:focus {
+  border-color: #00d2ff; /* Neon Blue Border */
+  box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1); /* Blue Glow */
+}
+
+/* 4. Password Eye Logic */
+/* Hide Default Browser Icon */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+/* Container for Input + Icon */
+.password-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure text doesn't go behind the icon */
+.password-group input {
+  padding-right: 45px; 
+}
+
+/* The Eye Button */
+/* The Eye Button */
+.eye-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%; 
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.2s;
+  z-index: 2; 
+}
+.eye-toggle:hover {
+  color: #00d2ff;
+}
+
+/* 5. Buttons */
 .login-btn {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #3b82f6, #a855f7);
+  padding: 16px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Blue to Violet */
   color: #ffffff;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 10px;
 }
 
 .login-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
-.error {
-  color: #ff6b6b;
+.login-btn:disabled {
+  background: #334155;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 6. Error Messages */
+.error-msg {
+  color: #ff4757;
   font-size: 13px;
-  margin-bottom: 10px;
+  background: rgba(255, 71, 87, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  margin-bottom: 20px;
+  animation: slideDown 0.2s ease-out;
 }
 
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 7. Footer Links */
 .login-footer {
-  margin-top: 16px;
-  font-size: 13px;
+  margin-top: 25px;
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
 }
 
 .login-footer a {
-  color: #60b8ff;
+  color: #00d2ff; /* Neon Blue Links */
   text-decoration: none;
-  margin-left: 6px;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
 .login-footer a:hover {
-  color: #9ad5ff;
+  color: #60a5fa;
+  text-decoration: underline;
 }
 
-/* Mobile tweaks */
+/* 8. Mobile Responsive */
 @media (max-width: 600px) {
   .login-card {
     width: 90%;
-    padding: 60px 20px;
-  }
-
-  .login-btn {
-    font-size: 16px;
-    padding: 14px;
+    padding: 40px 20px;
   }
 }
