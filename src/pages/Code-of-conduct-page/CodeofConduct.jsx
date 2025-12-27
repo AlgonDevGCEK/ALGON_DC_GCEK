@@ -1,18 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft, Users ,X} from 'lucide-react';
 import './CodeOfConduct.css';
 
 const CodeOfConduct = () => {
   const navigate = useNavigate();
+   const handleBack = () => {
+    // Check if there is history to go back to
+    if (window.history.length > 2) {
+      navigate(-1); // Go back if history exists
+    } else {
+      window.close(); // Close tab if it's a new window
+    }
+  };
+
 
   return (
     <div className="policy-page-wrapper">
       <div className="policy-container">
         {/* Navigation Header */}
         <header className="policy-header">
-          <button className="back-link" onClick={() => navigate(-1)}>
-            <ArrowLeft size={18} /> Back
+          <button className="back-link" onClick={handleBack}>
+             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
+             {window.history.length > 2 ? (
+                <><ArrowLeft size={18} /> Back</>
+             ) : (
+                <><X size={20} /> Close</>
+             )}
           </button>
           <div className="header-info">
             <h1>Code of Conduct <Users size={28} color="#10b981" style={{ verticalAlign: 'middle', marginLeft: '10px' }} /></h1>
