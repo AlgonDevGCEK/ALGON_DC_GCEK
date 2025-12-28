@@ -312,12 +312,12 @@
 
   /* 6. Fix Close Button Position on Mobile Modal */
   .close-modal-btn {
-    top: -15px;
-    right: 9px; 
-    background: rgba(0,0,0,0.5); /* Add background so it's visible over content */
+    top: 4px;
+    right: 25px; 
+    background: rgba(0,0,0,0.5); 
     border-radius: 50%;
     padding: 5px;
-    width: 40px;
+    width: 60px;
     height: 33px;
     display: flex;
     align-items: center;
