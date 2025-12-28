@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Users ,X} from 'lucide-react';
-import './CodeOfConduct.css';
+import './CodeofConduct.css';
 
 const CodeOfConduct = () => {
   const navigate = useNavigate();
