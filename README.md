@@ -1,7 +1,6 @@
-# ALGON DC GCEK – Official Website
+<h1 align = "center"> ALGON DC GCEK – Official Website</h1>
 
-This repository contains the official website and membership registration system for **ALGON DC**,  
-Government College of Engineering Kannur.
+This repository contains the official website and membership registration system for **ALGON DC**, Government College of Engineering Kannur.
 
 ## Features
 - Club membership registration
@@ -21,5 +20,6 @@ Government College of Engineering Kannur.
 - Admin-level operations are protected via backend rules.
 
 ---
-
+<div align = "center">
 © ALGON DC, Government College of Engineering Kannur
+</div>
