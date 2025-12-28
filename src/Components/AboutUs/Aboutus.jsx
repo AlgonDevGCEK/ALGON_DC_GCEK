@@ -1,5 +1,5 @@
 import React from "react";
-import "./AboutUs.css";
+import "./Aboutus.css";
 
 const AboutUs = ({ title, content, gradient }) => {
   return (
