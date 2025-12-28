@@ -52,7 +52,7 @@ const Dashboard = () => {
   // --- IMAGE UPLOAD ---
   const handleAvatarClick = () => fileInputRef.current.click();
 
-  const handleImageUpload = async (event) => {
+ const handleImageUpload = async (event) => {
     try {
       const file = event.target.files[0];
       if (!file) return;
@@ -63,31 +63,33 @@ const Dashboard = () => {
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `${member.user_id}/${fileName}`; 
 
-      // UPLOAD to 'avatar' bucket
       const { error: uploadError } = await supabase.storage
         .from("avatar")
-        .upload(filePath, file); // Removed { upsert: true } as new filenames won't collide
+        .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      const { data: { publicUrl } } = supabase.storage.from("avatar").getPublicUrl(filePath);
+      const { data: { publicUrl } } = supabase.storage
+        .from("avatar")
+        .getPublicUrl(filePath);
       
-      const { error: updateError } = await supabase
-        .from("members")
-        .update({ profile_pic: publicUrl })
-        .eq("user_id", member.user_id);
+      const { error: dbError } = await supabase.rpc('update_my_profile_pic', {
+        new_url: publicUrl
+      });
 
-      if (updateError) throw updateError;
+      if (dbError) throw dbError;
 
+      // 4. UPDATE LOCAL STATE
       setMember({ ...member, profile_pic: publicUrl });
       alert("Profile picture updated!");
+      
     } catch (error) {
+      console.error(error);
       alert("Error: " + error.message);
     } finally {
       setUploading(false);
     }
   };
-
   // --- INLINE EDITING ---
   const startEditing = (field, val) => { setEditingField(field); setTempValue(val); };
   const cancelEditing = () => { setEditingField(null); setTempValue(""); };
