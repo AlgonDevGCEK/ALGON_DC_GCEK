@@ -1,258 +1,296 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Code, Database, Zap, Trophy, Clock, ArrowRight } from 'lucide-react';
+import { 
+  Calendar, Code, Database, Zap, Trophy, Clock, ArrowRight, 
+  Lock, ExternalLink, X, Shield, Cloud, Link as LinkIcon, FileText, BarChart2 
+} from 'lucide-react';
 import { supabase } from '../../supabaseClient';
 import './insightx.css';
 import { NavLink } from 'react-router-dom';
+
+const iconMap = { 'Database': Database, 'Zap': Zap, 'Code': Code, 'Shield': Shield };
+
 const InsightXLanding = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  // --- STATE ---
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [eventDate, setEventDate] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [timelineData, setTimelineData] = useState([]);
+  const [domains, setDomains] = useState([]);
+  
+  // Modal & Submission State
+  const [selectedDomain, setSelectedDomain] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form, setForm] = useState({ teamName: '', projectLink: '' });
+  const [status, setStatus] = useState({ loading: false, msg: '', type: '' });
 
-  // Fetch event data from Supabase
+  // --- 1. FETCH PUBLIC DATA ---
   useEffect(() => {
-    const fetchPageData = async () => {
+    const init = async () => {
       try {
-        setIsLoading(true);
+        const { data: ev } = await supabase.from('insightx_event').select('start_date').single();
+        if (ev) setEventDate(new Date(ev.start_date).getTime());
 
-        // 1. Fetch Event Date (Settings)
-        const { data: eventData, error: eventError } = await supabase
-          .from('insightx_event')
-          .select('start_date, is_live')
-          .eq('id', 1)
-          .single();
-
-        if (eventData) {
-          setEventDate(new Date(eventData.start_date).getTime());
-        }
-        if (eventError) console.error('Error fetching event date:', eventError);
-
-        // 2. Fetch Timeline Cards (Ordered by sort_order)
-        const { data: timeline, error: timelineError } = await supabase
-          .from('insightx_timeline')
-          .select('*')
-          .order('sort_order', { ascending: true });
-
-        if (timeline) {
-          setTimelineData(timeline);
-        }
-        if (timelineError) console.error('Error fetching timeline:', timelineError);
-
-      } catch (err) {
-        console.error('Unexpected Error:', err);
+        const { data: d } = await supabase.from('insightx_domains').select('*').order('id');
+        if (d) setDomains(d);
+      } catch (e) {
+        console.error("Setup Error", e);
       } finally {
         setIsLoading(false);
       }
     };
-
-    fetchPageData();
+    init();
   }, []);
 
-  // Countdown timer logic
+  // --- 2. TIMER ---
   useEffect(() => {
     if (!eventDate) return;
-
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      const distance = eventDate - now;
-      
-      if (distance < 0) {
+      const dist = eventDate - now;
+      if (dist < 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
         clearInterval(interval);
-        return;
+      } else {
+        setTimeLeft({
+          days: Math.floor(dist / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((dist % (1000 * 60)) / 1000)
+        });
       }
-      
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((distance % (1000 * 60)) / 1000)
-      });
     }, 1000);
-    
     return () => clearInterval(interval);
   }, [eventDate]);
 
+  // --- 3. SUBMISSION HANDLER ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.teamName.trim() || !form.projectLink.trim()) return;
+
+    setStatus({ loading: true, msg: 'Verifying Team...', type: 'info' });
+
+    try {
+      const { data, error } = await supabase.rpc('submit_project_securely', {
+        p_team_name: form.teamName.trim(),
+        p_domain_id: selectedDomain.id,
+        p_project_link: form.projectLink.trim()
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        setStatus({ loading: false, msg: data.message, type: 'success' });
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setForm({ teamName: '', projectLink: '' });
+          setStatus({ loading: false, msg: '', type: '' });
+        }, 2000);
+      } else {
+        setStatus({ loading: false, msg: data.message, type: 'error' });
+      }
+
+    } catch (err) {
+      console.error(err);
+      setStatus({ loading: false, msg: "System Error. Try again.", type: 'error' });
+    }
+  };
+
+  const openModal = (domain) => {
+    if (domain.status === 'upcoming') return;
+    setSelectedDomain(domain);
+    setIsModalOpen(true);
+    setStatus({ loading: false, msg: '', type: '' });
+  };
+
+  const renderIcon = (name) => {
+    const Icn = iconMap[name] || Database;
+    return <Icn size={40} />;
+  };
+
   return (
     <div className="insightx-landing">
-      {/* Hero Section */}
+      {/* --- HERO --- */}
       <div className="hero-section">
         <div className="container">
-          <div className="hero-grid">
-            {/* Left Side - Content */}
-            <div className="hero-left">
-              <div className="badge">
-                <span>ADC GCEK Presents</span>
-              </div>
-              
-              <h1 className="main-title">
-                <span className="typing-animation">
-                  Insight<span className="title-accent">X</span>
-                </span>
-              </h1>
-              
-              <p className="subtitle">The Week-Long Project Challenge</p>
-              
-              <p className="description">
-                Build innovative projects across Data Analytics, Prompt Engineering, 
-                and Web Development. One week to create, compete, and win!
-              </p>
+          <div className="hero-centered-content">
+            <div className="badge"><span>ADC GCEK Presents</span></div>
+            <h1 className="main-title">Insight<span className="title-accent">X</span></h1>
+            <p className="subtitle">The 6-Week Innovation Marathon</p>
+            <p className="description">
+              One Team. Six Domains. Infinite Possibilities.<br/>
+              Don't just code. Build the future.
+            </p>
 
-              <NavLink to="/insightx-register" >
-              <button className="cta-button">
-                Register Now
-                <ArrowRight className="button-icon" />
-              </button>
-              </NavLink>
-              
-            </div>
+            <NavLink to="/insightx-register">
+              <button className="cta-button">Register Your Team <ArrowRight className="button-icon" /></button>
+            </NavLink>
 
-            {/* Right Side - Countdown */}
-            <div className="hero-right">
-              <div className="countdown-card glass-card">
-                <p className="countdown-label">Challenge Starts In</p>
-                {isLoading && !eventDate ? (
-                  <div className="countdown-loading">Loading Timer...</div>
-                ) : (
-                  <div className="countdown-grid">
-                    {[
-                      { label: 'Days', value: timeLeft.days },
-                      { label: 'Hours', value: timeLeft.hours },
-                      { label: 'Minutes', value: timeLeft.minutes },
-                      { label: 'Seconds', value: timeLeft.seconds }
-                    ].map((item, i) => (
-                      <div key={i} className="countdown-item">
-                        <div className="countdown-value">
-                          {String(item.value).padStart(2, '0')}
-                        </div>
-                        <div className="countdown-label-small">{item.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            {/* Countdown */}
+            <div className="countdown-wrapper">
+               <p className="countdown-label">Challenge Starts In</p>
+               {isLoading && !eventDate ? <div className="text-gray-400">Loading...</div> : (
+                 <div className="countdown-grid">
+                   {Object.entries(timeLeft).map(([unit, val]) => (
+                     <div key={unit} className="countdown-item glass-card">
+                       <div className="countdown-value">{String(val).padStart(2, '0')}</div>
+                       <div className="countdown-label-small">{unit}</div>
+                     </div>
+                   ))}
+                 </div>
+               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* About Section */}
+      {/* --- DOMAINS GRID --- */}
       <div className="about-section">
         <div className="container">
-          <div className="section-intro">
-            <h2 className="section-title">What is InsightX?</h2>
-            <p className="section-description">
-              InsightX is a week-long project challenge where you tackle real-world problems, 
-              build innovative solutions, and compete for the top spot.
-            </p>
-          </div>
-
-          {/* Domains Section */}
+          <h2 className="section-title">The Battleground</h2>
+          
           <div className="domains-grid">
-            <div className="domain-card glass-card group">
-              <div className="domain-icon domain-icon-blue">
-                <Database size={40} />
+            {domains.map((domain) => (
+              <div 
+                key={domain.id} 
+                className={`domain-card glass-card group ${domain.status}`}
+                onClick={() => openModal(domain)}
+              >
+                <div className={`domain-icon ${domain.status === 'upcoming' ? 'grayscale' : ''}`}>
+                  {domain.status === 'upcoming' ? <Lock size={32}/> : renderIcon(domain.icon_name)}
+                </div>
+                
+                <h3 className="domain-title">{domain.title}</h3>
+                <p className="domain-description">{domain.short_desc}</p>
+                
+                <div className={`status-badge ${domain.status}`}>
+                  {domain.status === 'upcoming' ? 'Locked' : domain.status === 'live' ? 'View Challenge' : 'Closed'}
+                </div>
               </div>
-              <h3 className="domain-title">Data Analytics</h3>
-              <p className="domain-description">
-                Master data visualization and extract meaningful insights using Python and Pandas.
-              </p>
-            </div>
-
-            <div className="domain-card glass-card group">
-              <div className="domain-icon domain-icon-purple">
-                <Zap size={40} />
-              </div>
-              <h3 className="domain-title">Prompt Engineering</h3>
-              <p className="domain-description">
-                Craft effective prompts and build innovative AI-powered applications.
-              </p>
-            </div>
-
-            <div className="domain-card glass-card group">
-              <div className="domain-icon domain-icon-orange">
-                <Code size={40} />
-              </div>
-              <h3 className="domain-title">Web Development</h3>
-              <p className="domain-description">
-                Create stunning web applications using modern frameworks.
-              </p>
-            </div>
+            ))}
           </div>
 
-          {/* How It Works */}
-          <div className="how-it-works">
-            <h2 className="section-title">How It Works</h2>
-            <div className="steps-grid">
+          {/* --- ROADMAP --- */}
+           <div className="how-it-works">
+            <h2 className="section-title">The Roadmap</h2>
+            <div className="flowchart-container">
               {[
-                { step: "01", title: "Register", desc: "Sign up as individual or team", icon: <Calendar size={24} /> },
-                { step: "02", title: "Get Problem", desc: "Receive challenge on Dec 22", icon: <Code size={24} /> },
-                { step: "03", title: "Build Project", desc: "Create solution in one week", icon: <Zap size={24} /> },
-                { step: "04", title: "Win Prizes", desc: "Climb the leaderboard", icon: <Trophy size={24} /> }
+                { step: "1", title: "Register Team", desc: "Lock your unique Team Name" },
+                { step: "2", title: "Choose Domain", desc: "Select active challenge" },
+                { step: "3", title: "Build", desc: "Access Drive & Resources" },
+                { step: "4", title: "Submit", desc: "Verify Team & Upload" },
+                { step: "5", title: "Win", desc: "Top the Charts" }
               ].map((item, i) => (
-                <div key={i} className="step-card glass-card">
-                  <div className="step-icon">{item.icon}</div>
-                  <div className="step-number">{item.step}</div>
-                  <h3 className="step-title">{item.title}</h3>
-                  <p className="step-description">{item.desc}</p>
+                <div key={i} className="flow-step">
+                  <div className="flow-circle">{item.step}</div>
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                  {i < 4 && <div className="flow-line"></div>}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* DYNAMIC TIMELINE SECTION */}
-          <div className="timeline-section">
-            <h2 className="section-title">Event Timeline</h2>
-            
-            {isLoading ? (
-               <div className="text-center text-gray-400">Loading timeline...</div>
-            ) : (
-              <div className="timeline-grid">
-                {timelineData.map((item) => (
-                  <div 
-                    key={item.id} 
-                    className={`timeline-card glass-card ${item.highlight ? 'highlight' : ''}`}
-                  >
-                    <div className="timeline-week">{item.week}</div>
-                    <div className="timeline-date">{item.date_text}</div>
-                    <h3 className="timeline-title">{item.title}</h3>
-                  </div>
-                ))}
+          {/* --- NEW LEADERBOARD SECTION --- */}
+          <div className="leaderboard-section">
+            <div className="leaderboard-banner glass-card">
+              <div className="lb-content">
+                <Trophy size={48} className="lb-icon" />
+                <h2>Hall of Fame</h2>
+                <p>Check the live standings. Filter by domain to see who is leading the race.</p>
+                
+                <NavLink to="/leaderboard">
+                   <button className="lb-button">
+                     <BarChart2 size={20} /> View Leaderboard
+                   </button>
+                </NavLink>
               </div>
-            )}
+            </div>
           </div>
 
-          {/* Stats */}
-          <div className="stats-grid">
-            {[
-              { icon: <Clock size={28} />, value: "7 Days", label: "Duration" },
-              { icon: <Code size={28} />, value: "3 Domains", label: "To Choose" },
-              { icon: <Trophy size={28} />, value: "Live", label: "Leaderboard" }
-            ].map((stat, i) => (
-              <div key={i} className="stat-card glass-card">
-                <div className="stat-icon">{stat.icon}</div>
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Final CTA */}
-          <div className="final-cta glass-card">
-            <h2>Ready to Take the Challenge?</h2>
-            <p>Join hundreds of students building the future</p>
-            <button className="cta-button cta-large">
-              Register for InsightX
-              <ArrowRight className="button-icon" />
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* --- SUBMISSION MODAL --- */}
+      {isModalOpen && selectedDomain && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content glass-card" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setIsModalOpen(false)}><X size={24}/></button>
+            
+            <div className="modal-header">
+              {renderIcon(selectedDomain.icon_name)}
+              <h2>{selectedDomain.title}</h2>
+              <span className={`status-badge ${selectedDomain.status}`}>{selectedDomain.status}</span>
+            </div>
+
+            <div className="modal-body">
+              {/* Objective */}
+              <div className="objective-text">
+                <p><strong>🎯 Objective:</strong> {selectedDomain.full_desc || "Details coming soon..."}</p>
+              </div>
+
+              {/* 📂 RESOURCE DRIVE LINK (NEW) */}
+              {selectedDomain.resources_link && (
+                <a href={selectedDomain.resources_link} target="_blank" rel="noopener noreferrer" className="resource-link-btn">
+                  <ExternalLink size={20} />
+                  <span>Access Materials & Problem Statement</span>
+                  <p className="sub-text">Open Google Drive / GitHub</p>
+                </a>
+              )}
+
+              <div className="modal-meta">
+                <p><strong>📅 Deadline:</strong> {selectedDomain.deadline ? new Date(selectedDomain.deadline).toDateString() : 'TBA'}</p>
+              </div>
+
+              <hr className="divider"/>
+
+              {/* --- SECURE SUBMISSION FORM --- */}
+              <div className="submission-section">
+                <h3>Submit Solution</h3>
+                
+                {selectedDomain.status === 'closed' ? (
+                  <div className="warning-box">⛔ Submissions Closed</div>
+                ) : (
+                  <form onSubmit={handleSubmit}>
+                    
+                    <div className="form-group">
+                      <label className="input-label">Team Name (Must match Registration)</label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Code Warriors" 
+                        required
+                        className="input-field"
+                        value={form.teamName}
+                        onChange={e => setForm({...form, teamName: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="input-label">Project Link</label>
+                      <input 
+                        type="url" 
+                        placeholder="GitHub / Drive Link" 
+                        required
+                        className="input-field"
+                        value={form.projectLink}
+                        onChange={e => setForm({...form, projectLink: e.target.value})}
+                      />
+                    </div>
+
+                    {status.msg && (
+                      <div className={`status-msg ${status.type}`}>
+                        {status.msg}
+                      </div>
+                    )}
+
+                    <button type="submit" className="submit-btn" disabled={status.loading}>
+                      {status.loading ? 'Verifying...' : 'Verify & Submit'}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
