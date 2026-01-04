@@ -29,8 +29,10 @@ import PrivacyPolicy from './pages/Privacypolicy-page/PrivacyPolicy';
 import RefundPolicy from './pages/Refund-policy-page/RefundPolicy';
 import CodeOfConduct from './pages/Code-of-conduct-page/CodeofConduct';
 import JoinInfo from './pages/Join-us-page/JoinInfo';
-import InsightXLanding from './pages/InsightX/InsightX';
+// InsightX Pages
+import InsightXLanding from './pages/insightx/insightx';
 import InsightXRegister from './pages/insightx/InsightXRegister';
+import Leaderboard from './pages/insightx/Leaderboard';
 import './index.css';
 
 const ScrollToTop = () => {
@@ -64,8 +66,11 @@ const App = () => {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/code-of-conduct" element={<CodeOfConduct />} />
           <Route path="/join-us" element={<JoinInfo />} />
+
+           {/* --- InsightX Routes --- */}
           <Route path="/insightx" element={<InsightXLanding />} />
           <Route path="/insightx-register" element={<InsightXRegister />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
