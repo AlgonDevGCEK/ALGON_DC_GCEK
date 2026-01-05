@@ -65,6 +65,11 @@ const App = () => {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/code-of-conduct" element={<CodeOfConduct />} />
           <Route path="/join-us" element={<JoinInfo />} />
+
+          {/* --- InsightX Routes --- */}
+          <Route path="/insightx" element={<InsightXLanding />} />
+          <Route path="/insightx-register" element={<InsightXRegister />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
