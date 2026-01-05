@@ -99,6 +99,11 @@ const Navbar = () => {
         >
           <li><NavLink to="/" end>Home</NavLink></li>
           <li><NavLink to="/upcoming-programs">Programs</NavLink></li>
+          <li>
+              <NavLink to="/insightx" className="nav-item-highlight">
+              InsightX <span className="nav-icon-animate"></span>
+              </NavLink>
+          </li>
           <li><NavLink to="/about">About Us</NavLink></li>
           <li><NavLink to="/gallery">Gallery</NavLink></li>
           <li><NavLink to="/contact">Contact Us</NavLink></li>
