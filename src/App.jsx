@@ -12,14 +12,13 @@ import UpcomingPrograms from './Components/Programs/UpcomingPrograms';
 import EventRegistration from './Components/Programs/EventRegistration';
 import AdminGuard from './Components/Admin/AdminGuard'; 
 
-
 // Pages
 import AboutPage from "./pages/AboutPage";
 import Contact from './pages/Contact/Contact';
 import Login from "./pages/login-page/Login";
 import Signup from "./pages/signup-page/Signup";
-import ForgotPassword from "./pages/password/ForgotPassword";
-import UpdatePassword from "./pages/password/UpdatePassword";
+import ForgotPassword from "./pages/password_temp/Forgotpassword";
+import UpdatePassword from "./pages/password_temp/Updatepassword";
 import Dashboard from "./pages/dashboard-page/Dashboard";
 import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -29,10 +28,6 @@ import PrivacyPolicy from './pages/Privacypolicy-page/PrivacyPolicy';
 import RefundPolicy from './pages/Refund-policy-page/RefundPolicy';
 import CodeOfConduct from './pages/Code-of-conduct-page/CodeofConduct';
 import JoinInfo from './pages/Join-us-page/JoinInfo';
-// InsightX Pages
-import InsightXLanding from './pages/insightx/insightx';
-import InsightXRegister from './pages/insightx/InsightXRegister';
-import Leaderboard from './pages/insightx/Leaderboard';
 import './index.css';
 
 const ScrollToTop = () => {
@@ -66,11 +61,6 @@ const App = () => {
           <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="/code-of-conduct" element={<CodeOfConduct />} />
           <Route path="/join-us" element={<JoinInfo />} />
-
-           {/* --- InsightX Routes --- */}
-          <Route path="/insightx" element={<InsightXLanding />} />
-          <Route path="/insightx-register" element={<InsightXRegister />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
