@@ -46,7 +46,7 @@ const Leaderboard = () => {
         {/* Title Section */}
         <div className="text-center mb-10">
           <h1 className="main-title" style={{ fontSize: "4rem" }}>
-            Leader<span className="title-accent">board</span>
+            <span className="title-accent">Leaderboard</span>
           </h1>
           <p className="description" style={{ margin: "0 auto" }}>
             Live Standings. Scores updated by Admins.
