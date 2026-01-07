@@ -25,14 +25,14 @@ const Leaderboard = () => {
     }
   };
 
-  // Filter teams based on search
   const filteredTeams = teams.filter((t) =>
     t.team_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="insightx-landing" style={{ minHeight: "100vh", paddingBottom: "4rem" }}>
-      <div className="container">
+    // 👇 UNIQUE CLASS NAME HERE
+    <div className="leaderboard-wrapper">
+      <div className="lb-container">
         
         {/* Navigation Header */}
         <div style={{ paddingTop: "2rem", marginBottom: "3rem" }}>
@@ -44,18 +44,18 @@ const Leaderboard = () => {
         </div>
 
         {/* Title Section */}
-        <div className="text-center mb-10">
-          <h1 className="main-title" style={{ fontSize: "4rem" }}>
-            <span className="title-accent">Leaderboard</span>
+        <div className="lb-text-center lb-mb-10">
+          <h1 className="lb-main-title">
+            <span className="lb-title-accent">Leaderboard</span>
           </h1>
-          <p className="description" style={{ margin: "0 auto" }}>
+          <p className="lb-description" style={{ margin: "0 auto" }}>
             Live Standings. Scores updated by Admins.
           </p>
         </div>
 
         {/* Search Bar */}
         <div className="lb-search-wrapper">
-          <Search className="search-icon" size={20} />
+          <Search className="lb-search-icon" size={20} />
           <input
             type="text"
             placeholder="Search for a team..."
@@ -66,51 +66,51 @@ const Leaderboard = () => {
         </div>
 
         {/* Leaderboard Table Card */}
-        <div className="glass-card lb-table-container">
+        <div className="lb-glass-card lb-table-container">
           {loading ? (
-            <div className="loading-state">
-               <Loader2 className="animate-spin text-theme-primary" size={32} />
+            <div className="lb-loading-state">
+               <Loader2 className="lb-animate-spin" style={{color: '#8a2be2'}} size={32} />
                <p>Loading Scores...</p>
             </div>
           ) : filteredTeams.length === 0 ? (
-            <div className="empty-state">
-               <Trophy size={48} className="text-gray-500 mb-2 opacity-50" />
-               <p>No teams found on the leaderboard yet.</p>
+            <div className="lb-empty-state">
+               <Trophy size={48} className="lb-text-gray-500 mb-2 opacity-50" />
+               <p>No teams found.</p>
             </div>
           ) : (
-            <div className="table-responsive">
+            <div className="lb-table-responsive">
               <table className="lb-table">
                 <thead>
                   <tr>
-                    <th className="rank-col">Rank</th>
-                    <th className="team-col">Team Name</th>
-                    <th className="proj-col text-center">Submissions</th>
-                    <th className="score-col text-right">Total Score</th>
+                    <th className="lb-rank-col">Rank</th>
+                    <th className="lb-team-col">Team Name</th>
+                    <th className="lb-proj-col lb-text-center">Submissions</th>
+                    <th className="lb-score-col lb-text-right">Total Score</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTeams.map((team, index) => (
-                    <tr key={index} className={index < 3 ? `top-${index + 1}` : ""}>
-                      {/* Rank Column with Icons */}
-                      <td className="rank-cell">
-                        {index === 0 && <Trophy size={24} className="text-yellow-400" />}
-                        {index === 1 && <Medal size={24} className="text-gray-300" />}
-                        {index === 2 && <Medal size={24} className="text-orange-400" />}
-                        {index > 2 && <span className="rank-num">#{index + 1}</span>}
+                    <tr key={index} className={index < 3 ? `lb-top-${index + 1}` : ""}>
+                      {/* Rank Column */}
+                      <td className="lb-rank-cell">
+                        {index === 0 && <Trophy size={24} className="lb-text-yellow-400" />}
+                        {index === 1 && <Medal size={24} className="lb-text-gray-300" />}
+                        {index === 2 && <Medal size={24} className="lb-text-orange-400" />}
+                        {index > 2 && <span className="lb-rank-num">#{index + 1}</span>}
                       </td>
                       
                       {/* Team Name */}
-                      <td className="team-name">{team.team_name}</td>
+                      <td className="lb-team-name">{team.team_name}</td>
                       
                       {/* Submissions Count */}
-                      <td className="text-center text-gray-400">
+                      <td className="lb-text-center lb-text-gray-400">
                         {team.domains_completed > 0 ? (
-                           <span className="submission-badge">{team.domains_completed}</span>
+                           <span className="lb-submission-badge">{team.domains_completed}</span>
                         ) : "-"}
                       </td>
                       
                       {/* Score */}
-                      <td className="score-cell">{team.total_score}</td>
+                      <td className="lb-score-cell">{team.total_score}</td>
                     </tr>
                   ))}
                 </tbody>

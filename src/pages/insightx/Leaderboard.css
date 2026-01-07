@@ -1,39 +1,22 @@
 /* =========================================
-   InsightX Leaderboard - Standalone Styles
+   InsightX Leaderboard - ISOLATED STYLES
    File: Leaderboard.css
 ========================================= */
 
-/* --- 1. Variables & Theme --- */
-:root {
-  --theme-bg-dark: #0a0e17;
-  --theme-primary: #8a2be2;    /* Purple */
-  --theme-secondary: #00bfff;  /* Cyan */
-  --theme-accent: #ff00ff;     /* Magenta */
-  
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-blur: blur(12px);
-  
-  --theme-text-main: #ffffff;
-  --theme-text-light: #f8fafc;
-  --theme-text-muted: #a0aec0;
-  
-  --gradient-glow: linear-gradient(45deg, #8a2be2, #ff00ff, #00bfff);
-}
-
-/* --- 2. Base Page Layout --- */
-.insightx-landing {
+/* --- Page Wrapper --- */
+.leaderboard-wrapper {
   width: 100%;
   min-height: 100vh;
-  background: var(--theme-bg-dark);
-  color: var(--theme-text-main);
+  background: #0a0e17; /* Hardcoded to avoid variable conflicts */
+  color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
   position: relative;
+  padding-bottom: 4rem;
 }
 
-/* Background Animation */
-.insightx-landing::before {
+/* Background Animation (Scoped) */
+.leaderboard-wrapper::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -44,7 +27,7 @@
   pointer-events: none;
 }
 
-.container {
+.lb-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
@@ -52,8 +35,8 @@
   z-index: 1;
 }
 
-/* --- 3. Typography --- */
-.main-title {
+/* --- Typography --- */
+.lb-main-title {
   font-size: 3rem;
   font-weight: 900;
   margin-bottom: 0.5rem;
@@ -61,25 +44,26 @@
   color: #fff;
 }
 
-.title-accent {
-  background: var(--gradient-glow);
+.lb-title-accent {
+  background: linear-gradient(45deg, #8a2be2, #ff00ff, #00bfff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.description {
-  color: var(--theme-text-muted);
+.lb-description {
+  color: #a0aec0;
   font-size: 1.1rem;
 }
 
-.text-center { text-align: center; }
-.mb-10 { margin-bottom: 3rem; }
+.lb-text-center { text-align: center; }
+.lb-text-right { text-align: right; }
+.lb-mb-10 { margin-bottom: 3rem; }
 
-/* --- 4. Navigation (Back Button) --- */
+/* --- Navigation --- */
 .lb-back-btn {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
   padding: 10px 20px;
   border-radius: 8px;
@@ -93,30 +77,30 @@
 
 .lb-back-btn:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: var(--theme-secondary);
+  border-color: #00bfff;
   transform: translateX(-5px);
 }
 
-/* --- 5. Search Bar --- */
+/* --- Search Bar --- */
 .lb-search-wrapper {
   max-width: 500px;
   margin: 0 auto 3rem;
   position: relative;
 }
 
-.search-icon {
+.lb-search-icon {
   position: absolute;
   left: 1.2rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--theme-text-muted);
+  color: #a0aec0;
 }
 
 .lb-search-input {
   width: 100%;
   padding: 14px 14px 14px 45px;
   background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 99px;
   color: #fff;
   font-size: 1rem;
@@ -125,31 +109,31 @@
 }
 
 .lb-search-input:focus {
-  border-color: var(--theme-secondary);
+  border-color: #00bfff;
   background: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
 }
 
-/* --- 6. Table Container (Glass Card) --- */
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+/* --- Glass Card --- */
+.lb-glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
 .lb-table-container {
-  padding: 0 !important; /* Remove padding to make table flush */
+  padding: 0 !important;
   overflow: hidden;
 }
 
-.table-responsive {
+.lb-table-responsive {
   overflow-x: auto;
 }
 
-/* --- 7. Leaderboard Table --- */
+/* --- Table --- */
 .lb-table {
   width: 100%;
   border-collapse: collapse;
@@ -160,7 +144,7 @@
   background: rgba(255, 255, 255, 0.03);
   padding: 1.5rem;
   text-align: left;
-  color: var(--theme-text-muted);
+  color: #a0aec0;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.8rem;
@@ -183,42 +167,41 @@
   border-bottom: none;
 }
 
-/* --- 8. Columns & Ranking Styles --- */
-.rank-col { width: 80px; }
-.score-col { width: 120px; }
-.proj-col { width: 120px; }
+/* --- Columns --- */
+.lb-rank-col { width: 80px; }
+.lb-score-col { width: 120px; }
+.lb-proj-col { width: 120px; }
 
-/* Rank Cell Alignment */
-.rank-cell {
+.lb-rank-cell {
   display: flex;
   align-items: center;
   font-weight: bold;
   height: 100%;
 }
 
-.rank-num {
+.lb-rank-num {
   font-family: monospace;
-  color: var(--theme-text-muted);
+  color: #a0aec0;
   font-size: 1.1rem;
   margin-left: 8px;
 }
 
-.team-name {
+.lb-team-name {
   font-weight: 600;
   font-size: 1.1rem;
-  color: var(--theme-text-light);
+  color: #f8fafc;
 }
 
-.score-cell {
+.lb-score-cell {
   font-family: 'Courier New', monospace;
   font-weight: 800;
   font-size: 1.4rem;
-  color: var(--theme-secondary);
+  color: #00bfff;
   text-align: right;
   text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
 
-.submission-badge {
+.lb-submission-badge {
   background: rgba(255, 255, 255, 0.1);
   padding: 4px 10px;
   border-radius: 8px;
@@ -227,28 +210,26 @@
   color: #fff;
 }
 
-/* --- 9. Top 3 Highlights --- */
-.top-1 { background: linear-gradient(90deg, rgba(250, 204, 21, 0.08), transparent); }
-.top-2 { background: linear-gradient(90deg, rgba(209, 213, 219, 0.08), transparent); }
-.top-3 { background: linear-gradient(90deg, rgba(251, 146, 60, 0.08), transparent); }
+/* --- Highlights & Colors --- */
+.lb-top-1 { background: linear-gradient(90deg, rgba(250, 204, 21, 0.08), transparent); }
+.lb-top-2 { background: linear-gradient(90deg, rgba(209, 213, 219, 0.08), transparent); }
+.lb-top-3 { background: linear-gradient(90deg, rgba(251, 146, 60, 0.08), transparent); }
 
-.top-1 .team-name { color: #facc15; } /* Gold Text */
-.top-2 .team-name { color: #e5e7eb; } /* Silver Text */
-.top-3 .team-name { color: #fb923c; } /* Bronze Text */
+.lb-top-1 .lb-team-name { color: #facc15; }
+.lb-top-2 .lb-team-name { color: #e5e7eb; }
+.lb-top-3 .lb-team-name { color: #fb923c; }
 
-/* Icon Colors used in JSX */
-.text-yellow-400 { color: #facc15; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.5)); }
-.text-gray-300   { color: #d1d5db; filter: drop-shadow(0 0 5px rgba(209, 213, 219, 0.5)); }
-.text-orange-400 { color: #fb923c; filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.5)); }
-.text-theme-primary { color: var(--theme-primary); }
-.text-gray-500 { color: #64748b; }
-.text-gray-400 { color: var(--theme-text-muted); }
+.lb-text-yellow-400 { color: #facc15; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.5)); }
+.lb-text-gray-300   { color: #d1d5db; filter: drop-shadow(0 0 5px rgba(209, 213, 219, 0.5)); }
+.lb-text-orange-400 { color: #fb923c; filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.5)); }
+.lb-text-gray-400 { color: #a0aec0; }
+.lb-text-gray-500 { color: #64748b; }
 
-/* --- 10. States (Loading/Empty) --- */
-.loading-state, .empty-state {
+/* --- States --- */
+.lb-loading-state, .lb-empty-state {
   text-align: center;
   padding: 5rem 2rem;
-  color: var(--theme-text-muted);
+  color: #a0aec0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -256,20 +237,19 @@
   gap: 1rem;
 }
 
-.animate-spin {
-  animation: spin 1s linear infinite;
+.lb-animate-spin {
+  animation: lb-spin 1s linear infinite;
 }
 
-@keyframes spin {
+@keyframes lb-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* --- 11. Responsive Design --- */
+/* --- Responsive --- */
 @media (max-width: 768px) {
-  .main-title { font-size: 3rem; }
+  .lb-main-title { font-size: 3rem; }
   
-  /* Hide 'Submissions' column on mobile to save space */
   .lb-table th:nth-child(3), 
   .lb-table td:nth-child(3) {
     display: none; 
