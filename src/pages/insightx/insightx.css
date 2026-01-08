@@ -286,12 +286,12 @@
 /* ==========================================
    5. MODAL & FORMS
 ========================================== */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
-.modal-content { width: 100%; max-width: 600px; background: #0f172a; border: 1px solid rgba(138, 43, 226, 0.3); max-height: 90vh; overflow-y: auto; position: relative; padding: 2rem; border-radius: 16px; }
-.close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #fff; cursor: pointer; }
+.ix-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+.ix-modal-content { width: 100%; max-width: 600px; background: #0f172a; border: 1px solid rgba(138, 43, 226, 0.3); max-height: 90vh; overflow-y: auto; position: relative; padding: 2rem; border-radius: 16px; }
+.ix-close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: #fff; cursor: pointer; }
 
-.modal-header { text-align: center; margin-bottom: 2rem; }
-.modal-header h2 { font-size: 2rem; margin: 10px 0; background: var(--gradient-glow); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.ix-modal-header { text-align: center; margin-bottom: 2rem; }
+.ix-modal-header h2 { font-size: 2rem; margin: 10px 0; background: var(--gradient-glow); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
 .objective-text { font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.5rem; }
 .problem-box { background: rgba(255, 165, 0, 0.1); border: 1px solid rgba(255, 165, 0, 0.3); padding: 1rem; border-radius: 8px; margin: 1.5rem 0; color: #fbbf24; }
@@ -307,9 +307,9 @@
 .input-label { display: block; font-size: 0.9rem; color: #cbd5e1; margin-bottom: 0.5rem; }
 .form-group { margin-bottom: 1.2rem; }
 .input-field { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; }
-.submit-btn { width: 100%; padding: 12px; background: #10b981; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
-.submit-btn:hover { background: #34d399; }
-.submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+.insightx-submit-btn { width: 100%; padding: 12px; background: #10b981; color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-top: 10px; }
+.insightx-submit-btn:hover { background: #34d399; }
+.insightx-submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
 /* Status Messages */
 .status-msg { padding: 10px; border-radius: 6px; margin-bottom: 1rem; font-size: 0.9rem; text-align: center; font-weight: 500; }
@@ -352,13 +352,13 @@
   .flow-line { width: 3px; height: 40px; top: 105px; left: 50%; }
   .flow-step { margin-bottom: 2rem; width: 100%; }
 }
-.modal-overlay {
+.ix-modal-overlay {
     align-items: flex-start; /* Aligns to top so we can add padding */
     padding-top: 5rem;       /* Push down to clear the Hamburger Menu */
     padding-bottom: 2rem;    /* Extra space at bottom for scrolling */
   }
-  
-  .modal-content {
+
+  .ix-modal-content {
     max-height: 85vh;        /* Ensure it fits within the remaining space */
   }
 

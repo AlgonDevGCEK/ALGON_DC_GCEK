@@ -208,17 +208,17 @@ const InsightXLanding = () => {
 
       {/* MODAL */}
       {isModalOpen && selectedDomain && (
-        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modal-content glass-card" onClick={e => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setIsModalOpen(false)}><X size={24}/></button>
+        <div className="ix-modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="ix-modal-content glass-card" onClick={e => e.stopPropagation()}>
+            <button className="ix-close-btn" onClick={() => setIsModalOpen(false)}><X size={24}/></button>
             
-            <div className="modal-header">
+            <div className="ix-modal-header">
               {renderIcon(selectedDomain.icon_name)}
               <h2>{selectedDomain.title}</h2>
               <span className={`status-badge ${selectedDomain.status}`}>{selectedDomain.status}</span>
             </div>
 
-            <div className="modal-body">
+            <div className="ix-modal-body">
               <div className="objective-text">
                 <p><strong>🎯 Objective:</strong> {selectedDomain.full_desc || "Details coming soon..."}</p>
               </div>
@@ -269,7 +269,7 @@ const InsightXLanding = () => {
 
                     {status.msg && <div className={`status-msg ${status.type}`}>{status.msg}</div>}
 
-                    <button type="submit" className="submit-btn" disabled={status.loading}>
+                    <button type="submit" className="insightx-submit-btn" disabled={status.loading}>
                       {status.loading ? 'Verifying...' : 'Verify & Submit'}
                     </button>
                   </form>
