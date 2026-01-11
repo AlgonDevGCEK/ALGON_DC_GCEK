@@ -298,7 +298,11 @@ input:focus, select:focus {
   color: var(--text-muted);
   cursor: pointer;
 }
-
+.checkbox-container input[type="checkbox"] {
+  /* 1. Force fixed size */
+  width: 18px;
+  height: 18px;
+}
 .terms-check {
   margin-top: 25px;
 }
