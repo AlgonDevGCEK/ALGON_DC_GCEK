@@ -100,8 +100,8 @@ const Navbar = () => {
           <li><NavLink to="/" end>Home</NavLink></li>
           <li><NavLink to="/upcoming-programs">Programs</NavLink></li>
           <li>
-              <NavLink to="/insightx" className="nav-item-highlight">
-              InsightX <span className="nav-icon-animate"></span>
+              <NavLink to="/competitions" className="nav-item-highlight">
+              Competitions <span className="nav-icon-animate"></span>
               </NavLink>
           </li>
           <li><NavLink to="/about">About Us</NavLink></li>
