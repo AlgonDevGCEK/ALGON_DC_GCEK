@@ -32,6 +32,7 @@ import JoinInfo from './pages/Join-us-page/JoinInfo';
 import InsightXLanding from './pages/insightx/insightx';
 import InsightXRegister from './pages/insightx/InsightXRegister';
 import Leaderboard from './pages/insightx/Leaderboard';
+import CompetitionPage from './pages/CompetitionPage';
 import './index.css';
 
 const ScrollToTop = () => {
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="/insightx" element={<InsightXLanding />} />
           <Route path="/insightx-register" element={<InsightXRegister />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/competitions" element={<CompetitionPage />} />
           
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
