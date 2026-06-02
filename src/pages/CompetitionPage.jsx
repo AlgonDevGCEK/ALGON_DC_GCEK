@@ -49,7 +49,26 @@ const CompetitionPage = () => {
         return;
       }
 
-      // 2. SAVE TO LOCAL STORAGE ON SUCCESS
+      // 2. THE ANTI-CHEAT GATEKEEPER
+      // Count exactly how many warnings this specific email has
+      const { count: strikes, error: strikeError } = await supabase
+        .from('competition_warnings')
+        .select('*', { count: 'exact', head: true })
+        .eq('program_id', programId)
+        .eq('participant_email', cleanEmail);
+
+      if (strikeError) {
+        console.error("Error checking warning history:", strikeError);
+      }
+
+      // 3. THE LOCKOUT
+      if (strikes >= 3) {
+        setErrorMsg("ACCESS DENIED: You have been disqualified from this competition due to multiple tab-switching violations.");
+        setIsLoading(false);
+        return; 
+      }
+
+      // 4. SAVE TO LOCAL STORAGE ON SUCCESS
       localStorage.setItem(`insightx_user_${programId}`, cleanEmail);
       setIsEntered(true);
       
