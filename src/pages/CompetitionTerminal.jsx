@@ -12,6 +12,9 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   const [status, setStatus] = useState('idle');
   const [sqlQuery, setSqlQuery] = useState('');
   const [isCooldown, setIsCooldown] = useState(false);
+  // Anti-Cheat State
+  const [warnings, setWarnings] = useState(0);
+  const [showWarningScreen, setShowWarningScreen] = useState(false);
 
   // Dual Timers
   const [globalTimeLeft, setGlobalTimeLeft] = useState(1200); // 20 mins = 1200s
@@ -48,6 +51,52 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
 
     bootTerminal();
   }, [programId]);
+
+  // ANTI-CHEAT ENGINE: Detect Tab Switching & Focus Loss
+  useEffect(() => {
+    // Don't run if the competition is over or hasn't started
+    if (isFinished || isLocked || !question) return;
+
+    const handleVisibilityChange = async () => {
+      if (document.hidden) {
+        setWarnings((prev) => {
+          const newCount = prev + 1;
+          
+          // Instantly log the penalty to the database using your actual schema
+          supabase.from('competition_warnings').insert([
+            { 
+              program_id: programId,
+              participant_email: participantEmail, 
+              warning_type: 'tab_switch'
+            }
+          ]).then(({ error }) => {
+            if (error) console.error("Failed to log penalty:", error);
+          });
+
+          if (newCount >= 3) {
+            // STRIKE 3: Wipe their session and kick them out!
+            localStorage.clear();
+            window.location.href = '/'; 
+          } else {
+            // STRIKE 1 & 2: Show the red warning screen
+            setShowWarningScreen(true);
+          }
+          return newCount;
+        });
+      }
+    };
+
+    // Prevent right-clicking to inspect element or paste
+    const handleContextMenu = (e) => e.preventDefault();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('contextmenu', handleContextMenu);
+    };
+  }, [isFinished, isLocked, question, programId, participantEmail]);
 
   // 2. Fetch Question Logic
   const fetchQuestion = async (afterOrder = 0, isBoot = false) => {
@@ -196,6 +245,31 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
     );
   }
 
+  // SCREEN OVERRIDE: Anti-Cheat Warning
+  if (showWarningScreen) {
+    return (
+      <div className="competition-layout" style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#450a0a' }}>
+        <div style={{ textAlign: 'center', maxWidth: '600px', padding: '40px', backgroundColor: '#7f1d1d', borderRadius: '12px', border: '2px solid #ef4444' }}>
+          <AlertCircle size={64} color="#fca5a5" style={{ marginBottom: '20px' }} />
+          <h1 style={{ color: '#fff', fontSize: '2.5rem', margin: '0 0 10px 0' }}>TAB SWITCH DETECTED</h1>
+          <p style={{ color: '#fca5a5', fontSize: '1.2rem', lineHeight: '1.6' }}>
+            Navigating away from the competition arena is strictly prohibited. <br/><br/>
+            You have <strong>{3 - warnings}</strong> warnings remaining. A penalty has been logged to your score. If you switch tabs again, your session will be permanently terminated.
+          </p>
+          <button 
+            onClick={() => setShowWarningScreen(false)} 
+            style={{ 
+              marginTop: '30px', padding: '15px 30px', background: '#ef4444', color: '#fff', 
+              border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1rem' 
+            }}
+          >
+            I Understand, Return to Arena
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!question) return <div className="loading-screen" style={{ color: '#00bfff', textAlign: 'center', marginTop: '20vh' }}>Booting InsightX Environment...</div>;
 
   // SCREEN: Active Arena
@@ -244,7 +318,28 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
 
         <div className="editor-panel">
           <div className="editor-container">
-            <Editor height="100%" defaultLanguage="sql" theme="vs-dark" value={sqlQuery} onChange={(value) => setSqlQuery(value)} options={{ minimap: { enabled: false }, fontSize: 16 }} />
+            <Editor 
+              height="100%" 
+              defaultLanguage="sql" 
+              theme="vs-dark" 
+              value={sqlQuery} 
+              onChange={(value) => setSqlQuery(value)} 
+              options={{ 
+                minimap: { enabled: false }, 
+                fontSize: 16,
+                contextmenu: false, // Disables right-click inside the editor
+                readOnly: false
+              }} 
+              // Prevent standard keyboard pasting (Ctrl+V / Cmd+V)
+              onMount={(editor) => {
+                editor.onKeyDown((e) => {
+                  if ((e.ctrlKey || e.metaKey) && (e.keyCode === 52 /* V */ || e.keyCode === 33 /* C */)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+                });
+              }}
+            />
           </div>
           
           <div className="action-bar">
