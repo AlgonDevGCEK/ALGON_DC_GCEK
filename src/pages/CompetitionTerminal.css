@@ -2,10 +2,16 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #0a0e17; /* Deep midnight blue/black */
+  background: linear-gradient(
+    180deg,
+    #111827 0%,
+    #1e293b 50%,   
+    #020617 100%
+  ); /* Deep midnight blue/black */
   color: #e2e8f0;
   font-family: 'Inter', system-ui, sans-serif;
   overflow: hidden;
+  padding-top: 70px;
 }
 
 .terminal-header {
@@ -82,7 +88,7 @@
 .run-btn:disabled { filter: grayscale(1); cursor: not-allowed; }
 
 .output-terminal {
-  height: 250px;
+  height: 270px;
   background: #000;
   border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
