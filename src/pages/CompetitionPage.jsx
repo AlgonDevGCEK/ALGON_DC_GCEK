@@ -1,28 +1,70 @@
 import React, { useState } from 'react';
-import CompetitionTerminal from './CompetitionTerminal'; // Update path if needed
-import { Terminal, ArrowRight } from 'lucide-react';
+import CompetitionTerminal from './CompetitionTerminal'; // Adjust path if your folder structure is different
+import { Terminal, ArrowRight, Loader2 } from 'lucide-react';
+import { supabase } from '../supabaseClient'; 
 
 const CompetitionPage = () => {
-  // State for the gateway
-  const [email, setEmail] = useState('');
-  const [isEntered, setIsEntered] = useState(false);
-
-  // The specific ID for this SQL competition
   const programId = "40aba380-f64c-49e6-b373-9cbb8bad10f8";
 
-  const handleEnterArena = (e) => {
+  // 1. LAZY INITIALIZATION: Check local storage on load
+  const [email, setEmail] = useState(() => {
+    return localStorage.getItem(`insightx_user_${programId}`) || '';
+  });
+  const [isEntered, setIsEntered] = useState(() => {
+    return !!localStorage.getItem(`insightx_user_${programId}`);
+  });
+  
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleEnterArena = async (e) => {
     e.preventDefault();
-    if (email.trim().includes('@')) {
-      setIsEntered(true);
-    } else {
-      alert("Please enter a valid email address.");
+    setErrorMsg('');
+    setIsLoading(true);
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanEmail.includes('@')) {
+      setErrorMsg("Please enter a valid email address.");
+      setIsLoading(false);
+      return;
     }
+
+    try {
+      const { data, error } = await supabase
+        .from('registrations')
+        .select('*')
+        .eq('email', cleanEmail)
+        .limit(1);
+
+      if (error) {
+        setErrorMsg(`Database error: ${error.message}`);
+        setIsLoading(false);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        setErrorMsg("Access Denied: This email is not registered.");
+        setIsLoading(false);
+        return;
+      }
+
+      // 2. SAVE TO LOCAL STORAGE ON SUCCESS
+      localStorage.setItem(`insightx_user_${programId}`, cleanEmail);
+      setIsEntered(true);
+      
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      setErrorMsg("An unexpected error occurred. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    } 
   };
 
-  // If they have entered their email, show the actual terminal
+  // If already entered (or saved in local storage), show the terminal
   if (isEntered) {
     return (
-      <div style={{ width: '100vw', height: '100vh' }}>
+      <div style={{ width: '100%', height: '100%' }}>
         <CompetitionTerminal 
           programId={programId} 
           participantEmail={email} 
@@ -31,19 +73,19 @@ const CompetitionPage = () => {
     );
   }
 
-  // Otherwise, show the Email Gateway form
+  // Otherwise, show the login Gateway
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
           <Terminal size={32} color="#00bfff" />
-          <h1 style={styles.title}>InsightX Arena</h1>
-          <p style={styles.subtitle}>Ultimate SQL Query Competition</p>
+          <h1 style={styles.title}>SQL Arena</h1>
+          <p style={styles.subtitle}>Secure Database Access</p>
         </div>
 
         <form onSubmit={handleEnterArena} style={styles.form}>
           <div style={styles.inputGroup}>
-            <label style={styles.label}>Participant Email</label>
+            <label style={styles.label}>Registered Email</label>
             <input 
               type="email" 
               value={email}
@@ -54,8 +96,10 @@ const CompetitionPage = () => {
             />
           </div>
 
-          <button type="submit" style={styles.button}>
-            Enter Arena <ArrowRight size={18} />
+          {errorMsg && <div style={{color: '#ff007f', fontSize: '0.9rem'}}>{errorMsg}</div>}
+
+          <button type="submit" style={styles.button} disabled={isLoading}>
+            {isLoading ? <Loader2 className="spinner" size={18} /> : 'Authenticate'} <ArrowRight size={18} />
           </button>
         </form>
       </div>
@@ -63,14 +107,14 @@ const CompetitionPage = () => {
   );
 };
 
-// Inline styles for the gateway to match your dark theme
+// Styles object (MUST be included!)
 const styles = {
   container: {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0a0e17',
+    backgroundColor: '#08111b',
     fontFamily: "'Inter', sans-serif",
     color: '#e2e8f0'
   },
