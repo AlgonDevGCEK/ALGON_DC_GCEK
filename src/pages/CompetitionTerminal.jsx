@@ -11,6 +11,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   const [terminalOutput, setTerminalOutput] = useState('Waiting for execution...');
   const [status, setStatus] = useState('idle');
   const [sqlQuery, setSqlQuery] = useState('');
+  const [isCooldown, setIsCooldown] = useState(false);
 
   // Dual Timers
   const [globalTimeLeft, setGlobalTimeLeft] = useState(1200); // 20 mins = 1200s
@@ -128,20 +129,35 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   }, [question, isFinished, isLocked, status]);
 
   const handleExecute = async () => {
-    if (!sqlQuery.trim()) return;
+    if (!sqlQuery.trim() || isCooldown) return; // Block if in cooldown
+    
     setStatus('executing');
+    setIsCooldown(true); // Lock the button!
     setTerminalOutput('Connecting to secure InsightX execution engine...');
 
     try {
       const { data, error } = await supabase.functions.invoke('evaluate-query', {
-        body: { program_id: programId, participant_email: participantEmail, question_id: question.id, submitted_query: sqlQuery }
+        body: {
+          program_id: programId,
+          participant_email: participantEmail,
+          question_id: question.id,
+          submitted_query: sqlQuery
+        }
       });
+
       if (error) throw error;
+
       setStatus(data.status); 
       setTerminalOutput(JSON.stringify(data.output, null, 2));
+
     } catch (err) {
       setStatus('error');
       setTerminalOutput(`Execution Failed: ${err.message}`);
+    } finally {
+      // Unlock the button after 3 seconds, no matter what happens
+      setTimeout(() => {
+        setIsCooldown(false);
+      }, 3000); 
     }
   };
 
@@ -218,10 +234,10 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
           <div className="schema-hint">
             <h3><Database size={16} /> Available Tables</h3>
             <ul>
-              <li><code>books</code> (book_id, title, author_id, genre, price)</li>
-              <li><code>authors</code> (author_id, name, birth_country)</li>
-              <li><code>library_members</code> (member_id, name, join_date)</li>
-              <li><code>borrow_records</code> (record_id, book_id, member_id, borrow_date)</li>
+              <li><code>books</code> (book_id: INT <b>[PK]</b>, title: TEXT, author_id: INT <b>[FK]</b>, published_year: INT, genre: TEXT, price: NUMERIC)</li>
+              <li><code>authors</code> (author_id: INT <b>[PK]</b>, name: TEXT, birth_country: TEXT)</li>
+              <li><code>library_members</code> (member_id: INT <b>[PK]</b>, name: TEXT, join_date: DATE, membership_type: TEXT)</li>
+              <li><code>borrow_records</code> (record_id: INT <b>[PK]</b>, book_id: INT <b>[FK]</b>, member_id: INT <b>[FK]</b>, borrow_date: DATE, return_date: DATE)</li>
             </ul>
           </div>
         </div>
@@ -237,8 +253,11 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
                 Next Question <ArrowRight size={16} />
               </button>
             ) : (
-              <button className="run-btn" onClick={handleExecute} disabled={status === 'executing' || questionTimeLeft <= 0 || globalTimeLeft <= 0}>
-                {status === 'executing' ? 'Executing...' : <><Play size={16} /> Run Query</>}
+              <button className="run-btn" 
+                  onClick={handleExecute} 
+                  disabled={status === 'executing' || questionTimeLeft <= 0 || globalTimeLeft <= 0 || isCooldown}
+              >
+              {status === 'executing' ? 'Executing...' : (isCooldown ? 'Cooling down...' : <><Play size={16} /> Run Query</>)}
               </button>
             )}
           </div>
