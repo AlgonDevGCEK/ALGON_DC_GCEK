@@ -182,7 +182,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
     
     setStatus('executing');
     setIsCooldown(true); // Lock the button!
-    setTerminalOutput('Connecting to secure InsightX execution engine...');
+    setTerminalOutput('Connecting to secure SQL execution engine...');
 
     try {
       const { data, error } = await supabase.functions.invoke('evaluate-query', {
@@ -270,13 +270,13 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
     );
   }
 
-  if (!question) return <div className="loading-screen" style={{ color: '#00bfff', textAlign: 'center', marginTop: '20vh' }}>Booting InsightX Environment...</div>;
+  if (!question) return <div className="loading-screen" style={{ color: '#00bfff', textAlign: 'center', marginTop: '20vh' }}>Booting SQL Environment...</div>;
 
   // SCREEN: Active Arena
   return (
     <div className="competition-layout">
       <header className="terminal-header">
-        <div className="brand"><Terminal size={20} /> InsightX SQL Engine</div>
+        <div className="brand"><Terminal size={20} /> SQL Engine</div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           {/* Global Timer */}
