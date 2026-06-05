@@ -166,7 +166,7 @@ const UpcomingPrograms = () => {
                   </div>
 
                   <div className="program-footer">
-                    {/* --- DYNAMIC SEATS --- */}
+                    {/* --- DYNAMIC SEATS --- 
                     <div className="program-seats" style={{ color: isFull ? '#ef4444' : '#94a3b8' }}>
                       <span 
                         className="seats-indicator" 
@@ -179,7 +179,7 @@ const UpcomingPrograms = () => {
                         {isFull ? "Sold Out" : `${program.seats_left} Seats Left`}
                       </span>
                     </div>
-                    
+                    */}
                     {/* --- BUTTON LOGIC --- */}
                     <button 
                         className={`register-btn ${isPaid ? 'btn-paid' : ''}`}
@@ -223,12 +223,14 @@ const UpcomingPrograms = () => {
                   <div className="info-row"><Calendar className="icon"/><span>{selectedProgram.date}</span></div>
                   <div className="info-row"><Clock className="icon"/><span>{selectedProgram.time}</span></div>
                   <div className="info-row"><MapPin className="icon"/><span>{selectedProgram.location}</span></div>
+                 {/*
                   <div className="info-row">
                       <Users className="icon"/>
                       <span style={{ color: getSeatColor(selectedProgram.seats_left, selectedProgram.total_seats) }}>
                           {selectedProgram.seats_left} / {selectedProgram.total_seats} Seats Available
                       </span>
                   </div>
+                  */}
                 </div>
                 
                 <div className={`status-box ${getEventStatus(selectedProgram.date).style}`}>
