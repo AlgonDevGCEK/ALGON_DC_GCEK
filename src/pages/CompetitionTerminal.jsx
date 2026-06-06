@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef} from 'react';
 import Editor from '@monaco-editor/react';
 import { supabase } from '../supabaseClient';
 import { Terminal, Clock, Play, Database, AlertCircle, CheckCircle, LogOut, ArrowRight, Lock } from 'lucide-react';
@@ -12,6 +12,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   const [status, setStatus] = useState('idle');
   const [sqlQuery, setSqlQuery] = useState('');
   const [isCooldown, setIsCooldown] = useState(false);
+  const penaltyCooldown = useRef(false);
   // Anti-Cheat State
   const [warnings, setWarnings] = useState(0);
   const [showWarningScreen, setShowWarningScreen] = useState(false);
@@ -54,50 +55,64 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
 
   // ANTI-CHEAT ENGINE: Detect Tab Switching & Focus Loss
   useEffect(() => {
-    // Don't run if the competition is over or hasn't started
     if (isFinished || isLocked || !question) return;
 
-    const handleVisibilityChange = async () => {
-      if (document.hidden) {
-        setWarnings((prev) => {
-          const newCount = prev + 1;
-          
-          // Instantly log the penalty to the database using your actual schema
-          supabase.from('competition_warnings').insert([
-            { 
-              program_id: programId,
-              participant_email: participantEmail, 
-              warning_type: 'tab_switch'
-            }
-          ]).then(({ error }) => {
-            if (error) console.error("Failed to log penalty:", error);
-          });
+    const logPenalty = () => {
+      // 1. If the lock is active, ignore the event entirely!
+      if (penaltyCooldown.current) return;
 
-          if (newCount >= 3) {
-            // STRIKE 3: Wipe their session and kick them out!
-            localStorage.clear();
-            window.location.href = '/'; 
-          } else {
-            // STRIKE 1 & 2: Show the red warning screen
-            setShowWarningScreen(true);
+      // 2. Lock the gate instantly
+      penaltyCooldown.current = true;
+
+      setWarnings((prev) => {
+        const newCount = prev + 1;
+        
+        supabase.from('competition_warnings').insert([
+          { 
+            program_id: programId,
+            participant_email: participantEmail, 
+            warning_type: 'focus_loss_or_tab_switch'
           }
-          return newCount;
+        ]).then(({ error }) => {
+          if (error) console.error("Failed to log penalty:", error);
         });
-      }
+
+        if (newCount >= 3) {
+          localStorage.clear();
+          window.location.href = '/'; 
+        } else {
+          setShowWarningScreen(true);
+        }
+        return newCount;
+      });
+
+      // 3. Unlock the gate after 2 seconds so future cheating is caught
+      setTimeout(() => {
+        penaltyCooldown.current = false;
+      }, 2000);
     };
 
-    // Prevent right-clicking to inspect element or paste
+    const handleVisibilityChange = () => {
+      if (document.hidden) logPenalty();
+    };
+
+    const handleWindowBlur = () => {
+      logPenalty();
+    };
+
     const handleContextMenu = (e) => e.preventDefault();
 
+    // Listeners...
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
     document.addEventListener('contextmenu', handleContextMenu);
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
       document.removeEventListener('contextmenu', handleContextMenu);
     };
   }, [isFinished, isLocked, question, programId, participantEmail]);
-
   // 2. Fetch Question Logic
   const fetchQuestion = async (afterOrder = 0, isBoot = false) => {
     // If not booting, we are advancing. Save the new order so refresh doesn't jump back.
@@ -295,7 +310,11 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       </header>
 
       <main className="terminal-body">
-        <div className="question-panel">
+        <div 
+          className="question-panel"
+          onCopy={(e) => e.preventDefault()}
+          style={{ userSelect: 'none', WebkitUserSelect: 'none', msUserSelect: 'none' }}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h2>Question {question.display_order}</h2>
             {/* Question Timer */}
