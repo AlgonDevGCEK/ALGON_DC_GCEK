@@ -18,8 +18,8 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   const [showWarningScreen, setShowWarningScreen] = useState(false);
 
   // Dual Timers
-  const [globalTimeLeft, setGlobalTimeLeft] = useState(1200); // 20 mins = 1200s
-  const [questionTimeLeft, setQuestionTimeLeft] = useState(120); // 2 mins = 120s
+  const [globalTimeLeft, setGlobalTimeLeft] = useState(1500); // 20 mins = 1500s
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(150); // 2.5 mins = 150s
 
   // 1. Initial Boot & Admin Control Check
   useEffect(() => {
@@ -166,7 +166,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       // Calculate Global Time
       const globalStart = parseInt(localStorage.getItem(`insightx_global_start_${programId}`));
       const globalElapsed = Math.floor((now - globalStart) / 1000);
-      const gTimeLeft = Math.max(1200 - globalElapsed, 0); // 1200s = 20m
+      const gTimeLeft = Math.max(1500 - globalElapsed, 0); // 1200s = 20m
       setGlobalTimeLeft(gTimeLeft);
 
       if (gTimeLeft <= 0) {
@@ -179,7 +179,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       if (status !== 'correct') {
         const qStart = parseInt(localStorage.getItem(`insightx_q_start_${programId}_${question.id}`));
         const qElapsed = Math.floor((now - qStart) / 1000);
-        const qTimeLeft = Math.max(120 - qElapsed, 0); // 120s = 2m
+        const qTimeLeft = Math.max(150 - qElapsed, 0); // 120s = 2m
         setQuestionTimeLeft(qTimeLeft);
 
         if (qTimeLeft <= 0) {
