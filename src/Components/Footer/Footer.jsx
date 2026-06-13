@@ -69,8 +69,8 @@ const Footer = () => {
               <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.7s' }}>
               <img src="https://github.com/Amal-nellanhi.png" alt="Amal GitHub" className="creator-icon" />
             </a>
-              <a href="https://github.com/alanaj77" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.8s' }}>
-              <img src="https://github.com/alanaj77.png" alt="Alan GitHub" className="creator-icon" />
+              <a href="https://github.com/Alan-AJ-dev" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.8s' }}>
+              <img src="https://github.com/Alan-AJ-dev.png" alt="Alan GitHub" className="creator-icon" />
             </a>
           </div>
       </div>
