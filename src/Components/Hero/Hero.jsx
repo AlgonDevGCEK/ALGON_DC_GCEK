@@ -1,36 +1,87 @@
-import React from 'react'
-import './Hero.css'
-import dark_arrow from '../../assets/dark-arrow.png'
-import {useNavigate} from "react-router-dom";
+import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { Canvas } from '@react-three/fiber';
+import { motion } from 'framer-motion';
+import { ArrowRight, Terminal } from 'lucide-react';
+import ParticleSphere from '../ParticleSphere';
+import './Hero.css';
+
 const Hero = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  // Framer Motion setup for smooth page loads
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
   return (
-     
+    <section id="home" className="hero-wrapper">
+      
+      {/* 3D Canvas Background */}
+      <div className="hero-canvas-container">
+        <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+          <ParticleSphere />
+        </Canvas>
+      </div>
 
-<div id="home" className="hero container">
-  <div className="hero-text">
-    <h1 className="logo-title">ALGON DC</h1>
-    <h1 className="logo-subtitle">GCEK</h1>
+      {/* Text Content */}
+      <div className="hero-content">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible">
+          
+          <motion.div variants={itemVariants} className="hero-badge">
+            <Terminal size={14} />
+            Developer Community of GCEK
+          </motion.div>
 
-    <h2>Build. Collaborate. Innovate.</h2>
-    <br></br>
-    <p>
-      Take the leap from learning to doing — join us and shape tomorrow.
-      Turning ideas into real-world impact and preparing the next generation of changemakers.
+          <motion.h1 variants={itemVariants} className="hero-title">
+            Algon <span>DCGCK</span>
+          </motion.h1>
+          
+          <motion.h2 variants={itemVariants} className="hero-subtitle">
+            Build. Learn. Compete. Collaborate.
+          </motion.h2>
 
-    </p>
-    <br></br>
-    <div className="hero-btn-wrapper">
-    <button className="btn hero-btn" onClick={() => navigate("/join-us")}>
-        Join us <img src={dark_arrow} alt="" />
-    </button>
-    </div>
-  
-  </div>
-</div>
+          <motion.p variants={itemVariants} className="hero-desc">
+            Algon DCGCK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
+          </motion.p>
 
+          <motion.div variants={itemVariants} className="hero-btn-group">
+            <button className="btn btn-primary" onClick={() => navigate("/events")}>
+              Explore Events
+            </button>
+            <button className="btn btn-secondary" onClick={() => navigate("/join-us")}>
+              Join the Community <ArrowRight size={18} />
+            </button>
+          </motion.div>
 
-  )
-}
+          <motion.div variants={itemVariants} className="hero-stats">
+            <div className="stat-item">
+              <h4>50+</h4>
+              <p>Events</p>
+            </div>
+            <div className="stat-item">
+              <h4>200+</h4>
+              <p>Members</p>
+            </div>
+            <div className="stat-item">
+              <h4>15+</h4>
+              <p>Projects</p>
+            </div>
+          </motion.div>
 
-export default Hero
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
