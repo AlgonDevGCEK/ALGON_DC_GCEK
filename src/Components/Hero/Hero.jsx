@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
-import { ArrowRight, Terminal } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import ParticleSphere from '../ParticleSphere';
+import CosmicDust from '../CosmicDust';
 import './Hero.css';
 
 const Hero = () => {
@@ -25,6 +26,7 @@ const Hero = () => {
 
   return (
     <section id="home" className="hero-wrapper">
+      <CosmicDust />
       
       {/* 3D Canvas Background */}
       <div className="hero-canvas-container">
@@ -36,22 +38,16 @@ const Hero = () => {
       {/* Text Content */}
       <div className="hero-content">
         <motion.div variants={containerVariants} initial="hidden" animate="visible">
-          
-          <motion.div variants={itemVariants} className="hero-badge">
-            <Terminal size={14} />
-            Developer Community of GCEK
-          </motion.div>
-
           <motion.h1 variants={itemVariants} className="hero-title">
-            Algon <span>DCGCK</span>
+            ALGON <span>DC GCEK</span>
           </motion.h1>
           
           <motion.h2 variants={itemVariants} className="hero-subtitle">
-            Build. Learn. Compete. Collaborate.
+            Build. Learn. Collaborate.
           </motion.h2>
 
           <motion.p variants={itemVariants} className="hero-desc">
-            Algon DCGCK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
+            Algon DC GCEK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
           </motion.p>
 
           <motion.div variants={itemVariants} className="hero-btn-group">
