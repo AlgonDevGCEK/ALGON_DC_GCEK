@@ -6,12 +6,12 @@ const ParticleSphere = () => {
   const pointsRef = useRef();
 
   // Generate 3000 particles in a loose spherical distribution
-  const particlesCount = 3000;
+  const particlesCount = 4300;
   const positions = useMemo(() => {
     const pos = new Float32Array(particlesCount * 3);
     for (let i = 0; i < particlesCount; i++) {
       // Math for a spherical distribution with denser center
-      const r = 2.5 * Math.cbrt(Math.random()); 
+      const r = 2 * Math.cbrt(Math.random()); 
       const theta = Math.random() * 2 * Math.PI;
       const phi = Math.acos(2 * Math.random() - 1);
       
