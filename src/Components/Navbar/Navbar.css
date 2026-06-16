@@ -88,9 +88,7 @@
 /* Active & Hover State (Premium Glowing Style) */
 .nav-links a:hover,
 .nav-links a.active {
-  color: #00bfff; /* Bright Azure */
-  font-weight: 700; /* Bold */
-  text-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+  color: #00bfff;
 }
 
 /* Right Side Actions */
