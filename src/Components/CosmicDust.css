@@ -11,7 +11,7 @@
 
 .dust-particle {
   position: absolute;
-  background-color: var(--accent-azure);
+  background-color: #00bfff; 
   border-radius: 50%;
   opacity: 0;
   /* Very faint glow so they look like distant cosmic dust */
