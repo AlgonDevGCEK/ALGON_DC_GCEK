@@ -1,264 +1,281 @@
-nav {
-  width: 100%;
-  color: #fff;
-  padding: 15px 0; /* Slightly increased for better vertical centering */
-  position: absolute;
+/* ==========================================================================
+   NAVBAR BASE & GLASSMORPHISM
+   ========================================================================== */
+.navbar {
+  position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 70px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  padding: 0 5%;
   z-index: 100;
-  background: rgba(75, 144, 196, 0);
-  backdrop-filter: blur(10px);
-}
-
-nav ul li {
-  list-style: none;
-  margin: 0 23px; /* Reduced margin slightly to fit more items */
-  font-size: 17px;
-  display: inline-block;
-}
-
-/* --- LINKS STYLING --- */
-nav ul li a {
-  color: #fff; 
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease;
-  padding: 5px 0;
-}
-
-/* Sliding underline effect (Standard Links) */
-nav ul li a:not(.nav-admin-link):not(.btn)::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 2px;
-  background: #4b90c4; 
-  transition: width 0.3s ease;
-}
-
-nav ul li a:hover {
-  color: #189ee1; 
-}
-
-nav ul li a:not(.nav-admin-link):not(.btn):hover::after {
-  width: 100%; 
-}
-
-/* InsightX Highlighted Text */
-.nav-item-highlight {
-  font-weight: 900 !important; /* Extra Bold */
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.3s ease;
   
-  /* Gradient Text Effect */
-  background: linear-gradient(90deg, #c084fc, #6366f1, #38bdf8); /* Purple -> Indigo -> Blue */
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  
-  /* Text Glow */
-  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
-  animation: shine 4s linear infinite;
+  /* Initial Premium Glassmorphism */
+  background-color: rgba(8, 8, 12, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 191, 255, 0.05);
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Hover Effect */
-.nav-item-highlight:hover {
-  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.6)); /* Blue Glow */
-  transform: scale(1.05);
+/* Scrolled State */
+.navbar.scrolled {
+  background-color: rgba(8, 8, 12, 0.85);
+  border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Rocket Animation on Hover */
-.nav-item-highlight:hover .nav-icon-animate {
-  transform: translate(2px, -2px);
-  display: inline-block;
-}
-
-.nav-icon-animate {
-  transition: transform 0.3s ease;
-  -webkit-text-fill-color: initial; /* Ensures emoji stays colored */
-  filter: none;
-}
-
-/* Animation for the gradient flow */
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-/* Active State (React Router adds 'active' class automatically) */
-nav ul li a.active:not(.nav-admin-link):not(.btn) {
-  color: #4b90c4;
-}
-nav ul li a.active:not(.nav-admin-link):not(.btn)::after {
-  width: 100%;
-}
-
-/* --- 👑 NEW: ADMIN BUTTON STYLE --- */
-.nav-admin-link {
-  background: linear-gradient(135deg, #8b5cf6, #d946ef); /* Purple Gradient */
-  color: white !important; /* Force white text */
-  padding: 8px 18px !important;
-  border-radius: 20px;
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.nav-admin-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.5);
-  color: white !important;
-}
-
-/* --- 🚪 NEW: LOGOUT BUTTON STYLE --- */
-.logout-btn {
-  padding: 7px 20px;
-  border-radius: 6px;
+/* ==========================================================================
+   LOGO
+   ========================================================================== */
+.nav-logo {
   cursor: pointer;
-  font-family: inherit;
+  z-index: 201; /* Above mobile menu */
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 25px; 
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 0 8px rgba(0, 191, 255, 0.2)); 
+}
+
+.logo-img:hover {
+  transform: scale(1.05); 
+}
+
+/* ==========================================================================
+   DESKTOP LAYOUT (Container, Links, Actions)
+   ========================================================================== */
+.nav-menu-container {
+  display: contents; 
+}
+
+/* Center Links */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+}
+
+/* Base Muted State for Links */
+.nav-links a {
+  font-size: 1rem;
   font-weight: 500;
-  transition: all 0.3s;
+  color: #94a3b8; /* Muted Slate */
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 5px 0;
+  display: inline-block;
+}
+
+/* Active & Hover State (Premium Glowing Style) */
+.nav-links a:hover,
+.nav-links a.active {
+  color: #00bfff; /* Bright Azure */
+  font-weight: 700; /* Bold */
+  text-shadow: 0 0 12px rgba(0, 191, 255, 0.5);
+}
+
+/* Right Side Actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ==========================================================================
+   BUTTON STYLES
+   ========================================================================== */
+.nav-ghost-btn {
+  background-color: transparent;
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 22px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-ghost-btn:hover {
+  border-color: #00bfff;
+  color: #00bfff;
+  background-color: rgba(0, 191, 255, 0.05);
 }
 
 .logout-btn:hover {
-  background: #ef4444 !important;
-  color: white !important;
+  border-color: #ef4444;
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
 }
 
-/* --- HAMBURGER MENU --- */
+/* 👑 The New Premium Admin Hub Button */
+.nav-admin-link {
+  background-color: rgba(0, 191, 255, 0.05);
+  color: #00bfff;
+  border: 1px solid rgba(0, 191, 255, 0.4);
+  padding: 8px 22px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.1) inset;
+}
+
+.nav-admin-link:hover {
+  background-color: #00bfff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+}
+
+/* ==========================================================================
+   HAMBURGER ICON
+   ========================================================================== */
 .hamburger {
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 28px;
-  height: 22px;
+  width: 24px;
+  height: 15px;
   background: none;
   border: none;
   cursor: pointer;
-  color: #fff;       
-  font-size: 28px;   
-  z-index: 300;      
+  z-index: 201; /* Above mobile menu */
 }
 
 .hamburger span {
-  height: 3px;
+  height: 2px;
   width: 100%;
-  background: #fff;
+  background: #f1f5f9;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Animate into X when open */
 .hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: translateY(4.9px) rotate(45deg);
 }
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
 .hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -8px);
+  transform: translateY(-9px) rotate(-45deg);
 }
-  
-  /* --- MOBILE RESPONSIVENESS --- */
-@media (max-width: 900px) {
+
+/* ==========================================================================
+   APPLE-STYLE MOBILE FULLSCREEN MENU
+   ========================================================================== */
+@media (max-width: 968px) {
   .hamburger {
     display: flex;
-    position: absolute;
-    right: 20px;
-    top: 25px;
   }
-
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: flex-start;
-    
+  .navbar{
+    height: 50px;
+  }
+  .nav-menu-container {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
+    width: 100%;
     height: 100vh;
-    width: 280px; 
-    background: linear-gradient(to bottom, #0f172a 50%, #1e1b4b 100%);    
-    padding-top: 100px; 
-    padding-bottom: 40px;
-    
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: rgba(8, 8, 12, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s;
     z-index: 200;
   }
 
-  .nav-links.open {
+  .nav-menu-container.open {
     opacity: 1;
-    transform: translateX(0);
+    visibility: visible;
     pointer-events: auto;
   }
 
-  .nav-links li {
-    width: 100%; 
-    margin: 12px 0;
-    display: flex;      
-    justify-content: center;
-    font-size: 17px;
-  }
-
-  /* --- BUTTON STYLING --- */
-  .nav-admin-link, 
-  .logout-btn,
-  .btn {
-    display: inline-flex;
-    justify-content: center;
+  /* Reposition Links for Mobile */
+  .nav-links {
+    position: relative;
+    left: 0;
+    transform: none;
+    flex-direction: column;
     align-items: center;
-    width: auto;        
-    min-width: 140px;   
-    max-width: 80%;      
-    padding: 10px 24px;  
-    margin: 0 auto;      
-    font-size: 16px;
+    gap: 25px;
+    margin-bottom: 40px;
   }
 
-  .btn {
-    background: #3b82f6;
-    color: white;
-    border-radius: 30px; 
+  .nav-links a {
+    font-size: 2rem; /* Large clean text */
+    font-weight: 600;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: color 0.3s ease, transform 0.4s ease, opacity 0.4s ease, text-shadow 0.3s ease;
   }
-}
 
-/* --- OVERLAY (The Blur Effect Behind Menu) --- */
-.menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(12, 12, 12, 0); 
-  
-  /* Start with NO blur */
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.4s ease;
-  z-index: 50; 
-}
+  /* Mobile Active/Hover State */
+  .nav-menu-container.open .nav-links a:hover,
+  .nav-menu-container.open .nav-links a.active {
+    color: #00bfff;
+    text-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+    transform: translateY(0) scale(1.05); /* Keeps the entrance transform intact */
+  }
 
-.menu-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-  
-  /* 👇 THIS IS WHERE THE BLUR HAPPENS */
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); /* Required for Safari/iPhone */
-  
-  /* Darken the background */
-  background: rgba(0, 0, 0, 0.4); 
+  /* Reposition Actions for Mobile */
+  .nav-actions {
+    flex-direction: column;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .nav-actions > * {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
+
+  /* Staggered Entrance Animations when Open */
+  .nav-menu-container.open .nav-links a,
+  .nav-menu-container.open .nav-actions > * {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .nav-menu-container.open .nav-links li:nth-child(1) a { transition-delay: 0.1s; }
+  .nav-menu-container.open .nav-links li:nth-child(2) a { transition-delay: 0.15s; }
+  .nav-menu-container.open .nav-links li:nth-child(3) a { transition-delay: 0.2s; }
+  .nav-menu-container.open .nav-links li:nth-child(4) a { transition-delay: 0.25s; }
+  .nav-menu-container.open .nav-links li:nth-child(5) a { transition-delay: 0.3s; }
+  .nav-menu-container.open .nav-links li:nth-child(6) a { transition-delay: 0.35s; }
+  .nav-menu-container.open .nav-links li:nth-child(7) a { transition-delay: 0.4s; }
+  .nav-menu-container.open .nav-actions > *:nth-child(1) { transition-delay: 0.45s; }
+  .nav-menu-container.open .nav-actions > *:nth-child(2) { transition-delay: 0.5s; }
+  .nav-menu-container.open .nav-actions > *:nth-child(3) { transition-delay: 0.55s; }
 }
