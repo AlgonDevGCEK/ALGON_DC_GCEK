@@ -51,11 +51,8 @@ const Hero = () => {
           </motion.p>
 
           <motion.div variants={itemVariants} className="hero-btn-group">
-            <button className="btn btn-primary" onClick={() => navigate("/about")}>
-              About Us
-            </button>
-            <button className="btn btn-secondary" onClick={() => navigate("/join-us")}>
-              Join the Community <ArrowRight size={18} />
+            <button className="btn btn-primary" onClick={() => navigate("/join-us")}>
+              Join Our Club
             </button>
           </motion.div>
         </motion.div>
