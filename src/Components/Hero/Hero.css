@@ -1,4 +1,3 @@
-/* --- PREMIUM DARK THEME VARIABLES --- */
 :root {
   --bg-color: #08080c;
   --text-main: #f1f5f9;
@@ -10,7 +9,6 @@
   --border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Ensure the body matches the dark hero */
 body {
   background-color: var(--bg-color);
   color: var(--text-main);
@@ -52,10 +50,10 @@ body {
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: 3.7rem;
   font-weight: 800;
   line-height: 1.1;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: var(--text-main);
 }
 
@@ -65,14 +63,14 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 20px;
 }
 
 .hero-desc {
-  font-size: 1.1rem;
+  font-size: 1.09rem;
   line-height: 1.6;
   color: var(--text-muted);
   margin-bottom: 40px;
@@ -136,28 +134,6 @@ body {
   50% { box-shadow: 0 4px 25px var(--glow-color); }
 }
 
-/* --- STATS ROW --- */
-.hero-stats {
-  display: flex;
-  gap: 40px;
-  padding-top: 30px;
-  border-top: 1px solid var(--border-color);
-}
-
-.stat-item h4 {
-  font-size: 2rem;
-  color: var(--accent-azure);
-  margin: 0 0 5px 0;
-}
-
-.stat-item p {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 0;
-}
-
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 968px) {
   .hero-canvas-container {
@@ -174,12 +150,9 @@ body {
     z-index: 10;
   }
 
-  .hero-badge {
-    margin: 0 auto 24px;
-  }
-
-  .hero-title { font-size: 3rem; }
-  .hero-subtitle { font-size: 1.5rem; }
+  .hero-title { font-size: 2.9rem; }
+  .hero-subtitle { font-size: 1.4rem; }
+  .hero-desc { font-size: 1rem; }
   
   .hero-btn-group {
     justify-content: center;

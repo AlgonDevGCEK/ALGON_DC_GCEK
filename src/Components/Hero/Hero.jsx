@@ -47,33 +47,17 @@ const Hero = () => {
           </motion.h2>
 
           <motion.p variants={itemVariants} className="hero-desc">
-            Algon DC GCEK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
+            ALGON DC GCEK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
           </motion.p>
 
           <motion.div variants={itemVariants} className="hero-btn-group">
-            <button className="btn btn-primary" onClick={() => navigate("/events")}>
-              Explore Events
+            <button className="btn btn-primary" onClick={() => navigate("/about")}>
+              About Us
             </button>
             <button className="btn btn-secondary" onClick={() => navigate("/join-us")}>
               Join the Community <ArrowRight size={18} />
             </button>
           </motion.div>
-
-          <motion.div variants={itemVariants} className="hero-stats">
-            <div className="stat-item">
-              <h4>50+</h4>
-              <p>Events</p>
-            </div>
-            <div className="stat-item">
-              <h4>200+</h4>
-              <p>Members</p>
-            </div>
-            <div className="stat-item">
-              <h4>15+</h4>
-              <p>Projects</p>
-            </div>
-          </motion.div>
-
         </motion.div>
       </div>
     </section>
