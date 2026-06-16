@@ -12,7 +12,10 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@monaco-editor/react": "^4.7.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "@supabase/supabase-js": "^2.89.0",
+    "framer-motion": "^12.40.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.2",
@@ -22,6 +25,7 @@
     "react-icons": "^5.5.0",
     "react-qr-code": "^2.0.18",
     "react-router-dom": "^7.11.0",
+    "three": "^0.184.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz"
   },
   "devDependencies": {
@@ -36,6 +40,6 @@
     "vite": "^8.0.16"
   },
   "overrides": {
-      "dompurify": "^3.2.4" 
+    "dompurify": "^3.2.4"
   }
 }

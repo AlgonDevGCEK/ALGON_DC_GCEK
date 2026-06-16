@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from "react-router-dom";
-import { supabase } from "../../supabaseClient"; // Ensure path is correct
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "../../supabaseClient"; 
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [session, setSession] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   
   const navRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // --- 1. HANDLE CLICK OUTSIDE (Mobile Menu) ---
+  // --- 1. HANDLE SCROLL LOCK & CLICK OUTSIDE ---
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -24,16 +24,12 @@ const Navbar = () => {
 
   useEffect(() => {
     if (isOpen) {
-      // Lock scrolling on both body and html
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     } else {
-      // Unlock scrolling (clear inline styles)
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }
-
-    // Cleanup: Ensure scroll is restored if component unmounts
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
@@ -42,123 +38,78 @@ const Navbar = () => {
 
   // --- 2. AUTHENTICATION CHECK ---
   useEffect(() => {
-    // Check active session immediately
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session) checkUserRole(session.user.id);
     });
 
-    // Listen for changes (Login/Logout events)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) {
-        checkUserRole(session.user.id);
-      } else {
-        setIsAdmin(false); // Reset admin status on logout
-      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Check if user is an Admin
-  const checkUserRole = async (userId) => {
-    const { data } = await supabase
-      .from('members')
-      .select('role')
-      .eq('user_id', userId)
-      .single();
-    
-    if (data?.role === 'admin') setIsAdmin(true);
-  };
-
-  // Logout Handler
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setIsOpen(false); // Close menu on mobile
-    navigate("/");    // Redirect to home
+    setIsOpen(false);
+    navigate("/"); 
   };
 
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <>
-      <nav ref={navRef}>
-        {/* Hamburger button */}
-        <button
-          className={`hamburger ${isOpen ? 'open' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <nav ref={navRef} className="navbar">
+      
+      {/* LEFT: Logo */}
+      <div className="nav-logo" onClick={() => { navigate('/'); closeMenu(); }}>
+        <img src="/logo.png" alt="Algon DC GCEK" className="logo-img" />
+      </div>
 
-        {/* Menu Links */}
-        <ul 
-          className={`nav-links ${isOpen ? 'open' : ''}`} 
-          onClick={() => setIsOpen(false)} // Closes menu when any link is clicked
-        >
-          <li><NavLink to="/" end>Home</NavLink></li>
-          <li><NavLink to="/upcoming-programs">Programs</NavLink></li>
-          <li>
-              <NavLink to="/competitions" className="nav-item-highlight">
-              Competitions <span className="nav-icon-animate"></span>
-              </NavLink>
-          </li>
-          <li><NavLink to="/about">About Us</NavLink></li>
-          <li><NavLink to="/gallery">Gallery</NavLink></li>
-          <li><NavLink to="/contact">Contact Us</NavLink></li>
+      {/* CENTER & RIGHT WRAPPER (Handles Desktop Flex vs Mobile Fullscreen) */}
+      <div className={`nav-menu-container ${isOpen ? 'open' : ''}`}>
+        
+        {/* CENTER: Navigation Links */}
+        <ul className="nav-links">
+          <li><NavLink to="/" end onClick={closeMenu}>Home</NavLink></li>
+          <li><NavLink to="/upcoming-programs" onClick={closeMenu}>Programs</NavLink></li>
+          <li><NavLink to="/competitions" onClick={closeMenu}>Competitions</NavLink></li>
+          <li><NavLink to="/insightx" onClick={closeMenu}>InsightX</NavLink></li>
+          <li><NavLink to="/about" onClick={closeMenu}>About Us</NavLink></li>
+          <li><NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink></li>
+          <li><NavLink to="/contact" onClick={closeMenu}>Contact Us</NavLink></li>
+        </ul>
 
-          {/* 👇 DYNAMIC AUTH BUTTONS 👇 */}
+        {/* RIGHT: Auth Actions */}
+        <div className="nav-actions">
           {session ? (
             <>
-              {/* 👑 ADMIN LINK (Only for Admins) */}
-              {isAdmin && (
-                <li>
-                  <NavLink to="/admin" className="nav-admin-link" style={{color: '#d8b4fe'}}>
-                    Admin Hub
-                  </NavLink>
-                </li>
-              )}
-
-              {/* DASHBOARD */}
-              <li>
-                <NavLink to="/dashboard">Dashboard</NavLink>
-              </li>
-
-              {/* LOGOUT */}
-              <li>
-                <button 
-                  className="btn logout-btn" 
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent bubbling if needed, though ul onClick handles closure
-                    handleLogout();
-                  }}
-                  style={{background: 'transparent', border: '1px solid #ef4444', color: '#ef4444'}}
-                >
-                  Logout
-                </button>
-              </li>
+              <NavLink to="/dashboard" className="nav-ghost-btn" onClick={closeMenu}>
+                Dashboard
+              </NavLink>
+              <button className="nav-ghost-btn logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
             </>
           ) : (
-            // NOT LOGGED IN? SHOW LOGIN
-            <li>
-              <button 
-                className="btn" 
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </button>
-            </li>
+            <button className="nav-ghost-btn" onClick={() => { navigate("/login"); closeMenu(); }}>
+              Login
+            </button>
           )}
-        </ul>
-      </nav>
+        </div>
+      </div>
 
-      {/* Overlay */}
-      <div
-        className={`menu-overlay ${isOpen ? 'active' : ''}`}
-        onClick={() => setIsOpen(false)}
-      />
-    </>
+      {/* MOBILE HAMBURGER ICON */}
+      <button
+        className={`hamburger ${isOpen ? 'open' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </nav>
   );
 };
 

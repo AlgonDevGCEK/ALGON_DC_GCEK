@@ -1,181 +1,160 @@
-.hero {
+:root {
+  --bg-color: #08080c;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent-azure: #04afe8;
+  --accent-hover: #0099cc;
+  --glow-color: rgba(0, 191, 255, 0.4);
+  --badge-bg: rgba(0, 191, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --- LAYOUT --- */
+.hero-wrapper {
+  position: relative;
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(rgba(7, 3, 34, 0.7), rgba(4, 2, 21, 0.7)),
-    url('../../assets/hero/Coventic Webpage images/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 140px 5% 100px; 
+  overflow: hidden;
+}
+
+/* 3D Canvas Container */
+.hero-canvas-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 0 20px;
-
-  padding-top: 80px; /* navbar height */
 }
 
-.hero-text {
-  max-width: 800px;
+/* Text Content Area */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 50%;
+  max-width: 650px;
 }
 
-/* Gradient logo */
-.logo-title {
-  font-size: 64px;
+.hero-title {
+  font-size: 3.7rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #b4c1c7, #05b2eb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text; /* Firefox */
-  color: transparent; /* Fallback for other browsers */
-  margin-bottom: 5px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--text-main);
 }
 
-.logo-subtitle {
-  font-size: 37px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin-bottom: 30px;
-
-  background: linear-gradient(90deg, #00b4db, #189ee1, #b4c1c7);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-
-  animation: shine 4s linear infinite;
+.hero-title span {
+  color: var(--text-main);
 }
 
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
+.hero-subtitle {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: #ccd3dc;
+  margin-bottom: 20px;
 }
 
-.hero-text h2 {
-  font-size: 27px;
-  margin-bottom: 15px;
-  font-weight: 700;
-  color: #ffffffbd;
-}
-
-.hero-text p {
-  font-size: 18px;
+.hero-desc {
+  font-size: 1.09rem;
   line-height: 1.6;
-  max-width: 700px;
-  margin: 0 auto 30px;
-  color: #ffffffbd;
+  color: var(--text-muted);
+  margin-bottom: 40px;
 }
 
-/* Button styling */
+/* --- BUTTONS --- */
+.hero-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
 .btn {
-  background: white;
-  color: #111;
-  border: none;
-  border-radius: 50px;
-  padding: 12px 28px;
-  font-size: 1rem;
-  font-weight: 500;
+  height: 54px; /* Consistent premium height */
+  padding: 0 32px;
+  border-radius: 14px; /* Modern, smooth radius */
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  transition: all 0.3s ease;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease; /* Smooth, non-aggressive transition */
+  border: none;
 }
 
-.btn img {
-  width: 20px;
-  margin-left: 10px;
-  filter: invert(1);
+
+.btn-primary {
+  background: #00bfffb5;
+  color: #ffffff;
+  border: 1px solid rgba(0, 127, 255, 0.45);
 }
 
-.btn:hover {
+.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 28px rgba(0, 127, 255, 0.35);
 }
-.hero-btn {
-  /* ... keep your existing background and border-radius ... */
-  background: #efeeeee9;
-  color: rgb(8, 8, 8);
-  border-radius: 50px;
-  padding: 15px 35px;
-  display: inline-flex;
-  align-items: center;
+
+/* .btn-primary {
+  background: rgba(0, 127, 255, 0.15);
+  color: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: none;
+}
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 127, 255, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 127, 255, 0.15);
+  transform: translateY(-2px);
+} */
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 968px) {
+  .hero-canvas-container {
+    width: 100%;
+    height: 100vh;
+    opacity: 0.25; /* Pushes the sphere into the background on mobile */
+    pointer-events: none; /* Allows user to click buttons through the canvas */
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .hero-title { font-size: 2.9rem; }
+  .hero-subtitle { font-size: 1.4rem; }
+  .hero-desc { font-size: 0.95rem; }
   
-  /* Apply both animations: 3s for floating, 2s for glowing */
-  animation: 
-    constantFloat 3s ease-in-out infinite, 
-    subtleGlow 2s ease-in-out infinite;
-    
-  transition: all 0.3s ease;
-}
-
-/* 1. Constant Floating (Y-Axis) */
-@keyframes constantFloat {
-  0%, 100% {
-    transform: translateY(0);
+  
+  .hero-btn-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
   }
-  50% {
-    transform: translateY(-8px); /* Moves up 8px */
-  }
-}
-
-/* 2. Subtle Breathing Glow */
-@keyframes subtleGlow {
-  0%, 100% {
-    box-shadow: 0 4px 15px rgba(5, 178, 235, 0.3);
-  }
-  50% {
-    box-shadow: 0 4px 25px rgba(5, 178, 235, 0.6); /* Glow expands */
-  }
-}
-
-/* Keep the hover effect to 'freeze' the float and pop more */
-.hero-btn:hover {
-  animation-play-state: paused; /* Optional: stops floating when user hovers */
-  transform: scale(1.05) translateY(-10px); 
-  filter: brightness(1.1);
-  box-shadow: 0 10px 30px rgba(5, 178, 235, 0.7);
-}
-
-.hero-text h1,
-.hero-text h2,
-.hero-text p,
-.hero-btn-wrapper {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 1s ease forwards;
-}
-
-.logo-title { animation-delay: 0.2s; }
-.logo-subtitle { animation-delay: 0.4s; }
-.hero-text h2 { animation-delay: 0.6s; }
-.hero-text p { animation-delay: 0.8s; }
-.btn { animation-delay: 1s; }
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .logo-title {
-    font-size: 48px;
-  }
-  .logo-subtitle {
-    font-size: 31px;
+  
+  .btn {
+    width: 49%;
+    max-width: 320px; 
   }
 
-  .hero-text h2 {
-    font-size: 23px;
-  }
-
-  .hero-text p {
-    font-size: 16px;
-  }
 }

@@ -1,38 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-*{
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Outfit", sans-serif;
 }
-body{
-  background: #010205;
+
+/* =========================================================
+   CONSOLIDATED GLOBAL WRAPPER
+   ========================================================= */
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  /* Forces the main scrollbar to always exist, preventing "pop-in" layout shifts */
+  overflow-y: scroll; 
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #010205 !important;
   color: #ffffff;
   overflow-x: hidden;
+  position: relative; 
   scroll-behavior: smooth;
 }
 
-/* .nav-hero{
-  position: relative;
-   background: linear-gradient(rgba(7, 3, 34, 0.7), rgba(15, 5, 107, 0.7)),
-    url('/src/assets/hero/Coventic Webpage images/background.png');
-} */
-a{
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  
+
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+#root::-webkit-scrollbar {
+  display: none;
+}/* =========================================================
+   BASE TYPOGRAPHY & LAYOUT
+   ========================================================= */
+a {
   text-decoration: none;
   color: inherit;
   line-height: 1;
   cursor: pointer;
 }
+
 .page-content {
-  padding-top: 80px; /* same as navbar height */
-  
+  padding-top: 80px; /* Offsets the fixed/absolute navbar */
 }
 
-.container{
+.container {
   padding-left: 10%;
   padding-right: 10%;
 }
-.btn{
+
+/* Base button fallback */
+.btn {
   background: white;
   color: #212121;
   padding: 14px 25px;
@@ -44,13 +76,4 @@ a{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-html, body {
-  width: 100%;
-  max-width: 100vw; 
-  overflow-x: hidden; /* Cut off anything that sticks out sideways */
-  position: relative; 
-  margin: 0;
-  padding: 0;
 }

@@ -1,0 +1,38 @@
+.cosmic-dust-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0; /* Keeps it behind the text and the 3D sphere */
+  pointer-events: none; /* Ensures it doesn't block button clicks */
+}
+
+.dust-particle {
+  position: absolute;
+  background-color: #00bfff; 
+  border-radius: 50%;
+  opacity: 0;
+  /* Very faint glow so they look like distant cosmic dust */
+  box-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+  animation: cosmicDrift linear infinite;
+}
+
+@keyframes cosmicDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4; /* Fade in */
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    /* Drift up 150px and sideways 50px */
+    transform: translateY(-150px) translateX(50px);
+    opacity: 0; /* Fade out before resetting */
+  }
+}

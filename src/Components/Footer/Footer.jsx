@@ -1,7 +1,8 @@
 import React from "react";
 import "./Footer.css";
 import { FaInstagram, FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="footer">
@@ -23,15 +24,20 @@ const Footer = () => {
 
       {/* Main footer */}
       <div className="footer-content">
+        
+        {/* Column 1: About Platform */}
         <div className="footer-column animate-slide-up" style={{ animationDelay: '0.2s' }}>
           <h4>Algon Developer Community</h4>
           <p>
-            Multidisciplinary platform integrating business, media, finance, fashion, development, marketing, coding, and more
+            Multidisciplinary platform integrating business, media, finance, fashion, development, marketing, coding, and more.
           </p>
-          <br></br>
-          <a href="https://algondevelopercommunity.com/" className="footer-btn">Know more</a>
+          <br />
+          <a href="https://algondevelopercommunity.com/" target="_blank" rel="noopener noreferrer" className="footer-ghost-btn">
+            Know more
+          </a>
         </div>
 
+        {/* Column 2: Policies */}
         <div className="footer-column animate-slide-up" style={{ animationDelay: '0.3s' }}>
           <h4>Policies</h4>
           <ul>
@@ -42,42 +48,23 @@ const Footer = () => {
           </ul>
         </div>
 
+        {/* Column 3: Creators */}
         <div className="footer-column animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <h4>Useful Links</h4>
-          <ul>
-            <li><NavLink to="/about">About Us</NavLink></li>
-           <li><NavLink to="/gallery">Gallery</NavLink></li>
-            <li><NavLink to="/contact">Contact Us</NavLink></li>
-            <li><NavLink to="/join-us">Join Us</NavLink></li>
-          </ul>
-        </div>
-
-        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.5s' }}>
-          <h4>Contact</h4>
-          <p>Government College of Engineering Kannur</p>
-            <p>Mangattuparamba</p>
-            <p>Parassinikadavu P.O.</p>
-            <p>Kannur, Kerala</p>
-            <p>670563</p>
-          <br></br>
-          <p>adcgcek25@gmail.com</p><br></br>
-        </div>
-
-        <div className="footer-column animate-slide-up" style={{ animationDelay: '0.6s' }}>
           <h4>Creators</h4>
           <div className="creators">
-              <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.7s' }}>
+              <a href="https://github.com/Amal-nellanhi" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.5s' }}>
               <img src="https://github.com/Amal-nellanhi.png" alt="Amal GitHub" className="creator-icon" />
             </a>
-              <a href="https://github.com/Alan-AJ-dev" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.8s' }}>
+              <a href="https://github.com/Alan-AJ-dev" target="_blank" rel="noopener noreferrer" className="creator-link" style={{ animationDelay: '0.6s' }}>
               <img src="https://github.com/Alan-AJ-dev.png" alt="Alan GitHub" className="creator-icon" />
             </a>
           </div>
+        </div>
+
       </div>
-    </div>
 
       {/* Bottom bar */}
-      <div className="footer-bottom animate-fade-in" style={{ animationDelay: '0.9s' }}>
+      <div className="footer-bottom animate-fade-in" style={{ animationDelay: '0.7s' }}>
         © {new Date().getFullYear()} ALGON DC GCEK • All Rights Reserved
       </div>
     </footer>
