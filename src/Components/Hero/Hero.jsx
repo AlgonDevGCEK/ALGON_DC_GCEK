@@ -47,7 +47,7 @@ const Hero = () => {
           </motion.h2>
 
           <motion.p variants={itemVariants} className="hero-desc">
-            ALGON DC GCEK is a student developer community focused on technical learning, coding competitions, workshops, projects, and peer-driven growth. Take the leap from learning to doing.
+            A multidisciplinary student community bringing together technology, creativity, entreprenuership, marketing, fashion, and electronics. Turn ideas into action, and foster innovation through collaboration.
           </motion.p>
 
           <motion.div variants={itemVariants} className="hero-btn-group">
