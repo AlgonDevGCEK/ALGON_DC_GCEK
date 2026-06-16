@@ -3,7 +3,7 @@ import './CosmicDust.css';
 
 const CosmicDust = () => {
   const particles = useMemo(() => {
-    return Array.from({ length: 300 }).map((_, i) => ({
+    return Array.from({ length: 100 }).map((_, i) => ({
       id: i,
       // Randomly scatter them across the entire screen
       top: `${Math.random() * 100}%`,
