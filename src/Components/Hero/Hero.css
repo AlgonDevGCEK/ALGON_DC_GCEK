@@ -54,18 +54,18 @@ body {
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 20px;
-  color: #04afe8c8
+  color: #04afe8b1
 }
 
 .hero-title span {
-  color: #04afe8c8;
+  color: #04afe8b1;
   text-shadow: 0 0 20px rgba(0, 191, 255, 0.15); 
 }
 
 .hero-subtitle {
   font-size: 1.7rem;
   font-weight: 600;
-  color: #b3bdcd;
+  color: #ccd3dc;
   margin-bottom: 20px;
 }
 
