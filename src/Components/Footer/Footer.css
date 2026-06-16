@@ -171,4 +171,13 @@
   .footer-column {
     min-width: 100%; /* Stacks beautifully on mobile */
   }
+  .footer-column h4{
+    font-size: 0.95rem;
+  }
+  .footer-column p{
+    font-size: 0.85rem;
+  }
+  .footer-column ul a{
+    font-size: 0.85rem
+  }
 }
