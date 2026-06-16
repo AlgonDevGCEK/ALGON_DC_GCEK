@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Canvas } from '@react-three/fiber';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import ParticleSphere from '../ParticleSphere';
-import CosmicDust from '../CosmicDust';
+import ParticleSphere from '../Animations/ParticleSphere';
+import CosmicDust from '../Animations/CosmicDust';
 import './Hero.css';
 
 const Hero = () => {
