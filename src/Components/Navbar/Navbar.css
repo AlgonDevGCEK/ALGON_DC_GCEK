@@ -128,25 +128,6 @@
   background-color: rgba(239, 68, 68, 0.05);
 }
 
-/* 👑 The New Premium Admin Hub Button */
-.nav-admin-link {
-  background-color: rgba(0, 191, 255, 0.05);
-  color: #00bfff;
-  border: 1px solid rgba(0, 191, 255, 0.4);
-  padding: 8px 22px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.1) inset;
-}
-
-.nav-admin-link:hover {
-  background-color: #00bfff;
-  color: #000;
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
-}
-
 /* ==========================================================================
    HAMBURGER ICON
    ========================================================================== */
