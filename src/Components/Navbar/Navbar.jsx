@@ -1,27 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { supabase } from "../../supabaseClient"; // Ensure path is correct
+import { supabase } from "../../supabaseClient"; 
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [session, setSession] = useState(null);
   
   const navRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // --- 1. HANDLE SCROLL STATE FOR BLUR EFFECT ---
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // --- 2. HANDLE SCROLL LOCK & CLICK OUTSIDE ---
+  // --- 1. HANDLE SCROLL LOCK & CLICK OUTSIDE ---
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -46,7 +36,7 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  // --- 3. AUTHENTICATION CHECK ---
+  // --- 2. AUTHENTICATION CHECK ---
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -68,7 +58,7 @@ const Navbar = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav ref={navRef} className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+    <nav ref={navRef} className="navbar">
       
       {/* LEFT: Logo */}
       <div className="nav-logo" onClick={() => { navigate('/'); closeMenu(); }}>
@@ -77,6 +67,7 @@ const Navbar = () => {
 
       {/* CENTER & RIGHT WRAPPER (Handles Desktop Flex vs Mobile Fullscreen) */}
       <div className={`nav-menu-container ${isOpen ? 'open' : ''}`}>
+        
         {/* CENTER: Navigation Links */}
         <ul className="nav-links">
           <li><NavLink to="/" end onClick={closeMenu}>Home</NavLink></li>
@@ -87,6 +78,7 @@ const Navbar = () => {
           <li><NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink></li>
           <li><NavLink to="/contact" onClick={closeMenu}>Contact Us</NavLink></li>
         </ul>
+
         {/* RIGHT: Auth Actions */}
         <div className="nav-actions">
           {session ? (

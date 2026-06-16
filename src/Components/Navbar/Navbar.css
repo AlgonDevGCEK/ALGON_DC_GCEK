@@ -2,7 +2,7 @@
    NAVBAR BASE & GLASSMORPHISM
    ========================================================================== */
 .navbar {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -20,14 +20,6 @@
   border-bottom: 1px solid rgba(0, 191, 255, 0.05);
   transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
-
-/* Scrolled State */
-.navbar.scrolled {
-  background-color: rgba(8, 8, 12, 0.85);
-  border-bottom: 1px solid rgba(0, 191, 255, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
-
 /* ==========================================================================
    LOGO
    ========================================================================== */
@@ -102,7 +94,7 @@
    BUTTON STYLES
    ========================================================================== */
 .nav-ghost-btn {
-  background-color: transparent;
+  background: rgba(255, 255, 255, 0.05);
   color: #f1f5f9;
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 8px 22px;
@@ -115,9 +107,10 @@
 }
 
 .nav-ghost-btn:hover {
-  border-color: #00bfff;
-  color: #00bfff;
-  background-color: rgba(0, 191, 255, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 127, 255, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 127, 255, 0.15);
 }
 
 .logout-btn:hover {
@@ -175,7 +168,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(8, 8, 12, 0.95);
+    background-color: rgb(8, 8, 12);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     display: flex;
