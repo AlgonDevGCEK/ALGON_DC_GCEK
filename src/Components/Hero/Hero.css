@@ -54,12 +54,11 @@ body {
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 20px;
-  color: #04afe8b1
+  color: var(--text-main);
 }
 
 .hero-title span {
-  color: #04afe8b1;
-  text-shadow: 0 0 20px rgba(0, 191, 255, 0.15); 
+  color: var(--text-main);
 }
 
 .hero-subtitle {
@@ -100,20 +99,18 @@ body {
 }
 
 
-/* .btn-primary {
-  background: linear-gradient(135deg, #007fff, #00aaff);
+.btn-primary {
+  background: #00bfffb5;
   color: #ffffff;
   border: 1px solid rgba(0, 127, 255, 0.45);
-  box-shadow: 0 0 22px rgba(0, 127, 255, 0.22);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  filter: brightness(1.05);
   box-shadow: 0 6px 28px rgba(0, 127, 255, 0.35);
-} */
+}
 
-.btn-primary {
+/* .btn-primary {
   background: rgba(0, 127, 255, 0.15);
   color: #f8fafc;
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -126,7 +123,7 @@ body {
   color: #ffffff;
   box-shadow: 0 0 15px rgba(0, 127, 255, 0.15);
   transform: translateY(-2px);
-}
+} */
 
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 968px) {
@@ -148,7 +145,7 @@ body {
   .hero-subtitle { font-size: 1.4rem; }
   .hero-desc { font-size: 0.95rem; }
   
-  /* Inside your existing @media (max-width: 968px) */
+  
   .hero-btn-group {
     flex-direction: column;
     align-items: center;
@@ -156,7 +153,7 @@ body {
   }
   
   .btn {
-    width: 60%;
+    width: 49%;
     max-width: 320px; 
   }
 
