@@ -7,7 +7,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [session, setSession] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   
   const navRef = useRef(null);
   const navigate = useNavigate();
@@ -51,30 +50,14 @@ const Navbar = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session) checkUserRole(session.user.id);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) {
-        checkUserRole(session.user.id);
-      } else {
-        setIsAdmin(false);
-      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const checkUserRole = async (userId) => {
-    const { data } = await supabase
-      .from('members')
-      .select('role')
-      .eq('user_id', userId)
-      .single();
-    
-    if (data?.role === 'admin') setIsAdmin(true);
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -108,11 +91,6 @@ const Navbar = () => {
         <div className="nav-actions">
           {session ? (
             <>
-              {isAdmin && (
-                <NavLink to="/admin" className="nav-admin-link" onClick={closeMenu}>
-                  Admin Hub
-                </NavLink>
-              )}
               <NavLink to="/dashboard" className="nav-ghost-btn" onClick={closeMenu}>
                 Dashboard
               </NavLink>
