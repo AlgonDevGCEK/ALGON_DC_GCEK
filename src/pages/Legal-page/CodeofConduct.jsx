@@ -1,41 +1,21 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Users ,X} from 'lucide-react';
-import './CodeofConduct.css';
+import './LegalModal.css';
 
 const CodeOfConduct = () => {
-  const navigate = useNavigate();
-   const handleBack = () => {
-    // Check if there is history to go back to
-    if (window.history.length > 2) {
-      navigate(-1); // Go back if history exists
-    } else {
-      window.close(); // Close tab if it's a new window
-    }
-  };
-
-
   return (
-    <div className="policy-page-wrapper">
-      <div className="policy-container">
+    <div className="terms-page-wrapper">
+      <div className="terms-container">
+        
         {/* Navigation Header */}
-        <header className="policy-header">
-          <button className="back-link" onClick={handleBack}>
-             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
-             {window.history.length > 2 ? (
-                <><ArrowLeft size={18} /> Back</>
-             ) : (
-                <><X size={20} /> Close</>
-             )}
-          </button>
-          <div className="header-info">
-            <h1>Code of Conduct <Users size={28} color="#10b981" style={{ verticalAlign: 'middle', marginLeft: '10px' }} /></h1>
+        <header className="terms-header">
+          <div className="header-info" align="center">
+            <h1>Code of Conduct</h1>
             <p>ALGON DC GCEK • Last updated: Dec 26, 2025</p>
           </div>
         </header>
 
         {/* Content Body */}
-        <div className="policy-body">
+        <div className="terms-body">
           <section>
             <h3>1. Purpose</h3>
             <p>ALGON DC GCEK is committed to creating a respectful, inclusive, and collaborative environment that promotes learning, innovation, and ethical conduct. This Code of Conduct outlines the expected behavior of all members, participants, and contributors involved in club activities.</p>
@@ -44,7 +24,7 @@ const CodeOfConduct = () => {
           <section>
             <h3>2. Community Values</h3>
             <p>All members are expected to uphold the following core values:</p>
-            <ul className="policy-list">
+            <ul>
               <li>Mutual respect towards fellow members, organizers, and participants</li>
               <li>Mutual learning and knowledge sharing</li>
               <li>Collaboration and teamwork</li>
@@ -101,8 +81,8 @@ const CodeOfConduct = () => {
           </section>
         </div>
 
-        <footer className="policy-footer">
-          <p>© {new Date().getFullYear()} ALGON DC GCEK • Government College of Engineering Kannur</p>
+        <footer className="terms-footer">
+          <p>© {new Date().getFullYear()} ALGON DC GCEK</p>
         </footer>
       </div>
     </div>

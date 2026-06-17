@@ -23,10 +23,10 @@ import Dashboard from "./pages/dashboard-page/Dashboard";
 import VerifyUser from "./pages/qr-verify-page/VerifyUser";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPrograms from './Components/Admin/AdminPrograms';
-import TermsModal from './pages/Terms_and_conditions/TermsModal';
-import PrivacyPolicy from './pages/Privacypolicy-page/PrivacyPolicy';
-import RefundPolicy from './pages/Refund-policy-page/RefundPolicy';
-import CodeOfConduct from './pages/Code-of-conduct-page/CodeofConduct';
+import TermsModal from './pages/Legal-page/TermsModal';
+import PrivacyPolicy from './pages/Legal-page/PrivacyPolicy';
+import RefundPolicy from './pages/Legal-page/RefundPolicy';
+import CodeOfConduct from './pages/Legal-page/CodeofConduct';
 import JoinInfo from './pages/Join-us-page/JoinInfo';
 // InsightX pages
 import InsightXLanding from './pages/insightx/insightx';

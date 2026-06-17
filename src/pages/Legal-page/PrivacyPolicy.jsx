@@ -1,43 +1,21 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ShieldCheck , X } from 'lucide-react';
-import './PrivacyPolicy.css';
+import './LegalModal.css';
 
 const PrivacyPolicy = () => {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (window.history.length > 2) {
-      navigate(-1); 
-    } else {
-      window.close(); 
-    }
-  };
-
   return (
-    <div className="privacy-page-wrapper">
-      <div className="privacy-container">
+    <div className="terms-page-wrapper">
+      <div className="terms-container">
+        
         {/* Navigation Header */}
-        <header className="privacy-header">
-          <button className="back-link" onClick={handleBack}>
-             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
-             {window.history.length > 2 ? (
-                <><ArrowLeft size={18} /> Back</>
-             ) : (
-                <><X size={20} /> Close</>
-             )}
-          </button>
-          <div className="header-info">
-            <div>
-                <h1>Privacy Policy &nbsp;<ShieldCheck size={28} color="#34d399" /></h1>
-                
-            </div>
+        <header className="terms-header">
+          <div className="header-info" align="center">
+            <h1>Privacy Policy</h1>
             <p>ALGON DC GCEK • Last updated: December 26, 2025</p>
           </div>
         </header>
 
         {/* Policy Content */}
-        <div className="privacy-body">
+        <div className="terms-body">
           <section>
             <h3>1. Introduction</h3>
             <p>ALGON DC GCEK respects the privacy of its members and users. This Privacy Policy explains how we collect, use, store, and protect personal information provided through our website and services. By using this website, you agree to the practices described in this policy.</p>
@@ -112,8 +90,8 @@ const PrivacyPolicy = () => {
           </section>
         </div>
 
-        <footer className="privacy-footer">
-          <p>© {new Date().getFullYear()} ALGON DC GCEK • Government College of Engineering Kannur</p>
+        <footer className="terms-footer">
+          <p>© {new Date().getFullYear()} ALGON DC GCEK</p>
         </footer>
       </div>
     </div>

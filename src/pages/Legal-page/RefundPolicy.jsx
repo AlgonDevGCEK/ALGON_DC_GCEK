@@ -1,41 +1,21 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Undo2 ,X} from 'lucide-react';
-import './RefundPolicy.css';
+import './LegalModal.css';
 
 const RefundPolicy = () => {
-  const navigate = useNavigate();
-
-  // --- UNIVERSAL BACK BUTTON LOGIC ---
-  const handleBack = () => {
-    // Check if there is history to go back to
-    if (window.history.length > 2) {
-      navigate(-1); // Go back if history exists
-    } else {
-      window.close(); // Close tab if it's a new window
-    }
-  };
   return (
-    <div className="policy-page-wrapper">
-      <div className="policy-container">
+    <div className="terms-page-wrapper">
+      <div className="terms-container">
+        
         {/* Navigation Header */}
-        <header className="policy-header">
-          <button className="back-link" onClick={handleBack}>
-             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
-             {window.history.length > 2 ? (
-                <><ArrowLeft size={18} /> Back</>
-             ) : (
-                <><X size={20} /> Close</>
-             )}
-          </button>
-          <div className="header-info">
-            <h1>Refund & Cancellation Policy <Undo2 size={28} color="#f59e0b" style={{ verticalAlign: 'middle', marginLeft: '10px' }} /></h1>
+        <header className="terms-header">
+          <div className="header-info" align="center">
+            <h1>Refund & Cancellation Policy</h1>
             <p>ALGON DC GCEK • Last updated: Dec 26, 2025</p>
           </div>
         </header>
 
         {/* Policy Content */}
-        <div className="policy-body">
+        <div className="terms-body">
           <section>
             <h3>1. Membership Fees</h3>
             <p>Membership fees are collected solely for club registration and activities. Refunds for membership fees, if applicable, are decided by the ALGON DC GCEK program team based on the nature of the request and circumstances. Submission of a membership application does not automatically guarantee eligibility for a refund.</p>
@@ -67,8 +47,8 @@ const RefundPolicy = () => {
           </section>
         </div>
 
-        <footer className="policy-footer">
-          <p>© {new Date().getFullYear()} ALGON DC GCEK • Government College of Engineering Kannur</p>
+        <footer className="terms-footer">
+          <p>© {new Date().getFullYear()} ALGON DC GCEK</p>
         </footer>
       </div>
     </div>
