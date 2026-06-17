@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft , FileText ,X} from 'lucide-react';
+import { ArrowLeft, X } from 'lucide-react';
 import './TermsModal.css';
 
 const TermsModal = () => {
@@ -28,8 +28,8 @@ const TermsModal = () => {
              )}
           </button>
           <div className="header-info">
-            <h1>Terms & Conditions &nbsp;<FileText size={28} color="#3b82f6" /></h1>
-            <p>ALGON DC GCEK • Last updated: Dec 26, 2025</p>
+            <h1>Terms & Conditions</h1>
+            <p align="center">ALGON DC GCEK • Last updated: Dec 26, 2025</p>
           </div>
         </header>
 
@@ -90,7 +90,7 @@ const TermsModal = () => {
         </div>
 
         <footer className="terms-footer">
-          <p>© {new Date().getFullYear()} ALGON DC GCEK • Government College of Engineering Kannur</p>
+          <p>© {new Date().getFullYear()} ALGON DC GCEK</p>
         </footer>
       </div>
     </div>
