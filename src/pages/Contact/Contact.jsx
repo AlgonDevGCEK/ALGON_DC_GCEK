@@ -61,7 +61,7 @@ const Contact = () => {
               </svg>
             </div>
             <h3>Email</h3>
-            <p>adcgcek25@gmail.com</p>
+            <p>algondc@gcek.ac.in</p>
           </div>
         </div>
 
