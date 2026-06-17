@@ -1,15 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
+:root {
+  /* Colors */
+  --bg-color: #010205;
+  --bg-surface: rgba(255, 255, 255, 0.03); /* For cards and modals */
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent-azure: #04afe8;
+  --accent-hover: #0099cc;
+  
+  /* Effects & Borders */
+  --glow-color: rgba(0, 191, 255, 0.4);
+  --badge-bg: rgba(0, 191, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-azure-subtle: rgba(0, 127, 255, 0.45);
+  --shadow-azure: 0 6px 28px rgba(0, 127, 255, 0.35);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px; 
+  --radius-lg: 24px;
+  --radius-full: 50px;
+
+  /* Spacing */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Outfit", sans-serif;
+  overflow-wrap: break-word; /* Mobile text wrapping */
+  word-wrap: break-word;
 }
 
-/* =========================================================
-   CONSOLIDATED GLOBAL WRAPPER
-   ========================================================= */
 html {
   width: 100%;
   max-width: 100%;
@@ -24,11 +53,12 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: #010205 !important;
-  color: #ffffff;
+  background-color: var(--bg-color) !important;
+  color: var(--text-main);
   overflow-x: hidden;
   position: relative; 
   scroll-behavior: smooth;
+  overscroll-behavior-x: none; /* Kills horizontal bounce on mobile */
 }
 
 #root {
@@ -38,21 +68,29 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   
-
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  /* The Phantom Scrollbar Killer */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;  
 }
+
 #root::-webkit-scrollbar {
   display: none;
-}/* =========================================================
-   BASE TYPOGRAPHY & LAYOUT
-   ========================================================= */
+}
+
+/* Revert the forced vertical scrollbar on mobile devices */
+@media (max-width: 768px) {
+  html {
+    overflow-y: auto;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;
   line-height: 1;
   cursor: pointer;
 }
+
 
 .page-content {
   padding-top: 80px; /* Offsets the fixed/absolute navbar */
@@ -63,17 +101,107 @@ a {
   padding-right: 10%;
 }
 
-/* Base button fallback */
+
+/* --- BUTTONS --- */
 .btn {
-  background: white;
-  color: #212121;
-  padding: 14px 25px;
-  font-size: 16px;
-  border-radius: 30px;
+  height: 54px;
+  padding: 0 32px;
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  border: 0;
-  outline: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #00bfffb5; 
+  color: #ffffff;
+  border: 1px solid var(--border-azure-subtle);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-azure);
+  background: var(--accent-azure);
+}
+
+.btn-secondary {
+  background: rgba(0, 127, 255, 0.05);
+  color: var(--text-main);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 127, 255, 0.4);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 127, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* --- CARDS & CONTAINERS --- */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--border-azure-subtle);
+  transform: translateY(-4px);
+}
+
+/* --- BADGES --- */
+.badge {
+  background: var(--badge-bg);
+  color: var(--accent-azure);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  border: 1px solid rgba(0, 191, 255, 0.2);
+}
+
+/* --- TYPOGRAPHY --- */
+.section-header {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-md);
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xl);
+}
+
+/* --- FORM INPUTS --- */
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--accent-azure);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
 }
