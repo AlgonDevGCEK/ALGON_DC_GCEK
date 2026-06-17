@@ -1,4 +1,3 @@
-
 .terms-page-wrapper {
   min-height: 100vh;
   padding: 120px 5% 80px;
@@ -27,27 +26,8 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  color: var(--text-muted);
-  border: none;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: var(--spacing-lg);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.back-link:hover {
-  color: var(--accent-azure);
-}
-
 .header-info h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: var(--spacing-sm);
@@ -131,7 +111,7 @@
    ========================================================= */
 @media (max-width: 768px) {
   .terms-page-wrapper {
-    padding: 100px 5% 40px;
+    padding: 85px 5% 40px;
   }
   
   .terms-container {
