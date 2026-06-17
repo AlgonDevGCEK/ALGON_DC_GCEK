@@ -1,87 +1,23 @@
-/* Animation Keyframes */
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Animation Classes */
-.animate-fade-down {
-  animation: fadeDown 0.8s ease-out;
-}
-
-.animate-slide-left {
-  animation: slideLeft 0.8s ease-out backwards;
-}
-
-.animate-slide-right {
-  animation: slideRight 0.8s ease-out 0.3s backwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
-
-/* General Layout & Background */
+/* =========================================================
+   GENERAL LAYOUT & BACKGROUND
+   ========================================================= */
 .contact-section {
-  background: linear-gradient(
-    180deg,
-    #111827 0%,
-    #1e293b 50%,  
-    #020617 100%
-  );
-  color: #ffffff;
+  background-color: #010205; /* Dark theme background */
+  color: #f1f5f9;
   padding: 4rem 1.5rem;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
+/* Very subtle azure ambient light, replacing the heavy purple glow */
 .contact-section::before {
   content: '';
   position: absolute;
@@ -90,13 +26,15 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(0, 191, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(4, 175, 232, 0.02) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Header Section */
+/* =========================================================
+   HEADER SECTION
+   ========================================================= */
 .contact-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -108,11 +46,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #a855f7;
-  background: linear-gradient(to right, #a855f7, #6366f1);
-  background-clip: text;  
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #00bfff; /* Azure accent */
 }
 
 .contact-header p {
@@ -123,7 +57,9 @@
   line-height: 1.5;
 }
 
-/* Main Grid Container */
+/* =========================================================
+   MAIN GRID CONTAINER
+   ========================================================= */
 .contact-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -134,7 +70,9 @@
   z-index: 1;
 }
 
-/* --- Left Column: Info Cards --- */
+/* =========================================================
+   LEFT COLUMN: INFO CARDS
+   ========================================================= */
 .contact-info {
   display: flex;
   flex-direction: column;
@@ -142,77 +80,75 @@
 }
 
 .info-card {
-  background-color: #15213b10;
-  border: 0.5px solid #a855f7;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
 }
 
 .info-card:hover {
-  border-color: #6366f1;
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
+  border-color: rgba(0, 127, 255, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Replaced heavy glow with soft shadow */
 }
 
 .icon-wrapper {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+  background: rgba(0, 191, 255, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
   transition: transform 0.3s ease;
-}
-
-.info-card:hover .icon-wrapper {
-  transform: scale(1.1);
-  border: 0.5px solid #a855f7;
-
+  border: 1px solid transparent;
 }
 
 .icon {
   width: 24px;
   height: 24px;
-  color: white;
+  color: #04afe8; /* Azure icon color */
 }
 
 .info-card h3 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #f1f5f9;
 }
 
 .info-card p {
-  color: #9ca3af;
+  color: #94a3b8;
   font-size: 0.95rem;
   line-height: 1.6;
 }
 
-/* --- Right Column: Form --- */
+/* =========================================================
+   RIGHT COLUMN: FORM
+   ========================================================= */
 .contact-form-wrapper {
-  background-color: #15213b10;
-  border: 0.5px solid #a855f7;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 2.5rem;
   transition: all 0.3s ease;
 }
 
 .contact-form-wrapper:hover {
-    border: 0.5px solid #a855f7;
-    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
-
+  border-color: rgba(0, 127, 255, 0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .contact-form-wrapper h2 {
   font-size: 1.5rem;
   margin-bottom: 2rem;
   font-weight: 600;
+  color: #f1f5f9;
 }
 
 /* Status Messages */
@@ -228,14 +164,14 @@
 }
 
 .status-message.success {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #4ade80;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #34d399;
 }
 
 .status-message.error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   color: #f87171;
 }
 
@@ -260,13 +196,13 @@
 .form-group label {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: #94a3b8;
 }
 
 .form-group input,
 .form-group textarea {
-  background-color: #1f2937;
-  border: 1px solid #374151;
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.75rem 1rem;
   color: white;
@@ -283,9 +219,9 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-  transform: translateY(-2px);
+  border-color: #04afe8;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.15); /* Very subtle focus ring */
 }
 
 .form-group textarea {
@@ -293,24 +229,24 @@
   min-height: 120px;
 }
 
+/* Submit Button */
 .submit-btn {
-  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  background: #00bfffb5;
   color: white;
   padding: 0.8rem 2rem;
-  border: none;
+  border: 1px solid rgba(0, 127, 255, 0.45);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   align-self: flex-start;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 }
 
 .submit-btn:hover:not(:disabled) {
-  opacity: 0.9;
+  background: #04afe8;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 127, 255, 0.25);
 }
 
 .submit-btn:active:not(:disabled) {
@@ -342,7 +278,9 @@
   animation: spin 0.6s linear infinite;
 }
 
-/* --- Responsive Design --- */
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
 @media (max-width: 768px) {
   .contact-container {
     grid-template-columns: 1fr;
