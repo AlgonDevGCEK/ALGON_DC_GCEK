@@ -1,32 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, X } from 'lucide-react';
 import './TermsModal.css';
 
 const TermsModal = () => {
-  const navigate = useNavigate();
-  const handleBack = () => {
-    // Check if there is history to go back to
-    if (window.history.length > 2) {
-      navigate(-1); // Go back if history exists
-    } else {
-      window.close(); // Close tab if it's a new window
-    }
-  };
-
   return (
     <div className="terms-page-wrapper">
       <div className="terms-container">
+        
         {/* Navigation Header */}
         <header className="terms-header">
-          <button className="back-link" onClick={handleBack}>
-             {/* Visual Trick: Show 'X' if it's likely a new tab, 'Arrow' if it's history */}
-             {window.history.length > 2 ? (
-                <><ArrowLeft size={18} /> Back</>
-             ) : (
-                <><X size={20} /> Close</>
-             )}
-          </button>
           <div className="header-info">
             <h1>Terms & Conditions</h1>
             <p align="center">ALGON DC GCEK • Last updated: Dec 26, 2025</p>
