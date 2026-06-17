@@ -1,0 +1,143 @@
+.terms-page-wrapper {
+  min-height: 100vh;
+  padding: 120px 5% 80px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--bg-color);
+}
+
+.terms-container {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  max-width: 800px;
+  width: 100%;
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-card);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.terms-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.header-info h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-sm);
+}
+
+.header-info p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BODY CONTENT
+   ========================================================= */
+.terms-body section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.terms-body h3 {
+  color: var(--accent-azure);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.terms-body p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.terms-body ul {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-lg);
+}
+
+.terms-body li {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 8px; /* Adds breathing room between list items */
+}
+
+/* Colors the bullet points to match your dark-tech theme */
+.terms-body li::marker {
+  color: var(--accent-azure);
+}
+
+/* =========================================================
+   WARNING / DANGER ZONE
+   ========================================================= */
+.danger-zone {
+  background: rgba(239, 68, 68, 0.05);
+  border-left: 4px solid #ef4444; /* Red accent for warnings */
+  padding: var(--spacing-md);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: var(--spacing-md);
+}
+
+.danger-zone p {
+  color: #f87171; /* Softer red for readability */
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.terms-footer {
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+}
+
+.terms-footer p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   MOBILE RESPONSIVENESS
+   ========================================================= */
+@media (max-width: 768px) {
+  .terms-page-wrapper {
+    padding: 85px 5% 40px;
+  }
+  
+  .terms-container {
+    padding: var(--spacing-lg);
+  }
+
+  .header-info h1 {
+    font-size: 1.6rem;
+  }
+  .header-info p {
+    font-size: 0.9rem;
+  }
+}
