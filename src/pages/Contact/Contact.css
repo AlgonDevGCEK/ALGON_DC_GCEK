@@ -46,7 +46,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #00bfff; /* Azure accent */
+  color: #ffffff; /* Azure accent */
 }
 
 .contact-header p {
@@ -309,7 +309,7 @@
 
 @media (max-width: 480px) {
   .contact-header h1 {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
   .contact-form-wrapper h2 {
