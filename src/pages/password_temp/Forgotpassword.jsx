@@ -30,12 +30,7 @@ const ForgotPassword = () => {
   return (
     <section className="forgot-wrapper">
       <div className="forgot-card">
-        {/* Optional: Back Button */}
-        <button onClick={() => navigate('/login')} className="back-link">
-             <ArrowLeft size={18} /> Back to Login
-        </button>
-
-        <h2>Forgot Password 🔑</h2>
+        <h2>Forgot Password </h2>
         <p className="instruction-text">Enter your email to receive a reset link.</p>
 
         <form onSubmit={handleReset}>
