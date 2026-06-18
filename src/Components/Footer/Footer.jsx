@@ -27,12 +27,12 @@ const Footer = () => {
         
         {/* Column 1: About Platform */}
         <div className="footer-column animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <h4>Algon Developer Community</h4>
+          <h4>Algon Solutions</h4>
           <p>
-            Multidisciplinary platform integrating business, media, finance, fashion, development, marketing, coding, and more.
+            A modern technology company building digital platforms, AI solutions, web experiences, cybersecurity systems, and growth focused products
           </p>
           <br />
-          <a href="https://algondevelopercommunity.com/" target="_blank" rel="noopener noreferrer" className="footer-ghost-btn">
+          <a href="https://algonsolutions.com/" target="_blank" rel="noopener noreferrer" className="footer-ghost-btn">
             Know more
           </a>
         </div>
