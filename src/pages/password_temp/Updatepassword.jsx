@@ -75,7 +75,7 @@ const UpdatePassword = () => {
   return (
     <section className="update-wrapper">
       <div className="update-card">
-        <h2>Set New Password 🔒</h2>
+        <h2>Set New Password </h2>
         
         {loading ? (
           <p className="status" style={{color: '#94a3b8'}}>Verifying security link...</p>

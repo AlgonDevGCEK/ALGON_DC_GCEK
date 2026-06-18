@@ -1,44 +1,31 @@
+/* --- Signup.css --- */
 
-:root {
-  --bg-dark: #0f172a;
-  --card-bg: #1e293b;
-  --neon-blue: #00d2ff;
-  --neon-violet: #8b5cf6;
-  --neon-pink: #ff007f;
-  --neon-green: #34d399;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --input-bg: #0f172a;
-  --border-dim: #334155;
-  --error-bg: rgba(255, 0, 127, 0.1);
-}
+/* Note: Variables at the top have been removed. We now rely entirely on the 
+   global variables defined in index.css for consistency across the site. */
 
 .signup-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-  180deg,
-  #111827 0%,
-  #1e293b 50%,  
-  #020617 100%
-);  
+  background-color: var(--bg-color); /* Updated to global dark bg */
   padding: 30px;
   padding-top: 120px;
   padding-bottom: 90px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: inherit; /* Pulls from index.css */
 }
 
 .signup-card {
   width: 100%;
   max-width: 650px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-dim);
-  border-radius: 24px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 40px;
   padding-top: 40px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
 }
@@ -56,23 +43,23 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--border-dim);
+  background: rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
 }
 
 .progress-dot.active {
-  background: var(--neon-blue);
-  box-shadow: 0 0 10px var(--neon-blue);
+  background: var(--accent-azure);
+  box-shadow: 0 0 10px var(--glow-color);
 }
 
 .progress-line {
   width: 40px;
   height: 2px;
-  background: var(--border-dim);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .progress-line.active {
-  background: var(--neon-blue);
+  background: var(--accent-azure);
 }
 
 /* --- Form Headers --- */
@@ -86,11 +73,11 @@
 }
 
 .error-banner {
-  background: var(--error-bg);
-  border: 1px solid var(--neon-pink);
-  color: var(--neon-pink);
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171; /* Soft Red */
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
   margin-bottom: 20px;
   text-align: center;
@@ -102,17 +89,13 @@
   display: flex;
   flex-direction: column;
 }
+
 input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
-.input-group label {
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  margin-left: 4px;
-}
+
+.input-group label,
 .password-container label {
   color: var(--text-muted);
   font-size: 13px;
@@ -122,19 +105,21 @@ input::-ms-clear {
 }
 
 input, select {
-  background: var(--input-bg);
-  border: 1px solid var(--border-dim);
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02); /* Maps to global input style */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
   padding: 14px 18px;
   color: var(--text-main);
-  font-size: 15px;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 input:focus, select:focus {
   outline: none;
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1);
+  border-color: var(--accent-azure);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .row-group {
@@ -166,12 +151,17 @@ input:focus, select:focus {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.input-with-icon button:hover {
+  color: var(--accent-azure);
 }
 
 /* --- Password Strength Meter (Red -> Orange -> Green) --- */
 .strength-meter {
   display: flex;
-  gap: 6px; /* Slightly wider gap for distinct colors */
+  gap: 6px; 
   margin-top: 10px;
 }
 
@@ -192,8 +182,6 @@ input:focus, select:focus {
 
 /* 2nd Bar: Orange/Yellow (Moderate) */
 .strength-meter .bar:nth-child(2).active {
-  background: #fca5a5; 
-  background: linear-gradient(90deg, #ff4757, #ffa502); 
   background: #ffa502; 
   box-shadow: 0 0 10px rgba(255, 165, 2, 0.5);
 }
@@ -219,7 +207,7 @@ input:focus, select:focus {
 }
 
 .rules-list li.met {
-  color: var(--neon-green);
+  color: #2ed573; /* Green */
 }
 
 /* --- Membership Cards --- */
@@ -231,18 +219,19 @@ input:focus, select:focus {
 }
 
 .duration-card {
-  background: var(--input-bg);
-  border: 2px solid var(--border-dim);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
   padding: 16px;
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
 }
 
 .duration-card.selected {
-  border-color: var(--neon-blue);
-  background: rgba(0, 210, 255, 0.05);
+  border-color: var(--accent-azure);
+  background: rgba(0, 191, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.1);
 }
 
 .duration-card span {
@@ -254,22 +243,22 @@ input:focus, select:focus {
 
 .duration-card strong {
   font-size: 18px;
-  color: var(--neon-blue);
+  color: var(--accent-azure);
 }
 
 /* --- Payment Section --- */
 .qr-section {
-  background: #000;
+  background: rgba(0, 0, 0, 0.3);
   padding: 25px;
-  border-radius: 20px;
+  border-radius: var(--radius-md);
   margin: 25px 0;
   text-align: center;
-  border: 1px dashed var(--border-dim);
+  border: 1px dashed var(--border-color);
 }
 
 .qr-wrapper {
   background: white;
-  padding: 10px;
+  padding: 15px;
   border-radius: 12px;
   display: inline-block;
   margin-bottom: 15px;
@@ -280,13 +269,21 @@ input:focus, select:focus {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: linear-gradient(135deg, var(--neon-blue), var(--neon-violet));
+  background: #00bfffb5;
+  border: 1px solid var(--border-azure-subtle);
   color: white;
   text-decoration: none;
   padding: 14px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   font-weight: 700;
   margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.upi-button:hover {
+  background: var(--accent-azure);
+  box-shadow: var(--shadow-azure);
+  transform: translateY(-2px);
 }
 
 /* --- Toggles & Checks --- */
@@ -298,75 +295,94 @@ input:focus, select:focus {
   color: var(--text-muted);
   cursor: pointer;
 }
+
 .checkbox-container input[type="checkbox"] {
-  /* 1. Force fixed size */
   width: 18px;
   height: 18px;
+  accent-color: var(--accent-azure);
 }
+
 .terms-check {
   margin-top: 25px;
 }
 
 .terms-check a {
-  color: var(--neon-violet);
+  color: var(--accent-azure);
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.terms-check a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
 /* --- Buttons --- */
+.btn-group {
+  display: flex;
+  gap: 12px;
+}
+
 .signup-btn {
   width: 100%;
   padding: 16px;
-  border-radius: 14px;
-  border: none;
-  font-weight: 700;
-  font-size: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-azure-subtle);
+  font-weight: 600;
+  font-size: 1.05rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   margin-top: 30px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.3s ease;
 }
 
-.signup-btn.neon-blue {
-  background: linear-gradient(90deg, var(--neon-blue), var(--neon-violet));
+.signup-btn.neon-blue,
+.signup-btn.neon-green {
+  background: #00bfffb5;
   color: white;
 }
 
-.signup-btn.neon-green {
-  background: var(--neon-green);
-  color: var(--bg-dark);
-}
-
-.signup-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.signup-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-azure);
+  background: var(--accent-azure);
 }
 
 .back-btn {
-  background: var(--input-bg);
-  border: 1px solid var(--border-dim);
-  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
   padding: 14px 20px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   cursor: pointer;
+  font-weight: 600;
+  margin-top: 30px;
+  transition: all 0.3s ease;
 }
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-azure-subtle);
+}
+
 /* =========================================
    ADD THIS TO THE BOTTOM OF YOUR CSS FILE
    ========================================= */
 
-/* 1. INPUT ERROR STATE (The Red Glow) */
+/* 1. INPUT ERROR STATE */
 input.input-error, 
 select.input-error {
-  border-color: #ff007f !important;
-  box-shadow: 0 0 0 4px rgba(255, 0, 127, 0.1) !important;
-  background-color: rgba(255, 0, 127, 0.05);
+  border-color: #ef4444 !important; /* Soft Red */
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+  background-color: rgba(239, 68, 68, 0.05);
 }
 
 /* 2. ERROR TEXT MESSAGE */
 .error-text {
-  color: #ff007f;
+  color: #ef4444; /* Soft Red */
   font-size: 11px;
   font-weight: 600;
   margin-top: 6px;
@@ -383,13 +399,14 @@ select.input-error {
 }
 
 /* 3. DISABLED BUTTON STATE (Visual Lock) */
-.signup-btn.disabled {
-  background: #334155; /* Dark Grey */
-  color: #94a3b8;
+.signup-btn.disabled,
+.signup-btn:disabled {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-muted) !important;
   cursor: not-allowed;
-  opacity: 0.7;
   transform: none !important;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 /* 4. PAYMENT INSTRUCTION TEXT */
@@ -406,18 +423,6 @@ select.input-error {
   font-size: 11px;
 }
 
-/* 5. QR CODE WRAPPER (Ensure it scans correctly) */
-.qr-wrapper {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  display: inline-block;
-}
-.btn-group {
-  display: flex;
-  gap: 12px;
-}
-
 /* --- Success View --- */
 .success-view {
   text-align: center;
@@ -425,9 +430,9 @@ select.input-error {
 }
 
 .success-icon {
-  color: var(--neon-green);
+  color: #4ade80; /* Green */
   margin-bottom: 20px;
-  filter: drop-shadow(0 0 10px var(--neon-green));
+  filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.5));
 }
 
 .success-view h3 {
