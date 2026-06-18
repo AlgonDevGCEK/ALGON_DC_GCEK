@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import{Navigate} from "react-router-dom";
 
 // Components
 import Navbar from './Components/Navbar/Navbar';
@@ -33,6 +34,7 @@ import InsightXLanding from './pages/insightx/insightx';
 import InsightXRegister from './pages/insightx/InsightXRegister';
 import Leaderboard from './pages/insightx/Leaderboard';
 import CompetitionPage from './pages/CompetitionPage';
+import InsightXWinners from './pages/insight-winners/InsightXWinners';
 import './index.css';
 
 const ScrollToTop = () => {
@@ -68,11 +70,11 @@ const App = () => {
           <Route path="/join-us" element={<JoinInfo />} />
 
           {/* --- InsightX Routes --- */}
-          <Route path="/insightx" element={<InsightXLanding />} />
+          <Route path="/insightx" element={<Navigate to="/" replace />} />
           <Route path="/insightx-register" element={<InsightXRegister />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/competitions" element={<CompetitionPage />} />
-          
+          <Route path="/insightx-winners" element={<InsightXWinners />} />
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
