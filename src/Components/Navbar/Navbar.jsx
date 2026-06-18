@@ -73,7 +73,7 @@ const Navbar = () => {
           <li><NavLink to="/" end onClick={closeMenu}>Home</NavLink></li>
           <li><NavLink to="/upcoming-programs" onClick={closeMenu}>Programs</NavLink></li>
           <li><NavLink to="/competitions" onClick={closeMenu}>Competitions</NavLink></li>
-          <li><NavLink to="/insightx" onClick={closeMenu}>InsightX</NavLink></li>
+          <li><NavLink to="/insightx-winners" onClick={closeMenu}>InsightX</NavLink></li>
           <li><NavLink to="/about" onClick={closeMenu}>About Us</NavLink></li>
           <li><NavLink to="/gallery" onClick={closeMenu}>Gallery</NavLink></li>
           <li><NavLink to="/contact" onClick={closeMenu}>Contact Us</NavLink></li>

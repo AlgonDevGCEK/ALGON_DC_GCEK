@@ -1,18 +1,18 @@
+/* --- About/Info Card --- */
+
 .card {
   position: relative;
   width: 80%;
   max-width: 900px;
   margin: 50px auto;
   padding: 60px 50px;
-  border-radius: 25px;
-  background: linear-gradient(135deg, rgba(15, 35, 55, 0.85), rgba(25, 45, 75, 0.75));
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(100, 180, 255, 0.15);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(0, 150, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  color: white;
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+  color: var(--text-main);
   text-align: center;
   transition: all 0.4s ease;
   overflow: hidden;
@@ -20,11 +20,8 @@
 
 .card:hover {
   transform: translateY(-8px);
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.5),
-    0 0 80px rgba(0, 180, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  border-color: rgba(100, 180, 255, 0.25);
+  box-shadow: var(--shadow-azure);
+  border-color: var(--border-azure-subtle);
 }
 
 /* Logo section */
@@ -34,17 +31,17 @@
   gap: 12px;
   padding: 12px 28px;
   margin-bottom: 30px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3); /* Keeps the pill slightly darker than the card */
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
 }
 
 .card-logo .dot {
   width: 3px;
   height: 20px;
-  background: linear-gradient(180deg, #00bfff, #0080ff);
+  background: var(--accent-azure);
   border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  box-shadow: 0 0 10px var(--glow-color);
 }
 
 .card-logo h3 {
@@ -52,14 +49,14 @@
   font-weight: 700;
   margin: 0;
   letter-spacing: 0.5px;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .card-logo p {
   font-size: 11px;
   margin: 0;
   padding-left: 8px;
-  color: #a0a0a0;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -69,8 +66,8 @@
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 20px;
-  color: #60b8ff;
-  text-shadow: 0 0 20px rgba(96, 184, 255, 0.3);
+  color: var(--accent-azure);
+  text-shadow: 0 0 20px var(--glow-color);
   letter-spacing: -0.5px;
 }
 
@@ -80,8 +77,8 @@
   line-height: 1.7;
   max-width: 750px;
   margin: 0 auto;
-  color: #d0d8e0;
-  font-weight: 300;
+  color: var(--text-muted);
+  font-weight: 400; /* Slightly bumped from 300 for better readability on dark */
 }
 
 /* Decorative elements */
@@ -91,8 +88,8 @@
   position: absolute;
   width: 120px;
   height: 120px;
-  border: 1px solid rgba(100, 180, 255, 0.08);
-  border-radius: 15px;
+  border: 1px solid rgba(0, 191, 255, 0.08); /* Faint Azure border */
+  border-radius: var(--radius-md);
   pointer-events: none;
   z-index: 0;
 }
@@ -101,14 +98,14 @@
   top: -20px;
   right: -20px;
   transform: rotate(15deg);
-  background: radial-gradient(circle at top right, rgba(0, 150, 255, 0.03), transparent);
+  background: radial-gradient(circle at top right, rgba(0, 191, 255, 0.03), transparent);
 }
 
 .card::after {
   bottom: -20px;
   left: -20px;
   transform: rotate(-15deg);
-  background: radial-gradient(circle at bottom left, rgba(0, 150, 255, 0.03), transparent);
+  background: radial-gradient(circle at bottom left, rgba(0, 191, 255, 0.03), transparent);
 }
 
 /* Ensure content stays above decorative elements */
@@ -121,49 +118,53 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
+  .card {
+    padding: 40px 25px; /* Slight padding tweak for better mobile spacing */
+    width: 90%;
+  }
+
   .card-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 27px;
-  margin-bottom: 30px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 27px;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-color);
   }
-    .card-logo p {
-  font-size: 11px;
-  margin: 0;
-  padding-left: 6px;
-  color: #a0a0a0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.card-title {
-  font-size: 30px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #60b8ff;
-  text-shadow: 0 0 20px rgba(96, 184, 255, 0.3);
-  letter-spacing: -0.5px;
-}
-
-.card-logo .dot {
-  width: 3px;
-  height: 20px;
-  background: linear-gradient(180deg, #00bfff, #0080ff);
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  
+  .card-logo p {
+    font-size: 11px;
+    margin: 0;
+    padding-left: 6px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
-.card-logo h3 {
-  font-size: 14px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-}
-}
+  .card-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--accent-azure);
+    text-shadow: 0 0 20px var(--glow-color);
+    letter-spacing: -0.5px;
+  }
 
+  .card-logo .dot {
+    width: 3px;
+    height: 20px;
+    background: var(--accent-azure);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--glow-color);
+  }
 
+  .card-logo h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+  }
+}
