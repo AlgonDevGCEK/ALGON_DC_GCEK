@@ -1,0 +1,258 @@
+/* =========================================================
+   WINNERS PAGE LAYOUT
+   ========================================================= */
+.winners-page-wrapper {
+  min-height: 100vh;
+  padding: 160px 0 100px;
+  background-color: var(--bg-color);
+  font-family: inherit;
+  overflow: hidden; /* Prevents scrollbars during the rise animations */
+}
+
+/* =========================================================
+   CINEMATIC TEXT & HEADER STYLING
+   ========================================================= */
+.winners-header {
+  text-align: center;
+  margin-bottom: 120px;
+}
+
+.winners-header .section-header {
+  font-size: 3.6rem; /* Massive, bold statement */
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+
+.winners-header .section-subtitle {
+  font-size: 1.35rem; /* Highly readable on laptops */
+  max-width: 850px; /* Widened to fit the larger text comfortably */
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.highlight {
+  color: var(--accent-azure);
+  text-shadow: 0 0 20px var(--glow-color);
+}
+
+.epic-reveal {
+  display: inline-block;
+  margin-top: 30px;
+  font-size: 2.2rem; /* Much larger reveal */
+  font-weight: 700;
+  color: var(--text-main);
+  opacity: 0;
+  animation: smoothReveal 1.5s var(--epic-easing) forwards;
+  animation-delay: 2.6s;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================
+   ANIMATION KEYFRAMES & EASING
+   ========================================================= */
+/* A beautifully smooth, decelerating curve */
+:root {
+  --epic-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.animate-title {
+  opacity: 0;
+  animation: smoothReveal 1.2s var(--epic-easing) forwards;
+  animation-delay: 0.2s;
+}
+
+.animate-subtitle {
+  opacity: 0;
+  animation: smoothReveal 1.2s var(--epic-easing) forwards;
+  animation-delay: 1.2s;
+}
+
+@keyframes smoothReveal {
+  0% { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.98); 
+    filter: blur(8px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+    filter: blur(0); 
+  }
+}
+
+/* =========================================================
+   THE PODIUM (Bigger, Epic Desktop Layout)
+   ========================================================= */
+.podium-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; 
+  gap: 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.podium-card {
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 14px; 
+  width: 360px; /* Increased Base Size */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 0; /* Hidden initially for the entrance animation */
+  animation-fill-mode: forwards;
+}
+
+.team-image-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.team-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--epic-easing);
+}
+
+.podium-card:hover .team-image-wrapper img {
+  transform: scale(1.06);
+}
+
+.rank-badge {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 1rem;
+  z-index: 10;
+  background: var(--bg-color);
+  transition: transform 0.4s ease;
+}
+
+/* --- RANK STYLING & STAGGERED ANIMATIONS --- */
+
+/* 1st Place (Center, Massive, Last to rise) */
+.rank-1 {
+  order: 2; 
+  width: 440px; /* Massive size for the ultimate winner */
+  border-color: rgba(250, 204, 21, 0.5); 
+  box-shadow: 0 10px 50px rgba(250, 204, 21, 0.2);
+  animation: riseRank1 1.5s var(--epic-easing) forwards;
+  animation-delay: 5.6s; /* The Grand Finale */
+}
+.rank-1 .rank-badge {
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #facc15;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+}
+
+/* 2nd Place (Left, Second to rise) */
+.rank-2 {
+  order: 1; 
+  border-color: rgba(148, 163, 184, 0.5); 
+  animation: riseRank23 1.5s var(--epic-easing) forwards;
+  animation-delay: 4.6s;
+}
+.rank-2 .rank-badge {
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  color: #cbd5e1;
+}
+
+/* 3rd Place (Right, First to rise) */
+.rank-3 {
+  order: 3; 
+  border-color: rgba(217, 119, 6, 0.5); 
+  animation: riseRank23 1.5s var(--epic-easing) forwards;
+  animation-delay: 3.8s; /* Rises right after the text finishes */
+}
+.rank-3 .rank-badge {
+  border: 1px solid rgba(217, 119, 6, 0.6);
+  color: #fbbf24;
+}
+
+/* Hover Elevations */
+.podium-card:hover {
+  transform: translateY(-8px);
+  transition: transform 0.4s var(--epic-easing);
+}
+.rank-1:hover {
+  transform: translateY(-48px); 
+}
+
+/* Desktop Keyframes */
+@keyframes riseRank1 {
+  0% { opacity: 0; transform: translateY(120px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(-40px) scale(1); }
+}
+
+@keyframes riseRank23 {
+  0% { opacity: 0; transform: translateY(120px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* =========================================================
+   MOBILE RESPONSIVENESS
+   ========================================================= */
+@media (max-width: 992px) {
+  .podium-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 70px;
+  }
+
+  /* Stack them elegantly on mobile */
+  .rank-1 { order: 1; width: 100%; max-width: 440px; }
+  .rank-2 { order: 2; width: 100%; max-width: 440px; }
+  .rank-3 { order: 3; width: 100%; max-width: 440px; }
+
+  .rank-1:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Redefine Mobile Keyframes to remove the desktop Y-offset */
+  @keyframes riseRank1 {
+    0% { opacity: 0; transform: translateY(80px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes riseRank23 {
+    0% { opacity: 0; transform: translateY(80px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+@media (max-width: 768px) {
+  .winners-header {
+    margin-bottom: 80px;
+  }
+  
+  .winners-header .section-header {
+    font-size: 2.8rem;
+    letter-spacing: -1px;
+  }
+  
+  .winners-header .section-subtitle {
+    font-size: 1.1rem;
+    padding: 0 15px;
+  }
+  
+  .epic-reveal {
+    font-size: 1.6rem;
+    margin-top: 20px;
+  }
+}
