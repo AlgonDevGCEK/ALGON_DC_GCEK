@@ -6,37 +6,32 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(
-    180deg,
-    #111827 0%,
-    #1e293b 50%,   
-    #020617 100%
-  );
-  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-color); /* Updated to global dark bg */
+  font-family: inherit; /* Pulls from index.css */
 }
 
 /* 2. Glassmorphism Card */
 .login-card {
-  background: rgba(30, 41, 59, 0.7); /* Darker, more professional tint */
+  background: var(--bg-surface);
   backdrop-filter: blur(12px);
   padding: 50px 30px;
-  border-radius: 20px; /* Smoother corners */
-  border: 1px solid #334155; /* Subtle border */
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
   width: 100%;
   max-width: 400px;
-  color: #f8fafc;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: var(--text-main);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
 .login-title {
-  color: #f8fafc;
+  color: var(--text-main);
   margin-bottom: 30px;
   font-size: 26px;
   font-weight: 700;
 }
 
-/* 3. Inputs (Updated to Dark Theme) */
+/* 3. Inputs (Mapped to global form-input styles) */
 .input-group {
   margin-bottom: 20px;
 }
@@ -44,19 +39,20 @@
 .input-group input {
   width: 100%;
   padding: 14px 18px;
-  background: #0f172a; /* Dark Input Background */
-  border: 1px solid #334155; /* Dark Border */
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
   outline: none;
-  font-size: 15px;
-  color: #f8fafc; /* Light Text */
+  font-size: 1rem;
+  color: var(--text-main);
   transition: all 0.3s ease;
-  box-sizing: border-box; /* Critical for padding to work */
+  box-sizing: border-box;
 }
 
 .input-group input:focus {
-  border-color: #00d2ff; /* Neon Blue Border */
-  box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1); /* Blue Glow */
+  border-color: var(--accent-azure);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* 4. Password Eye Logic */
@@ -85,42 +81,45 @@ input::-ms-clear {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  transition: color 0.2s;
+  transition: color 0.3s ease;
   z-index: 2; 
 }
+
 .eye-toggle:hover {
-  color: #00d2ff;
+  color: var(--accent-azure);
 }
 
-/* 5. Buttons */
+/* 5. Buttons (Mapped to global btn-primary styles) */
 .login-btn {
   width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Blue to Violet */
+  height: 54px;
+  background: #00bfffb5;
   color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
+  border: 1px solid var(--border-azure-subtle);
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   margin-top: 10px;
 }
 
-.login-btn:hover {
+.login-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: var(--shadow-azure);
+  background: var(--accent-azure);
 }
 
 .login-btn:disabled {
-  background: #334155;
-  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+  color: var(--text-muted);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -128,12 +127,12 @@ input::-ms-clear {
 
 /* 6. Error Messages */
 .error-msg {
-  color: #ff4757;
-  font-size: 13px;
-  background: rgba(255, 71, 87, 0.1);
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #f87171;
+  font-size: 0.95rem;
+  background: rgba(239, 68, 68, 0.05);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   margin-bottom: 20px;
   animation: slideDown 0.2s ease-out;
 }
@@ -146,21 +145,21 @@ input::-ms-clear {
 /* 7. Footer Links */
 .login-footer {
   margin-top: 25px;
-  font-size: 14px;
-  color: #94a3b8;
+  font-size: 0.95rem;
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
 .login-footer a {
-  color: #00d2ff; /* Neon Blue Links */
+  color: var(--accent-azure);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .login-footer a:hover {
-  color: #60a5fa;
-  text-decoration: underline;
+  color: var(--accent-hover);
+  text-shadow: 0 0 8px var(--glow-color);
 }
 
 /* 8. Mobile Responsive */
