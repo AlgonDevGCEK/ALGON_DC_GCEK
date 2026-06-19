@@ -1,9 +1,11 @@
-/* --- LAYOUT & GLASSMORPHISM --- */
+/* =========================================================
+   LAYOUT & GLASSMORPHISM
+   ========================================================= */
 .dashboard-wrapper {
   min-height: 100vh;
   padding: 100px 20px 40px; 
-  background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
-  color: #e2e8f0;
+  background-color: var(--bg-color, #020617);
+  color: var(--text-main, #ffffff);
   font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column;
@@ -12,9 +14,9 @@
 
 /* --- HERO SECTION --- */
 .dashboard-hero {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface, rgba(15, 23, 42, 0.4));
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color, rgba(0, 191, 255, 0.2));
   border-radius: 20px;
   padding: 30px;
   width: 100%;
@@ -23,142 +25,147 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
 .hero-content { display: flex; align-items: center; gap: 20px; }
-.welcome-text h1 { margin: 0; font-size: 24px; color: white; }
+.welcome-text h1 { margin: 0; font-size: 24px; color: var(--text-main, #ffffff); font-weight: 700; }
 .badges { display: flex; gap: 10px; margin-top: 8px; }
-.badge { font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-.badge.active { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-.badge.dept { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.badge { font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
 
-/* Buttons */
+.badge.active { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge.dept { background: rgba(0, 191, 255, 0.15); color: var(--accent-azure, #00bfff); border: 1px solid rgba(0, 191, 255, 0.3); }
+
+/* --- BUTTONS --- */
 .view-id-btn {
-  background: linear-gradient(90deg, #2563eb, #3b82f6);
-  color: white; border: none; padding: 12px 24px; border-radius: 10px;
-  font-weight: 600; cursor: pointer; transition: transform 0.2s;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+  background: rgba(0, 191, 255, 0.1);
+  color: var(--accent-azure, #00bfff); 
+  border: 1px solid var(--accent-azure, #00bfff); 
+  padding: 12px 24px; 
+  border-radius: 10px;
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.15);
 }
-.view-id-btn:hover { transform: translateY(-2px); }
+.view-id-btn:hover { 
+  transform: translateY(-2px); 
+  background: var(--accent-azure, #00bfff);
+  color: #020617;
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.5);
+}
 
 .logout-btn-danger {
   width: 100%; margin-top: 25px; padding: 12px;
-  background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.3);
   color: #ef4444; border-radius: 8px; font-weight: 600; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
-.logout-btn-danger:hover { background: #ef4444; color: white; }
+.logout-btn-danger:hover { 
+  background: rgba(239, 68, 68, 0.2); 
+  border-color: #ef4444; 
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); 
+}
 
-/* --- MAIN GRID & INFO CARDS --- */
+/* =========================================================
+   MAIN GRID & INFO CARDS
+   ========================================================= */
 .dashboard-grid {
   display: grid; grid-template-columns: 2fr 1fr; gap: 30px;
   width: 100%; max-width: 900px;
 }
 
 .info-card {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-surface, rgba(15, 23, 42, 0.4));
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color, rgba(0, 191, 255, 0.15));
   border-radius: 16px; padding: 30px;
 }
-.info-card h3 { margin-top: 0; margin-bottom: 20px; color: #94a3b8; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+.info-card h3 { margin-top: 0; margin-bottom: 20px; color: var(--accent-azure, #00bfff); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
 
 /* Detail Rows */
 .detail-row {
   display: flex; justify-content: space-between; align-items: center;
   padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); width: 100%;
 }
-.detail-row label { color: #64748b; font-size: 14px; font-weight: 500; }
-.detail-row .value, .detail-row .value-group { text-align: right; color: #e2e8f0; }
+.detail-row:last-child { border-bottom: none; }
+.detail-row label { color: var(--text-muted, #94a3b8); font-size: 14px; font-weight: 500; }
+.detail-row .value, .detail-row .value-group { text-align: right; color: var(--text-main, #ffffff); }
 
 .value-group { display: flex; align-items: center; gap: 10px; }
-.edit-icon { background: none; border: none; color: #3b82f6; cursor: pointer; opacity: 0.7; padding: 5px; }
-.edit-icon:hover { opacity: 1; background: rgba(59, 130, 246, 0.1); border-radius: 4px; }
+.edit-icon { background: none; border: none; color: var(--accent-azure, #00bfff); cursor: pointer; opacity: 0.7; padding: 5px; transition: all 0.2s; }
+.edit-icon:hover { opacity: 1; background: rgba(0, 191, 255, 0.1); border-radius: 4px; box-shadow: 0 0 10px rgba(0, 191, 255, 0.2); }
 
 /* Edit Inputs */
 .edit-mode { display: flex; align-items: center; gap: 5px; }
-.edit-mode input, .edit-mode select { background: #1e293b; border: 1px solid #3b82f6; color: white; padding: 6px 10px; border-radius: 6px; outline: none; }
-.save-icon { background: #10b981; color: white; border: none; border-radius: 4px; padding: 6px; cursor: pointer; }
-.cancel-icon { background: #ef4444; color: white; border: none; border-radius: 4px; padding: 6px; cursor: pointer; }
+.edit-mode input, .edit-mode select { 
+  background: rgba(0,0,0,0.3); 
+  border: 1px solid var(--accent-azure, #00bfff); 
+  color: white; padding: 6px 10px; border-radius: 6px; outline: none; 
+}
+.save-icon { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #34d399; border-radius: 4px; padding: 6px; cursor: pointer; }
+.save-icon:hover { background: #34d399; color: #020617; }
+.cancel-icon { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; border-radius: 4px; padding: 6px; cursor: pointer; }
+.cancel-icon:hover { background: #ef4444; color: white; }
 
 /* --- AVATAR UPLOAD --- */
-.avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; border-radius: 50%; transition: transform 0.2s;flex-shrink: 0; }
+.avatar-container { position: relative; width: 80px; height: 80px; cursor: pointer; border-radius: 50%; transition: transform 0.3s ease; flex-shrink: 0; }
 .avatar-container:hover { transform: scale(1.05); }
 
 .avatar-large {
   width: 100%; height: 100%; border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, var(--accent-azure, #00bfff), #8b5cf6);
   display: flex; align-items: center; justify-content: center;
   font-size: 32px; font-weight: bold; color: white;
-  border: 3px solid rgba(255,255,255,0.2); overflow: hidden;
+  border: 2px solid var(--accent-azure, #00bfff); 
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+  overflow: hidden;
 }
 .avatar-large img { width: 100%; height: 100%; object-fit: cover; }
 
 .avatar-overlay {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5); border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(2px); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   opacity: 0; transition: opacity 0.2s ease;
 }
 .avatar-container:hover .avatar-overlay { opacity: 1; }
 
 .loader-small {
-  border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white;
+  border: 2px solid rgba(0, 191, 255, 0.3); border-top: 2px solid var(--accent-azure, #00bfff);
   border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;
 }
-/* --- INSTRUCTIONS CARD --- */
+
+/* =========================================================
+   INSTRUCTIONS CARD
+   ========================================================= */
 .instruction-card {
-  background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(59, 130, 246, 0.2); /* Subtle Blue Border */
+  background: var(--bg-surface, rgba(15, 23, 42, 0.4));
+  border: 1px solid var(--border-color, rgba(0, 191, 255, 0.15));
+  backdrop-filter: blur(12px);
   border-radius: 16px;
   padding: 25px;
   height: fit-content;
 }
 
-.instruction-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
+.instruction-list { list-style: none; padding: 0; margin: 0; }
 .instruction-list li {
-  position: relative;
-  padding-left: 20px;
-  margin-bottom: 15px;
-  font-size: 14px;
-  color: #cbd5e1; /* Soft grey text */
-  line-height: 1.6;
+  position: relative; padding-left: 20px; margin-bottom: 15px;
+  font-size: 14px; color: var(--text-muted, #cbd5e1); line-height: 1.6;
 }
-
-/* Add a custom bullet point */
 .instruction-list li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #3b82f6; /* Blue bullet */
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 18px;
+  content: "•"; position: absolute; left: 0;
+  color: var(--accent-azure, #00bfff); font-weight: bold; font-size: 18px; line-height: 18px;
+  text-shadow: 0 0 10px var(--accent-azure, #00bfff);
 }
+.instruction-list strong { color: var(--text-main, white); font-weight: 600; margin-right: 5px; }
+.instruction-list a { color: var(--accent-azure, #00bfff); text-decoration: none; border-bottom: 1px dotted var(--accent-azure, #00bfff); }
+.instruction-list a:hover { color: white; border-bottom-style: solid; text-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
 
-.instruction-list strong {
-  color: white;
-  font-weight: 600;
-  margin-right: 5px;
-}
-
-.instruction-list a {
-  color: #60a5fa;
-  text-decoration: none;
-  border-bottom: 1px dotted #60a5fa;
-}
-
-.instruction-list a:hover {
-  color: white;
-  border-bottom-style: solid;
-}
-/* --- ID CARD DESIGN (POLISHED) --- */
+/* =========================================================
+   ID CARD DESIGN (RESTORED TO ORIGINAL)
+   ========================================================= */
 .digital-id-card-light {
   width: 320px;
   height: 540px; 
@@ -245,9 +252,11 @@
 
 .qr-box { margin-top: 1px; padding: 8px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; }
 
-/* --- MODAL (POPUP) --- */
+/* =========================================================
+   MODAL (POPUP) & PLACEHOLDERS
+   ========================================================= */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+  position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(12px);
   display: flex; justify-content: center; align-items: center; z-index: 1000;
   animation: fadeIn 0.2s ease-out;
 }
@@ -255,32 +264,37 @@
   position: relative; display: flex; flex-direction: column; align-items: center;
   animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.close-modal-btn { position: absolute; top: 10px; right: 0; background: none; border: none; color: white; cursor: pointer; }
-.download-btn-modal { margin-top: 20px; background: white; color: #1e293b; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; }
-.download-btn-modal:hover { transform: scale(1.05); }
+.close-modal-btn { position: absolute; top: 10px; right: 0; background: none; border: none; color: var(--text-muted); cursor: pointer; transition: color 0.2s;}
+.close-modal-btn:hover { color: white; }
 
-/* --- PLACEHOLDERS --- */
-.placeholder-card { background: rgba(30, 41, 59, 0.4); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
+.download-btn-modal { 
+  margin-top: 20px; background: rgba(0, 191, 255, 0.1); color: var(--accent-azure, #00bfff); 
+  border: 1px solid var(--accent-azure, #00bfff); padding: 10px 20px; border-radius: 30px; 
+  font-weight: 600; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s; 
+}
+.download-btn-modal:hover { background: var(--accent-azure, #00bfff); color: #020617; box-shadow: 0 0 20px rgba(0, 191, 255, 0.5); transform: scale(1.05); }
+
+/* Placeholders */
+.placeholder-card { background: var(--bg-surface, rgba(15, 23, 42, 0.4)); border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); }
 .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-.icon-blue { color: #3b82f6; } .icon-yellow { color: #f59e0b; }
-.small-btn { margin-top: 10px; background: transparent; border: 1px solid #475569; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.icon-blue { color: var(--accent-azure, #00bfff); } .icon-yellow { color: #facc15; }
+.small-btn { margin-top: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;}
+.small-btn:hover { border-color: var(--accent-azure, #00bfff); color: var(--accent-azure, #00bfff); }
 
-/* --- ANIMATIONS & MOBILE --- */
+/* =========================================================
+   ANIMATIONS & MOBILE
+   ========================================================= */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* Update the Mobile Media Query at the bottom of Dashboard.css */
-
 @media (max-width: 768px) {
-  /* 1. Reduce top padding so it doesn't feel empty */
   .dashboard-wrapper {
     padding-top: 85px; 
     padding-left: 15px;
     padding-right: 15px;
   }
 
-  /* 2. Stack the Main Hero Section */
   .dashboard-hero {
     flex-direction: column;
     text-align: center;
@@ -288,29 +302,25 @@
     padding: 25px 20px;
   }
 
-  /* 3. 👇 FIX: Stack Avatar on top of Name */
   .hero-content {
     display: flex;
-    flex-direction: column; /* Stack vertically */
-    align-items: center;    /* Center everything */
+    flex-direction: column; 
+    align-items: center;    
     gap: 16px;
     width: 100%;
   }
 
-  /* 4. Center the Badges */
   .badges {
     justify-content: center;
-    flex-wrap: wrap; /* Allow wrapping if text is long */
+    flex-wrap: wrap; 
     padding-top: 9px;
   }
 
-  /* 5. Stack the Grid (Info Cards) */
   .dashboard-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 
-  /* 6. Fix Close Button Position on Mobile Modal */
   .close-modal-btn {
     top: 4px;
     right: 25px; 
