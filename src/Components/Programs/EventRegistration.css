@@ -4,9 +4,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background-color: var(--bg-color, #020617);
   padding: 20px;
   font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background glow to match the theme */
+.reg-page-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(0, 191, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .reg-container {
@@ -15,6 +27,7 @@
   position: relative;
   padding-top: 80px;
   padding-bottom: 80px;
+  z-index: 1;
 }
 
 /* --- NAVIGATION --- */
@@ -24,18 +37,18 @@
   left: 0;
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted, #94a3b8);
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
-.back-nav-btn:hover { color: white; }
+.back-nav-btn:hover { color: var(--accent-azure, #00bfff); text-shadow: 0 0 10px rgba(0, 191, 255, 0.4); }
 
 .loading-screen {
-  color: white;
+  color: var(--text-main, white);
   font-size: 1.2rem;
   display: flex;
   justify-content: center;
@@ -45,32 +58,33 @@
 
 /* --- MAIN CARD STYLES --- */
 .form-card, .success-card {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-surface, rgba(15, 23, 42, 0.4));
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color, rgba(0, 191, 255, 0.15));
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 191, 255, 0.05) inset;
 }
 
 /* Header Section */
 .form-header {
   text-align: center;
   margin-bottom: 25px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   padding-bottom: 20px;
 }
 
 .event-type-tag {
   font-size: 0.8rem;
-  color: #a855f7;
+  color: var(--accent-azure, #00bfff);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
 }
 
 .form-header h1 {
-  color: white;
+  color: var(--text-main, white);
   font-size: 1.8rem;
   margin: 5px 0 10px;
   line-height: 1.2;
@@ -80,61 +94,38 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  color: #94a3b8;
+  color: var(--text-muted, #94a3b8);
   font-size: 0.9rem;
 }
-.header-meta span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.header-meta span { display: flex; align-items: center; gap: 6px; }
 
 /* --- FORM INPUTS & COMBO BOXES --- */
-.input-group {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.input-group label {
-  color: #cbd5e1;
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-  font-weight: 500;
-}
+.input-group { margin-bottom: 15px; display: flex; flex-direction: column; text-align: left; }
+.input-group label { color: var(--text-muted, #cbd5e1); font-size: 0.9rem; margin-bottom: 6px; font-weight: 500; }
 
 .input-group input, .input-group select {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 191, 255, 0.2);
   padding: 12px;
   border-radius: 8px;
   color: white;
   outline: none;
-  transition: border 0.2s;
+  transition: all 0.3s ease;
   font-family: inherit;
-
 }
 
 /* ⚠️ Fix for Dropdown Options Visibility */
-.input-group select option {
-  background-color: #1e293b; /* Dark background for options */
-  color: white;
-}
+.input-group select option { background-color: #020617; color: white; }
 
 /* Remove arrow for inputs (keep it only for select) */
-.input-group input {
-  background-image: none;
-}
+.input-group input { background-image: none; }
 
 .input-group input:focus, .input-group select:focus {
-  border-color: #3b82f6;
+  border-color: var(--accent-azure, #00bfff);
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
 }
 
-.row-group {
-  display: flex;
-  gap: 15px;
-}
+.row-group { display: flex; gap: 15px; }
 .row-group .input-group { flex: 1; }
 
 /* Locked/Disabled Inputs (Member) */
@@ -146,7 +137,7 @@
 }
 
 .member-privilege-badge {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.1);
   color: #34d399;
   padding: 10px;
   border-radius: 8px;
@@ -157,13 +148,15 @@
   gap: 8px;
   font-size: 0.9rem;
   font-weight: 600;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
 }
 
 /* --- Payment Section Styles --- */
 .fee-badge {
-  background: #22c55e;
-  color: #000;
+  background: rgba(251, 191, 36, 0.2);
+  color: #facc15;
+  border: 1px solid #facc15;
   font-size: 12px;
   font-weight: 700;
   padding: 4px 8px;
@@ -172,441 +165,233 @@
   vertical-align: middle;
 }
 
-.payment-section {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.pay-instruction {
-  color: #94a3b8;
-  margin-bottom: 20px;
-}
-
-.qr-box {
-  margin: 10px auto;
-  display: flex;
-  justify-content: center;
-}
+.payment-section { text-align: center; padding: 20px 0; }
+.pay-instruction { color: var(--text-muted, #94a3b8); margin-bottom: 20px; }
+.qr-box { margin: 10px auto; display: flex; justify-content: center; }
 
 /* Mobile UPI Button */
 .upi-app-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #3b82f6; /* Blue */
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  margin-top: 10px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0, 191, 255, 0.1);
+  color: var(--accent-azure, #00bfff);
+  border: 1px solid var(--accent-azure, #00bfff);
+  padding: 12px 20px; border-radius: 8px;
+  text-decoration: none; font-weight: 600; margin-top: 10px;
+  transition: all 0.3s;
+}
+.upi-app-btn:hover {
+  background: var(--accent-azure, #00bfff);
+  color: #020617;
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
 }
 
 /* UTR Input specific override */
 .payment-section input {
-  text-align: center;
-  font-family: monospace;
-  font-size: 18px;
-  letter-spacing: 2px;
+  text-align: center; font-family: monospace; font-size: 18px; letter-spacing: 2px;
 }
 
 /* --- BUTTONS --- */
 .review-btn {
-  width: 100%;
-  padding: 14px;
-  background: #3b82f6; /* Solid Blue */
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-  margin-top: 10px;
+  width: 100%; padding: 14px;
+  background: rgba(0, 191, 255, 0.1);
+  color: var(--accent-azure, #00bfff);
+  border: 1px solid var(--accent-azure, #00bfff);
+  border-radius: 12px; font-weight: 600; font-size: 1rem;
+  cursor: pointer; transition: all 0.3s ease; margin-top: 10px;
 }
 .review-btn:hover {
-  background: #2563eb;
+  background: var(--accent-azure, #00bfff);
+  color: #020617;
   transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
 }
 
 /* --- PREVIEW SECTION (STEP 2) --- */
 .preview-section h3 {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 10px;
+  color: var(--accent-azure, #00bfff);
+  font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;
 }
 
-.preview-grid {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 30px;
-}
+.preview-grid { display: grid; gap: 12px; margin-bottom: 30px; }
 
 .preview-item {
-  background: rgba(15, 23, 42, 0.6);
-  padding: 12px 15px;
-  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 15px; border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.05);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
 }
 
-.preview-item label {
-  font-size: 0.75rem;
-  color: #64748b;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
-.preview-item div {
-  color: #e2e8f0;
-  font-weight: 500;
-  font-size: 1rem;
-}
+.preview-item label { font-size: 0.75rem; color: var(--text-muted, #64748b); margin-bottom: 4px; text-transform: uppercase; }
+.preview-item div { color: var(--text-main, #e2e8f0); font-weight: 500; font-size: 1rem; }
 
 /* --- ACTION BUTTONS (EDIT / SUBMIT) --- */
-.form-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
+.form-actions { display: flex; gap: 15px; margin-top: 10px; }
 
 .edit-btn {
-  flex: 1;
-  background: transparent;
-  border: 1px solid #475569;
-  color: #cbd5e1;
-  padding: 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-size: 0.95rem;
+  flex: 1; background: transparent;
+  border: 1px solid rgba(255,255,255,0.2); color: var(--text-muted, #cbd5e1);
+  padding: 12px; border-radius: 10px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  font-weight: 500; transition: all 0.3s; font-size: 0.95rem;
 }
-
 .edit-btn:hover {
-  background: rgba(255,255,255,0.05);
-  color: white;
-  border-color: #cbd5e1;
+  background: rgba(255,255,255,0.05); color: white; border-color: white;
 }
 
 .submit-reg-btn {
   flex: 2;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.2s;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  background: rgba(0, 191, 255, 0.1);
+  color: var(--accent-azure, #00bfff);
+  border: 1px solid var(--accent-azure, #00bfff);
+  border-radius: 10px; padding: 12px; font-weight: 600; font-size: 1rem;
+  cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
+  transition: all 0.3s;
 }
-
 .submit-reg-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  background: var(--accent-azure, #00bfff);
+  color: #020617;
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
 }
 
 .verify-btn {
-  width: 100%;
-  max-width: 300px; 
-  margin: 20px auto 0 auto; 
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  background: linear-gradient(135deg, #10b981, #059669); /* Green for Verification */
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
+  width: 100%; max-width: 300px; margin: 20px auto 0 auto; padding: 16px;
+  border-radius: 12px; border: 1px solid #10b981;
+  background: rgba(16, 185, 129, 0.1); color: #10b981;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  display: flex; justify-content: center; align-items: center; gap: 12px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
-
 .verify-btn:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
+  background: #10b981;
+  color: #020617;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
 }
-
 .verify-btn:disabled {
-  background: #475569;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-  opacity: 0.7;
+  background: rgba(255,255,255,0.05); color: #64748b; border-color: rgba(255,255,255,0.1);
+  cursor: not-allowed; transform: none; box-shadow: none;
 }
+
 /* --- SUCCESS STATE (STEP 3) --- */
-.success-card {
-  text-align: center;
-}
+.success-card { text-align: center; }
+.success-icon { margin-bottom: 20px; color: #10b981; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.4)); }
+.success-card h2 { color: var(--text-main, white); margin-bottom: 10px; font-size: 1.8rem; }
+.success-card p { color: var(--text-muted, #cbd5e1); margin-bottom: 25px; }
 
-.success-icon {
-  margin-bottom: 20px;
-}
-
-.success-card h2 {
-  color: white;
-  margin-bottom: 10px;
-  font-size: 1.8rem;
-}
-
-.success-card p {
-  color: #cbd5e1;
-  margin-bottom: 25px;
-}
-
+/* Fix WhatsApp button so it stacks nicely */
 .whatsapp-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: #25D366;
-  color: white;
-  padding: 14px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s;
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; max-width: 320px; margin: 0 auto; /* Centers the button */
+  background: rgba(37, 211, 102, 0.1); color: #25D366; border: 1px solid #25D366;
+  padding: 14px; border-radius: 12px; text-decoration: none; font-weight: 600;
+  transition: all 0.3s;
 }
-
 .whatsapp-btn:hover {
   transform: translateY(-2px);
-  background: #22c35e;
+  background: #25D366; color: #020617;
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
 }
 
-.small-note {
-  font-size: 0.8rem;
-  color: #64748b;
-  margin-top: 20px;
-}
+.small-note { font-size: 0.8rem; color: #64748b; margin-top: 20px; }
+
 
 .secondary-btn {
-  margin-top: 25px;
-  margin-left: 0px;
-  background: transparent;
-  color: #94a3b8;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 0.9rem;
-  transition: color 0.2s;
-}
-
-.secondary-btn:hover {
-  color: white;
-}
-
-/* 1. The Card Container */
-.status-card.error-glow {
-  background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 10, 10, 0.9));
-  border: 1px solid rgba(239, 68, 68, 0.3); /* Red Border */
-  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.1), 
-              0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  position: relative;
-  overflow: hidden;
+  display: block; /* Forces it to drop to the next line */
+  width: 40%;
   text-align: center;
-  padding: 40px 30px;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
+  margin: 25px auto 0 auto; /* Centers it and gives it top spacing */
+  background: transparent;
+  color: var(--text-muted, #94a3b8); border: none; cursor: pointer;
+  font-size: 0.9rem; transition: color 0.2s;
+}
+.secondary-btn:hover { color: var(--accent-azure, #00bfff); }
+
+/* --- ERROR/STATUS CARD --- */
+.status-card.error-glow {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.15) inset, 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  position: relative; overflow: hidden; text-align: center;
+  padding: 40px 30px; border-radius: 24px; width: 100%; max-width: 450px; margin: 0 auto;
 }
 
-/* 2. Red Ambient Light at the top */
 .status-card.error-glow::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120%;
-  height: 100px;
-  background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.15), transparent 70%);
+  content: ''; position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+  width: 120%; height: 100px;
+  background: radial-gradient(ellipse at center, rgba(239, 68, 68, 0.2), transparent 70%);
   pointer-events: none;
 }
 
-/* 3. The Icon Wrapper */
 .status-icon-wrapper.red-theme {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #ef4444; /* Bright Red Icon */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 25px auto;
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.15);
+  width: 90px; height: 90px; border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 25px auto; box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
 }
 
-/* 4. Typography */
-.status-card h2 {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 15px;
-  letter-spacing: -0.5px;
-}
+.status-card h2 { font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 15px; letter-spacing: -0.5px; }
+.status-card p { color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px; }
 
-.status-card p {
-  color: #cbd5e1;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  margin-bottom: 35px;
-}
-
-/* 5. Highlight Event Title */
 .highlight-event {
-  display: block;
-  margin-top: 8px;
-  font-size: 1.1rem;
-  color: #fca5a5; /* Light Red Text */
-  font-weight: 600;
-  background: rgba(239, 68, 68, 0.1);
-  padding: 4px 12px;
-  border-radius: 6px;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  display: block; margin-top: 8px; font-size: 1.1rem; color: #fca5a5; font-weight: 600;
+  background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 4px 12px; border-radius: 6px; width: fit-content; margin-left: auto; margin-right: auto;
 }
 
-/* 6. The "Back to Events" Button (Specific to this card) */
 .primary-action-btn {
-  background: rgba(255, 255, 255, 0.05);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 14px 30px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05); color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 14px 30px; border-radius: 12px; font-weight: 600; font-size: 1rem;
+  cursor: pointer; transition: all 0.3s ease;
 }
-
 .primary-action-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1); color: white; border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-2px);
 }
+.status-actions { display: flex; flex-direction: column; align-items: center; gap: 15px; justify-content: center; }
 
-/* 7. Action Container */
-.status-actions {
-  display: flex;
-  justify-content: center;
-}
 /* --- ANIMATIONS --- */
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out;
-}
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+.animate-scale-in { animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
-.animate-scale-in {
-  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
 /* --- QR Black Box --- */
 .qr-box-black {
-  background: #000000;
-  padding: 20px;
-  border-radius: 16px;
-  display: inline-block;
-  margin: 15px 0;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  border: 1px solid #333;
+  background: #020617; padding: 20px; border-radius: 16px;
+  display: inline-block; margin: 15px 0;
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.15);
+  border: 1px solid rgba(0, 191, 255, 0.3);
 }
 
-/* Mobile Layout Fix */
-.mobile-pay-options {
-  display: flex;
-  justify-content: center;
-  margin-top: 5px;
-}
+.mobile-pay-options { display: flex; justify-content: center; margin-top: 5px; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Mobile Layout Fix */
 @media (max-width: 600px) {
-  .reg-page-wrapper {
-    align-items: flex-start; /* Prevent centering clipping on small screens */
-    padding: 15px; /* Less outer padding */
-  }
-  .reg-container {
-    padding-top: 70px; /* Reduced top space */
-    padding-bottom: 60px;
-  }
-
-  .form-card, .success-card {
-    padding: 24px 20px; /* Tighter padding inside card */
-    border-radius: 20px;
-  }
+  .reg-page-wrapper { align-items: flex-start; padding: 15px; }
+  .reg-container { padding-top: 70px; padding-bottom: 60px; }
+  .form-card, .success-card { padding: 24px 20px; border-radius: 20px; }
   
-  /* Make Header smaller */
   .form-header h1 { font-size: 1.5rem; }
   .header-meta { font-size: 0.85rem; gap: 10px; }
-  
-  /* Stack Rows Vertically */
-  .row-group { 
-    flex-direction: column; 
-    gap: 0; 
-  }
+  .row-group { flex-direction: column; gap: 0; }
 
-  /* Prevent iOS Zoom on Focus (Critical) */
-  .input-group input, 
-  .input-group select {
-    font-size: 16px; 
-  }
+  .input-group input, .input-group select { font-size: 16px; }
 
-  /* Safe Back Button Position */
-  .back-nav-btn {
-    position: relative; /* Not absolute anymore */
-    top: 0;
-    margin-bottom: 15px;
-    padding: 5px 0;
-  }
+  .back-nav-btn { position: relative; top: 0; margin-bottom: 15px; padding: 5px 0; }
+  .form-actions { flex-direction: column-reverse; gap: 15px; }
+  .edit-btn, .submit-reg-btn { width: 100%; padding: 16px; }
 
-  /* Stack Action Buttons on Mobile */
-  .form-actions {
-    flex-direction: column-reverse; /* Submit on top, Edit below */
-    gap: 15px;
-  }
-
-  .edit-btn, .submit-reg-btn {
-    width: 100%; /* Full width buttons */
-    padding: 16px; /* Fat finger friendly */
-  }
-
-  .secondary-btn {
-    padding: 15px; /* Easier to tap link */
-    display: block;
-    margin-left: 90px;
-  }
-  .qr-box-black {
-    padding: 15px; /* Slightly smaller on mobile */
-  }
+  /* Ensure secondary button stays centered and below on mobile */
+  .secondary-btn { padding: 15px; margin-left: auto; margin-right: auto; }
+  .qr-box-black { padding: 15px; }
 }
