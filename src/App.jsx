@@ -14,7 +14,7 @@ import EventRegistration from './Components/Programs/EventRegistration';
 import AdminGuard from './Components/Admin/AdminGuard'; 
 
 // Pages
-import AboutPage from "./pages/AboutPage";
+import AboutPage from "./pages/About-page/AboutPage";
 import Contact from './pages/Contact/Contact';
 import Login from "./pages/login-page/Login";
 import Signup from "./pages/signup-page/Signup";
