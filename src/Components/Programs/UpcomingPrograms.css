@@ -171,7 +171,7 @@
 }
 
 /* Meta */
-.program-meta { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; margin-top: auto; }
+.program-meta { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; margin-top: 1rem; }
 .meta-item { display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted, #94a3b8); font-size: 0.85rem; }
 .meta-item svg { color: var(--accent-azure, #00bfff); }
 .program-card:hover .meta-item { color: var(--text-main, white); }
