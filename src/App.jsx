@@ -33,9 +33,12 @@ import JoinInfo from './pages/Join-us-page/JoinInfo';
 import InsightXLanding from './pages/insightx/insightx';
 import InsightXRegister from './pages/insightx/InsightXRegister';
 import Leaderboard from './pages/insightx/Leaderboard';
-import CompetitionPage from './pages/CompetitionPage';
 import InsightXWinners from './pages/insight-winners/InsightXWinners';
 import './index.css';
+
+// Competition pages
+import CompetitionPage from './pages/Competition-page/SQLCompetitionPage';
+import Competitions from './pages/Competition-Lobby/Competitions';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -73,13 +76,15 @@ const App = () => {
           <Route path="/insightx" element={<Navigate to="/" replace />} />
           <Route path="/insightx-register" element={<InsightXRegister />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/competitions" element={<CompetitionPage />} />
           <Route path="/insightx-winners" element={<InsightXWinners />} />
           {/* --- 2. AUTH ROUTES (Login/Signup) --- */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/update-password" element={<UpdatePassword />} />
+          {/*---3. Competition routes---*/}
+          <Route path="/competitions" element={<Competitions />} />
+          <Route path="/competition/:id" element={<CompetitionPage />} />
           
           {/* --- 3. MEMBER ROUTES (Logged-in Users) --- */}
           {/* Note: You could add a UserGuard here later if you want to force login */}
