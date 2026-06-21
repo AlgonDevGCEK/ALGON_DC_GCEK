@@ -37,7 +37,7 @@ import InsightXWinners from './pages/insight-winners/InsightXWinners';
 import './index.css';
 
 // Competition pages
-import CompetitionPage from './pages/Competition-page/SQLCompetitionPage';
+import CompetitionPage from './pages/Competition-page/CompetitionPage';
 import Competitions from './pages/Competition-Lobby/Competitions';
 
 const ScrollToTop = () => {
