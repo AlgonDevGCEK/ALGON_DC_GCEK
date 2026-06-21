@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { supabase } from '../supabaseClient';
 import { Terminal, Clock, Play, Database, AlertCircle, CheckCircle, LogOut, ArrowRight, Lock } from 'lucide-react';
@@ -7,24 +7,23 @@ import './CompetitionTerminal.css';
 const CompetitionTerminal = ({ programId, participantEmail }) => {
   const [question, setQuestion] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
-  const [isLocked, setIsLocked] = useState(true); // Locks terminal until Admin starts it
+  const [isLocked, setIsLocked] = useState(true); 
   const [terminalOutput, setTerminalOutput] = useState('Waiting for execution...');
   const [status, setStatus] = useState('idle');
   const [sqlQuery, setSqlQuery] = useState('');
   const [isCooldown, setIsCooldown] = useState(false);
   const penaltyCooldown = useRef(false);
-  // Anti-Cheat State
+  
   const [warnings, setWarnings] = useState(0);
   const [showWarningScreen, setShowWarningScreen] = useState(false);
 
-  // Dual Timers
-  const [globalTimeLeft, setGlobalTimeLeft] = useState(1500); // 20 mins = 1500s
-  const [questionTimeLeft, setQuestionTimeLeft] = useState(150); // 2.5 mins = 150s
+  // Timers
+  const [globalTimeLeft, setGlobalTimeLeft] = useState(0); 
+  const [questionTimeLeft, setQuestionTimeLeft] = useState(0); 
 
-  // 1. Initial Boot & Admin Control Check
   useEffect(() => {
     const bootTerminal = async () => {
-      // Check Admin Control Table
+      // 1. Check Admin Control Table
       const { data: controlData } = await supabase
         .from('competition_control')
         .select('*')
@@ -38,30 +37,40 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       
       setIsLocked(false);
 
-      // Handle Global 20-min Timer Persistence
+      // 2. Fetch ALL questions for this program to calculate total time
+      const { data: questionsData } = await supabase
+        .from('competition_questions')
+        .select('time_limit_seconds')
+        .eq('program_id', programId);
+
+      // Sum the time limits (fallback to 300s per question if missing, or 1200s total if table is empty)
+      let totalTimeSeconds = 1200; 
+      if (questionsData && questionsData.length > 0) {
+        totalTimeSeconds = questionsData.reduce((total, q) => total + (q.time_limit_seconds || 300), 0);
+      }
+
+      // Save the dynamically calculated total duration
+      localStorage.setItem(`insightx_global_duration_${programId}`, totalTimeSeconds);
+
+      // Handle Global Timer Start Persistence
       let globalStart = localStorage.getItem(`insightx_global_start_${programId}`);
       if (!globalStart) {
         globalStart = Date.now();
         localStorage.setItem(`insightx_global_start_${programId}`, globalStart);
       }
 
-      // Handle Current Question Persistence
       const savedOrder = parseInt(localStorage.getItem(`insightx_current_order_${programId}`) || '0');
-      fetchQuestion(savedOrder, true); // true = fetching on boot
+      fetchQuestion(savedOrder, true); 
     };
 
     bootTerminal();
   }, [programId]);
 
-  // ANTI-CHEAT ENGINE: Detect Tab Switching & Focus Loss
   useEffect(() => {
     if (isFinished || isLocked || !question) return;
 
     const logPenalty = () => {
-      // 1. If the lock is active, ignore the event entirely!
       if (penaltyCooldown.current) return;
-
-      // 2. Lock the gate instantly
       penaltyCooldown.current = true;
 
       setWarnings((prev) => {
@@ -86,23 +95,15 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
         return newCount;
       });
 
-      // 3. Unlock the gate after 2 seconds so future cheating is caught
       setTimeout(() => {
         penaltyCooldown.current = false;
       }, 2000);
     };
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) logPenalty();
-    };
-
-    const handleWindowBlur = () => {
-      logPenalty();
-    };
-
+    const handleVisibilityChange = () => { if (document.hidden) logPenalty(); };
+    const handleWindowBlur = () => { logPenalty(); };
     const handleContextMenu = (e) => e.preventDefault();
 
-    // Listeners...
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('blur', handleWindowBlur);
     document.addEventListener('contextmenu', handleContextMenu);
@@ -113,9 +114,8 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       document.removeEventListener('contextmenu', handleContextMenu);
     };
   }, [isFinished, isLocked, question, programId, participantEmail]);
-  // 2. Fetch Question Logic
+
   const fetchQuestion = async (afterOrder = 0, isBoot = false) => {
-    // If not booting, we are advancing. Save the new order so refresh doesn't jump back.
     if (!isBoot) {
       localStorage.setItem(`insightx_current_order_${programId}`, afterOrder);
     }
@@ -124,7 +124,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       .from('competition_questions')
       .select('*')
       .eq('program_id', programId)
-      .gt('display_order', isBoot ? afterOrder - 1 : afterOrder) // Adjust for boot vs advance
+      .gt('display_order', isBoot ? afterOrder - 1 : afterOrder) 
       .order('display_order', { ascending: true })
       .limit(1)
       .maybeSingle();
@@ -134,11 +134,9 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       setStatus('idle');
       setTerminalOutput('Waiting for execution...');
       
-      // Load saved code
       const savedCode = localStorage.getItem(`insightx_code_${programId}_${data.id}`);
       setSqlQuery(savedCode || '-- Write your SQL query here\n');
 
-      // Question Timer Persistence (Anti-Cheat)
       let qStart = localStorage.getItem(`insightx_q_start_${programId}_${data.id}`);
       if (!qStart) {
         qStart = Date.now();
@@ -149,24 +147,23 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
     }
   };
 
-  // 3. Auto-Save Code
   useEffect(() => {
     if (question && sqlQuery) {
       localStorage.setItem(`insightx_code_${programId}_${question.id}`, sqlQuery);
     }
   }, [sqlQuery, question, programId]);
 
-  // 4. The Master Clock Engine (Handles both timers via absolute math)
   useEffect(() => {
     if (isLocked || !question || isFinished) return;
 
     const tick = setInterval(() => {
       const now = Date.now();
 
-      // Calculate Global Time
+      // Dynamic Global Timer
       const globalStart = parseInt(localStorage.getItem(`insightx_global_start_${programId}`));
+      const globalDuration = parseInt(localStorage.getItem(`insightx_global_duration_${programId}`)) || 1200;
       const globalElapsed = Math.floor((now - globalStart) / 1000);
-      const gTimeLeft = Math.max(1500 - globalElapsed, 0); // 1200s = 20m
+      const gTimeLeft = Math.max(globalDuration - globalElapsed, 0); 
       setGlobalTimeLeft(gTimeLeft);
 
       if (gTimeLeft <= 0) {
@@ -175,11 +172,15 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
         return;
       }
 
-      // Calculate Question Time (Only if they haven't solved it yet)
+      // Dynamic Question Timer (Populated from DB)
       if (status !== 'correct') {
         const qStart = parseInt(localStorage.getItem(`insightx_q_start_${programId}_${question.id}`));
         const qElapsed = Math.floor((now - qStart) / 1000);
-        const qTimeLeft = Math.max(150 - qElapsed, 0); // 120s = 2m
+        
+        // Use the dynamic time_limit_seconds from the DB (fallback to 300s if missing)
+        const maxQTime = question.time_limit_seconds || 300; 
+        const qTimeLeft = Math.max(maxQTime - qElapsed, 0); 
+        
         setQuestionTimeLeft(qTimeLeft);
 
         if (qTimeLeft <= 0) {
@@ -193,10 +194,10 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   }, [question, isFinished, isLocked, status]);
 
   const handleExecute = async () => {
-    if (!sqlQuery.trim() || isCooldown) return; // Block if in cooldown
+    if (!sqlQuery.trim() || isCooldown) return; 
     
     setStatus('executing');
-    setIsCooldown(true); // Lock the button!
+    setIsCooldown(true); 
     setTerminalOutput('Connecting to secure SQL execution engine...');
 
     try {
@@ -218,7 +219,6 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
       setStatus('error');
       setTerminalOutput(`Execution Failed: ${err.message}`);
     } finally {
-      // Unlock the button after 3 seconds, no matter what happens
       setTimeout(() => {
         setIsCooldown(false);
       }, 3000); 
@@ -230,17 +230,16 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
     window.location.href = '/'; 
   };
 
-  // UI FORMATTING HELPER
   const formatTime = (seconds) => `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
 
   // SCREEN: Locked by Admin
   if (isLocked) {
     return (
       <div className="competition-layout" style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <Lock size={64} color="#00bfff" style={{ marginBottom: '1rem' }} />
-        <h1 style={{ color: '#fff' }}>Arena is Locked</h1>
-        <p style={{ color: '#94a3b8' }}>The competition has not been started by the administrator yet.</p>
-        <button onClick={() => window.location.reload()} style={{ marginTop: '2rem', padding: '10px 20px', background: '#00bfff', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+        <Lock size={48} color="#64748b" style={{ marginBottom: '1rem' }} />
+        <h1 style={{ color: '#f8fafc', fontSize: '1.5rem', fontWeight: '500' }}>Arena is Locked</h1>
+        <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>The competition has not been started by the administrator yet.</p>
+        <button onClick={() => window.location.reload()} className="action-btn-primary" style={{ marginTop: '2rem' }}>
           Refresh Status
         </button>
       </div>
@@ -251,59 +250,56 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
   if (isFinished) {
     return (
       <div className="competition-layout" style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <CheckCircle size={64} color="#4ade80" style={{ marginBottom: '1rem' }} />
-        <h1 style={{ color: '#fff' }}>Competition Complete!</h1>
-        <button onClick={handleLogout} style={{ marginTop: '2rem', padding: '10px 20px', background: '#00bfff', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+        <CheckCircle size={48} color="#10b981" style={{ marginBottom: '1rem' }} />
+        <h1 style={{ color: '#f8fafc', fontSize: '1.5rem', fontWeight: '500' }}>Competition Complete</h1>
+        <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Your final submissions have been recorded securely.</p>
+        <button onClick={handleLogout} className="action-btn-primary" style={{ marginTop: '2rem' }}>
           Exit Arena
         </button>
       </div>
     );
   }
 
-  // SCREEN OVERRIDE: Anti-Cheat Warning
+  // SCREEN: Anti-Cheat Warning
   if (showWarningScreen) {
     return (
-      <div className="competition-layout" style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#450a0a' }}>
-        <div style={{ textAlign: 'center', maxWidth: '600px', padding: '40px', backgroundColor: '#7f1d1d', borderRadius: '12px', border: '2px solid #ef4444' }}>
-          <AlertCircle size={64} color="#fca5a5" style={{ marginBottom: '20px' }} />
-          <h1 style={{ color: '#fff', fontSize: '2.5rem', margin: '0 0 10px 0' }}>TAB SWITCH DETECTED</h1>
-          <p style={{ color: '#fca5a5', fontSize: '1.2rem', lineHeight: '1.6' }}>
+      <div className="competition-layout" style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#0f172a' }}>
+        <div style={{ textAlign: 'center', maxWidth: '500px', padding: '40px', backgroundColor: '#1e293b', borderRadius: '8px', border: '1px solid #334155' }}>
+          <AlertCircle size={48} color="#ef4444" style={{ marginBottom: '20px', margin: '0 auto' }} />
+          <h1 style={{ color: '#f8fafc', fontSize: '1.5rem', margin: '15px 0', fontWeight: '600' }}>Tab Switch Detected</h1>
+          <p style={{ color: '#cbd5e1', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '30px' }}>
             Navigating away from the competition arena is strictly prohibited. <br/><br/>
-            You have <strong>{3 - warnings}</strong> warnings remaining. A penalty has been logged to your score. If you switch tabs again, your session will be permanently terminated.
+            You have <strong style={{color: '#ef4444'}}>{3 - warnings}</strong> warnings remaining. A penalty has been logged. Further violations will result in immediate disqualification.
           </p>
           <button 
             onClick={() => setShowWarningScreen(false)} 
-            style={{ 
-              marginTop: '30px', padding: '15px 30px', background: '#ef4444', color: '#fff', 
-              border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1rem' 
-            }}
+            className="action-btn-danger"
           >
-            I Understand, Return to Arena
+            Acknowledge & Return
           </button>
         </div>
       </div>
     );
   }
 
-  if (!question) return <div className="loading-screen" style={{ color: '#00bfff', textAlign: 'center', marginTop: '20vh' }}>Booting SQL Environment...</div>;
+  if (!question) return <div className="loading-screen" style={{ color: '#64748b', textAlign: 'center', marginTop: '20vh' }}>Booting IDE Environment...</div>;
 
   // SCREEN: Active Arena
   return (
     <div className="competition-layout">
       <header className="terminal-header">
-        <div className="brand"><Terminal size={20} /> SQL Engine</div>
+        <div className="brand"><Terminal size={18} /> SQL Environment</div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          {/* Global Timer */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase' }}>Total Time Left</span>
-            <div className={`timer ${globalTimeLeft < 300 ? 'danger' : ''}`} style={{ color: '#00bfff' }}>
-              <Clock size={16} /> {formatTime(globalTimeLeft)}
+            <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase', fontWeight: '600' }}>Global Time</span>
+            <div className={`timer ${globalTimeLeft < 300 ? 'text-danger' : 'text-standard'}`}>
+              <Clock size={14} /> {formatTime(globalTimeLeft)}
             </div>
           </div>
           
-          <div className="points-badge">{question.points} Points</div>
-          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'transparent', color: '#ff007f', border: '1px solid #ff007f', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' }}>
+          <div className="points-badge">{question.points} PTS</div>
+          <button onClick={handleLogout} className="exit-btn">
             <LogOut size={14} /> Exit
           </button>
         </div>
@@ -315,22 +311,21 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
           onCopy={(e) => e.preventDefault()}
           style={{ userSelect: 'none', WebkitUserSelect: 'none', msUserSelect: 'none' }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2>Question {question.display_order}</h2>
-            {/* Question Timer */}
-            <div className={`timer ${questionTimeLeft < 30 ? 'danger' : ''}`} style={{ fontSize: '1rem', background: 'rgba(255, 0, 127, 0.1)', padding: '4px 10px', borderRadius: '4px', color: '#ff007f' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2 className="question-heading">Question {question.display_order}</h2>
+            <div className={`question-timer ${questionTimeLeft < 30 ? 'bg-danger' : 'bg-standard'}`}>
                {formatTime(questionTimeLeft)}
             </div>
           </div>
           <p className="question-text">{question.question_text}</p>
           
           <div className="schema-hint">
-            <h3><Database size={16} /> Available Tables</h3>
+            <h3 className="schema-heading"><Database size={14} /> Database Schema</h3>
             <ul>
-              <li><code>books</code> (book_id: INT <b>[PK]</b>, title: TEXT, author_id: INT <b>[FK]</b>, published_year: INT, genre: TEXT, price: NUMERIC)</li>
-              <li><code>authors</code> (author_id: INT <b>[PK]</b>, name: TEXT, birth_country: TEXT)</li>
-              <li><code>library_members</code> (member_id: INT <b>[PK]</b>, name: TEXT, join_date: DATE, membership_type: TEXT)</li>
-              <li><code>borrow_records</code> (record_id: INT <b>[PK]</b>, book_id: INT <b>[FK]</b>, member_id: INT <b>[FK]</b>, borrow_date: DATE, return_date: DATE)</li>
+              <li><code>books</code> (book_id: INT <span className="key-pk">PK</span>, title: TEXT, author_id: INT <span className="key-fk">FK</span>, published_year: INT, genre: TEXT, price: NUMERIC)</li>
+              <li><code>authors</code> (author_id: INT <span className="key-pk">PK</span>, name: TEXT, birth_country: TEXT)</li>
+              <li><code>library_members</code> (member_id: INT <span className="key-pk">PK</span>, name: TEXT, join_date: DATE, membership_type: TEXT)</li>
+              <li><code>borrow_records</code> (record_id: INT <span className="key-pk">PK</span>, book_id: INT <span className="key-fk">FK</span>, member_id: INT <span className="key-fk">FK</span>, borrow_date: DATE, return_date: DATE)</li>
             </ul>
           </div>
         </div>
@@ -345,14 +340,17 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
               onChange={(value) => setSqlQuery(value)} 
               options={{ 
                 minimap: { enabled: false }, 
-                fontSize: 16,
-                contextmenu: false, // Disables right-click inside the editor
-                readOnly: false
+                fontSize: 14,
+                fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
+                contextmenu: false, 
+                readOnly: false,
+                padding: { top: 16 },
+                scrollBeyondLastLine: false,
+                smoothScrolling: true
               }} 
-              // Prevent standard keyboard pasting (Ctrl+V / Cmd+V)
               onMount={(editor) => {
                 editor.onKeyDown((e) => {
-                  if ((e.ctrlKey || e.metaKey) && (e.keyCode === 52 /* V */ || e.keyCode === 33 /* C */)) {
+                  if ((e.ctrlKey || e.metaKey) && (e.keyCode === 52 || e.keyCode === 33)) {
                     e.preventDefault();
                     e.stopPropagation();
                   }
@@ -363,27 +361,27 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
           
           <div className="action-bar">
             {status === 'correct' ? (
-              <button className="run-btn" style={{ background: '#4ade80', color: '#000' }} onClick={() => fetchQuestion(question.display_order)}>
+              <button className="run-btn btn-success" onClick={() => fetchQuestion(question.display_order)}>
                 Next Question <ArrowRight size={16} />
               </button>
             ) : (
-              <button className="run-btn" 
+              <button className={`run-btn ${status === 'executing' || isCooldown ? 'btn-disabled' : 'btn-primary'}`}
                   onClick={handleExecute} 
                   disabled={status === 'executing' || questionTimeLeft <= 0 || globalTimeLeft <= 0 || isCooldown}
               >
-              {status === 'executing' ? 'Executing...' : (isCooldown ? 'Cooling down...' : <><Play size={16} /> Run Query</>)}
+              {status === 'executing' ? 'Executing...' : (isCooldown ? 'Cooling down...' : <><Play size={14} /> Execute Query</>)}
               </button>
             )}
           </div>
 
           <div className={`output-terminal status-${status}`}>
             <div className="output-header">
-              {status === 'correct' && <><CheckCircle size={16} /> Query Successful</>}
-              {status === 'error' && <><AlertCircle size={16} /> SQL Error</>}
-              {status === 'incorrect' && <><AlertCircle size={16} /> Incorrect Output</>}
-              {status === 'idle' && 'Output Console'}
+              {status === 'correct' && <><CheckCircle size={14} /> Query Successful</>}
+              {status === 'error' && <><AlertCircle size={14} /> Syntax / Execution Error</>}
+              {status === 'incorrect' && <><AlertCircle size={14} /> Incorrect Result Set</>}
+              {status === 'idle' && 'Console Output'}
             </div>
-            <pre>{terminalOutput}</pre>
+            <pre className="output-content">{terminalOutput}</pre>
           </div>
         </div>
       </main>
