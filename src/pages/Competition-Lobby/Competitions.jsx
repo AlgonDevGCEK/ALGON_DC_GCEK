@@ -4,32 +4,6 @@ import { supabase } from '../../supabaseClient';
 import { Clock, Calendar, ChevronRight, Terminal, Code, HelpCircle, Lock } from 'lucide-react';
 import './Competitions.css';
 
-// Dummy data for upcoming/planned competitions
-const DUMMY_COMPETITIONS = [
-  {
-    program_id: 'dummy-python-101',
-    is_active: false,
-    start_time: '2026-07-15T10:00:00Z',
-    duration_minutes: 60,
-    programs: {
-      title: 'Python Algorithmic Challenge',
-      description: 'Solve complex data structure and algorithmic problems using Python. Optimize for both time and space complexity in a secure IDE.',
-      type: 'coding'
-    }
-  },
-  {
-    program_id: 'dummy-quiz-202',
-    is_active: false,
-    start_time: '2026-08-01T14:00:00Z',
-    duration_minutes: 30,
-    programs: {
-      title: 'Tech Trivia & Logic Quiz',
-      description: 'Test your knowledge across multiple technology domains including web development, cloud architecture, and cybersecurity.',
-      type: 'quiz'
-    }
-  }
-];
-
 const Competitions = () => {
   const [competitions, setCompetitions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +15,7 @@ const Competitions = () => {
 
   const fetchCompetitions = async () => {
     try {
-      // Fetch real data from Supabase
+      // Fetch strictly real data from Supabase
       const { data, error } = await supabase
         .from('competition_control')
         .select(`
@@ -53,15 +27,12 @@ const Competitions = () => {
         `);
 
       if (error) throw error;
-
-      // Merge real database competitions with our static dummy ones
-      const combinedData = [...(data || []), ...DUMMY_COMPETITIONS];
-      setCompetitions(combinedData);
+      
+      setCompetitions(data || []);
       
     } catch (error) {
       console.error("Error fetching competitions:", error.message);
-      // Fallback to dummies if DB fails
-      setCompetitions(DUMMY_COMPETITIONS);
+      setCompetitions([]); // Failsafe: show empty grid on error
     } finally {
       setLoading(false);
     }
@@ -81,7 +52,7 @@ const Competitions = () => {
     });
   };
 
-  // Helper to pick an icon based on title/type
+  // Dynamically assigns an icon based on the program title
   const getIcon = (title = '') => {
     const lowerTitle = title.toLowerCase();
     if (lowerTitle.includes('python') || lowerTitle.includes('code')) return <Code size={24} />;
@@ -94,9 +65,9 @@ const Competitions = () => {
       <div className="competitions-container">
         
         <div className="competitions-header animate-fade-in">
-          <h1 className="page-title">Active <span className="highlight-azure">Arenas</span></h1>
+          <h1 className="page-title">Active Arenas</h1>
           <p className="page-subtitle">
-            Select your event. Access to the secure IDE and testing environments is restricted until the administrator activates the competition.
+            Select your event. Access to the secure testing environments is restricted until the administrator activates the competition.
           </p>
         </div>
 
@@ -105,6 +76,10 @@ const Competitions = () => {
             <div className="loading-spinner"></div>
             <p className="loading-text">Initializing arenas...</p>
           </div>
+        ) : competitions.length === 0 ? (
+           <div className="loading-container">
+             <p className="loading-text">No active arenas available at the moment.</p>
+           </div>
         ) : (
           <div className="competitions-grid">
             {competitions.map((comp) => (
