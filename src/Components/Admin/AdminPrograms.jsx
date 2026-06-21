@@ -36,8 +36,8 @@ const AdminPrograms = () => {
     whatsapp_link: '',
     external_link: '',
     display_order: 0,
-    is_paid: false,   // 👈 NEW: Paid Flag
-    fee_amount: 0     // 👈 NEW: Fee Amount
+    is_paid: false,   
+    fee_amount: 0     
   });
   
   const [imageFile, setImageFile] = useState(null);
@@ -141,8 +141,8 @@ const AdminPrograms = () => {
       "Branch": r.branch,
       "Year": r.year,
       "Status": r.is_member ? "Member" : "Guest",
-      "Payment Status": r.payment_status,  // 👈 NEW
-      "UTR / Ref": r.payment_ref || '-'    // 👈 NEW
+      "Payment Status": r.payment_status,  
+      "UTR / Ref": r.payment_ref || '-'    
     }));
 
     const ws = XLSX.utils.json_to_sheet(sheetData);
@@ -174,7 +174,7 @@ const AdminPrograms = () => {
         r.full_name,
         `${r.branch} (${r.year})`,
         r.phone_number,
-        r.payment_status === 'confirmed' ? 'Paid' : 'Pending', // 👈 Show status on PDF
+        r.payment_status === 'confirmed' ? 'Paid' : 'Pending', 
         "" 
       ]);
 
@@ -401,6 +401,17 @@ const AdminPrograms = () => {
               <option value="Hackathon">Hackathon</option>
               <option value="Meetup">Meetup</option>
               <option value="Project Expo">Project Expo</option>
+              <option value="Competition">Competition</option>
+              <option value="Quiz">Quiz</option>
+              <option value="Talk Session">Talk Session</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Seminar">Seminar</option>
+              <option value="Conference">Conference</option>
+              <option value="Bootcamp">Bootcamp</option>
+              <option value="Panel Discussion">Panel Discussion</option>
+              <option value="Idea Pitching">Idea Pitching</option>
+              <option value="SQL">SQL</option>
+              <option value="Coding">Coding</option>
             </select>
           </div>
         </div>

@@ -1,0 +1,151 @@
+/* --- BASE LAYOUT --- */
+.competitions-page-wrapper {
+  min-height: 100vh;
+  background-color: #020617; /* Deep Slate */
+  padding: 100px 20px 60px;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.competitions-page-wrapper::before {
+  content: ''; position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 80%; height: 500px;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 191, 255, 0.05), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.competitions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- HEADER --- */
+.competitions-header { text-align: center; margin-bottom: 50px; }
+.page-title { font-size: 2.8rem; font-weight: 800; color: white; margin-bottom: 10px; letter-spacing: -1px; }
+.highlight-azure { color: #00bfff; text-shadow: 0 0 15px rgba(0, 191, 255, 0.3); }
+.page-subtitle { color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+/* --- GRID & CARDS --- */
+.competitions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+.comp-card {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 191, 255, 0.15);
+  border-radius: 16px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.comp-card.is-live {
+  border-color: rgba(0, 191, 255, 0.4);
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.1) inset;
+}
+
+.comp-card:hover {
+  transform: translateY(-5px);
+  border-color: #00bfff;
+  box-shadow: 0 10px 40px rgba(0, 191, 255, 0.15);
+}
+
+/* --- CARD HEADER (Icons & Badges) --- */
+.comp-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.comp-icon-wrapper {
+  background: rgba(0, 191, 255, 0.1);
+  color: #00bfff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 191, 255, 0.2);
+  display: flex; justify-content: center; align-items: center;
+}
+
+.comp-status-badge {
+  padding: 6px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge-live { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-waiting { background: rgba(255, 255, 255, 0.05); color: #94a3b8; border: 1px solid rgba(255, 255, 255, 0.1); }
+
+.pulse-dot {
+  width: 8px; height: 8px; background-color: #34d399; border-radius: 50%; animation: pulse 1.5s infinite;
+}
+
+/* --- CONTENT --- */
+.comp-content { display: flex; flex-direction: column; flex: 1; }
+
+.comp-title { color: white; font-size: 1.3rem; font-weight: 700; margin: 0 0 10px 0; }
+.comp-description { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; flex: 1; }
+
+/* --- META GRID (Time & Duration) --- */
+.comp-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+  margin-bottom: 25px; padding: 15px;
+  background: rgba(0, 0, 0, 0.3); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+}
+
+.meta-item { display: flex; align-items: center; gap: 8px; color: #cbd5e1; font-size: 0.85rem; font-weight: 500; }
+.meta-item svg { color: #00bfff; }
+
+/* --- ACTION BUTTON --- */
+.comp-action-btn {
+  width: 100%; padding: 14px; border-radius: 10px;
+  font-weight: 600; font-size: 1rem;
+  display: flex; justify-content: center; align-items: center; gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-active {
+  background: rgba(0, 191, 255, 0.1); color: #00bfff; border: 1px solid #00bfff; cursor: pointer;
+}
+.btn-active:hover {
+  background: #00bfff; color: #020617; box-shadow: 0 0 20px rgba(0, 191, 255, 0.4); transform: translateY(-2px);
+}
+
+.btn-disabled {
+  background: rgba(255, 255, 255, 0.05); color: #64748b; border: 1px solid rgba(255, 255, 255, 0.1); cursor: not-allowed;
+}
+
+/* --- ANIMATIONS & LOADERS --- */
+.loading-container { display: flex; flex-direction: column; align-items: center; padding: 60px 0; }
+.loading-spinner {
+  width: 40px; height: 40px; border: 3px solid rgba(0, 191, 255, 0.2);
+  border-top-color: #00bfff; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px;
+}
+.loading-text { color: #94a3b8; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.animate-fade-in { animation: fadeIn 0.6s ease-out; }
+.animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .page-title { font-size: 2.2rem; }
+  .competitions-grid { grid-template-columns: 1fr; }
+  .comp-meta-grid { grid-template-columns: 1fr; gap: 10px; }
+}
