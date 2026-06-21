@@ -97,7 +97,7 @@ const CompetitionPage = () => {
     <div style={styles.container}>
       <div style={styles.card}>
         <div style={styles.header}>
-          <Terminal size={32} color="#00bfff" />
+          <Terminal size={36} color="#00bfff" style={{ filter: 'drop-shadow(0 0 10px rgba(0, 191, 255, 0.4))' }} />
           <h1 style={styles.title}>SQL Arena</h1>
           <p style={styles.subtitle}>Secure Database Access</p>
         </div>
@@ -115,9 +115,32 @@ const CompetitionPage = () => {
             />
           </div>
 
-          {errorMsg && <div style={{color: '#ff007f', fontSize: '0.9rem'}}>{errorMsg}</div>}
+          {errorMsg && <div style={{color: '#ef4444', fontSize: '0.9rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(239, 68, 68, 0.3)'}}>{errorMsg}</div>}
 
-          <button type="submit" style={styles.button} disabled={isLoading}>
+          <button 
+            type="submit" 
+            style={{
+              ...styles.button, 
+              ...(isLoading ? { opacity: 0.7, cursor: 'not-allowed' } : {})
+            }} 
+            disabled={isLoading}
+            onMouseOver={(e) => {
+              if(!isLoading){
+                e.currentTarget.style.backgroundColor = '#00bfff';
+                e.currentTarget.style.color = '#020617';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 191, 255, 0.4)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }
+            }}
+            onMouseOut={(e) => {
+              if(!isLoading){
+                e.currentTarget.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
+                e.currentTarget.style.color = '#00bfff';
+                e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 191, 255, 0.15)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }
+            }}
+          >
             {isLoading ? <Loader2 className="spinner" size={18} /> : 'Authenticate'} <ArrowRight size={18} />
           </button>
         </form>
@@ -126,25 +149,28 @@ const CompetitionPage = () => {
   );
 };
 
-// Styles object (MUST be included!)
+// Styles object (Updated to Azure Theme)
 const styles = {
   container: {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#08111b',
-    fontFamily: "'Inter', sans-serif",
-    color: '#e2e8f0'
+    background: 'radial-gradient(circle at 50% 0%, rgba(0, 191, 255, 0.05) 0%, transparent 70%), #020617',
+    fontFamily: "'Poppins', sans-serif",
+    color: '#e2e8f0',
+    padding: '20px'
   },
   card: {
-    backgroundColor: '#111827',
+    backgroundColor: 'rgba(15, 23, 42, 0.4)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
     padding: '3rem',
-    borderRadius: '12px',
-    border: '1px solid rgba(0, 191, 255, 0.2)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+    borderRadius: '20px',
+    border: '1px solid rgba(0, 191, 255, 0.15)',
+    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 191, 255, 0.05) inset',
     width: '100%',
-    maxWidth: '400px',
+    maxWidth: '420px',
     textAlign: 'center'
   },
   header: {
@@ -153,11 +179,14 @@ const styles = {
   title: {
     margin: '1rem 0 0.5rem',
     fontSize: '1.8rem',
-    color: '#fff'
+    color: 'white',
+    fontWeight: '700',
+    textShadow: '0 0 10px rgba(255, 255, 255, 0.1)'
   },
   subtitle: {
     margin: 0,
-    color: '#94a3b8'
+    color: '#94a3b8',
+    fontSize: '0.95rem'
   },
   form: {
     display: 'flex',
@@ -173,32 +202,35 @@ const styles = {
   label: {
     fontSize: '0.9rem',
     color: '#cbd5e1',
-    fontWeight: '600'
+    fontWeight: '500'
   },
   input: {
     padding: '12px 16px',
-    borderRadius: '6px',
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-    backgroundColor: '#1f2937',
+    borderRadius: '8px',
+    border: '1px solid rgba(0, 191, 255, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     color: '#fff',
     fontSize: '1rem',
-    outline: 'none'
+    outline: 'none',
+    fontFamily: 'inherit',
+    transition: 'all 0.3s ease'
   },
   button: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     gap: '8px',
-    padding: '12px',
-    backgroundColor: '#00bfff',
-    color: '#000',
-    border: 'none',
-    borderRadius: '6px',
+    padding: '14px',
+    backgroundColor: 'rgba(0, 191, 255, 0.1)',
+    color: '#00bfff',
+    border: '1px solid #00bfff',
+    borderRadius: '10px',
     fontSize: '1rem',
-    fontWeight: 'bold',
+    fontWeight: '600',
     cursor: 'pointer',
-    marginTop: '1rem',
-    transition: 'opacity 0.2s'
+    marginTop: '0.5rem',
+    transition: 'all 0.3s ease',
+    boxShadow: '0 0 15px rgba(0, 191, 255, 0.15)'
   }
 };
 
