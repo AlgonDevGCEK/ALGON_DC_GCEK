@@ -43,7 +43,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
         .select('time_limit_seconds')
         .eq('program_id', programId);
 
-      // Sum the time limits (fallback to 300s per question if missing, or 1200s total if table is empty)
+      
       let totalTimeSeconds = 1200; 
       if (questionsData && questionsData.length > 0) {
         totalTimeSeconds = questionsData.reduce((total, q) => total + (q.time_limit_seconds || 300), 0);
@@ -340,7 +340,7 @@ const CompetitionTerminal = ({ programId, participantEmail }) => {
               onChange={(value) => setSqlQuery(value)} 
               options={{ 
                 minimap: { enabled: false }, 
-                fontSize: 14,
+                fontSize: 16,
                 fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
                 contextmenu: false, 
                 readOnly: false,
