@@ -124,23 +124,35 @@ const Signup = () => {
       upper: /[A-Z]/.test(p),
       lower: /[a-z]/.test(p),
       number: /[0-9]/.test(p),
-      special: /[!@#$%^&*]/.test(p),
+      special: /[!@#$%^&*.,<>/?;:'"\[\]{}|`~()_\-+=]/.test(p), // Expanded slightly for better support
     };
   }, [formData.password]);
   
   const strengthScore = Object.values(passwordMetrics).filter(Boolean).length;
 
+  // FIXED: Explicitly check that ALL conditions are met, not just a score of 4
   const isFormValid = useMemo(() => {
+    const isPasswordStrong = 
+      passwordMetrics.length && 
+      passwordMetrics.upper && 
+      passwordMetrics.lower && 
+      passwordMetrics.number && 
+      passwordMetrics.special;
+
+    const isPasswordsMatch = 
+      formData.password.length > 0 && 
+      formData.password === formData.confirmPassword;
+
     return (
       formData.name && !errors.name &&
       formData.email && !errors.email &&
       formData.phone && !errors.phone && formData.phone.length === 10 &&
-      formData.password && strengthScore >= 4 &&
-      formData.confirmPassword && !errors.confirmPassword &&
+      isPasswordStrong &&
+      isPasswordsMatch &&
       formData.department && formData.year && formData.course &&
       formData.termsAccepted
     );
-  }, [formData, errors, strengthScore]);
+  }, [formData, errors, passwordMetrics]);
 
   const upiUrl = useMemo(() => {
     return `upi://pay?pa=anciaalusb@oksbi&pn=ALGON_DC_GCEK&am=${formData.amountToPay}&cu=INR&tn=${formData.durationLabel}`;
@@ -304,71 +316,72 @@ const Signup = () => {
                   <div className={`bar ${strengthScore >= 4 ? 'active' : ''}`}></div>
                   <div className={`bar ${strengthScore >= 5 ? 'active' : ''}`}></div>
                </div>
+               {/* FIXED: Added lowercase indicator so the user can easily see all 5 requirements */}
                <div className="rules-list">
-              <span className={passwordMetrics.length ? "met" : ""}>8+ Chars</span>
-              <span className={passwordMetrics.upper ? "met" : ""}>UpperCase</span>
-              <span className={passwordMetrics.number ? "met" : ""}>Number</span>
-              <span className={passwordMetrics.special ? "met" : ""}>Symbol</span>
+                  <span className={passwordMetrics.length ? "met" : ""}>8+ Chars</span>
+                  <span className={passwordMetrics.upper ? "met" : ""}>UpperCase</span>
+                  <span className={passwordMetrics.lower ? "met" : ""}>LowerCase</span>
+                  <span className={passwordMetrics.number ? "met" : ""}>Number</span>
+                  <span className={passwordMetrics.special ? "met" : ""}>Symbol</span>
                </div>
             </div>
 
             {/* Confirm Password Field */}
-<div className="input-group">
-   <label>Confirm Password</label>
-   <div className="input-with-icon">
-      <input 
-         // Toggle type based on showConfirm state
-         type={showConfirm ? "text" : "password"} 
-         name="confirmPassword" 
-         value={formData.confirmPassword} 
-         onChange={handleChange}
-         className={errors.confirmPassword ? "input-error" : ""}
-      />
-      <button type="button" onClick={() => setShowConfirm(!showConfirm)}>
-         {showConfirm ? <EyeOff size={18}/> : <Eye size={18}/>}
-      </button>
-   </div>
-   {errors.confirmPassword && <small className="error-text">{errors.confirmPassword}</small>}
-</div>
+            <div className="input-group">
+               <label>Confirm Password</label>
+               <div className="input-with-icon">
+                  <input 
+                     type={showConfirm ? "text" : "password"} 
+                     name="confirmPassword" 
+                     value={formData.confirmPassword} 
+                     onChange={handleChange}
+                     className={errors.confirmPassword ? "input-error" : ""}
+                  />
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)}>
+                     {showConfirm ? <EyeOff size={18}/> : <Eye size={18}/>}
+                  </button>
+               </div>
+               {errors.confirmPassword && <small className="error-text">{errors.confirmPassword}</small>}
+            </div>
 
-<div className="input-group" style={{marginTop: '10px'}}>
-        <label>College Verification</label>
-        <div style={{
-            display: 'flex', alignItems: 'center', gap: '12px', 
-            padding: '12px', background: 'var(--input-bg)', 
-            border: '1px solid var(--border-dim)', borderRadius: '14px'
-        }}>
-            <input 
-                type="checkbox" 
-                checked={true} 
-                readOnly 
-                style={{ width: '20px', height: '20px', margin: 0, cursor: 'not-allowed' }}
-            />
-            <span style={{ fontSize: '13px', color: 'var(--text-main)', lineHeight: '1.4' }}>
-                I confirm that I am a student of &nbsp;
-                <strong style={{color: 'var(--neon-blue)'}}>Government College of Engineering Kannur</strong>
-            </span>
-        </div>
-    </div>
+            <div className="input-group" style={{marginTop: '10px'}}>
+              <label>College Verification</label>
+              <div style={{
+                  display: 'flex', alignItems: 'center', gap: '12px', 
+                  padding: '12px', background: 'var(--input-bg)', 
+                  border: '1px solid var(--border-dim)', borderRadius: '14px'
+              }}>
+                  <input 
+                      type="checkbox" 
+                      checked={true} 
+                      readOnly 
+                      style={{ width: '20px', height: '20px', margin: 0, cursor: 'not-allowed' }}
+                  />
+                  <span style={{ fontSize: '13px', color: 'var(--text-main)', lineHeight: '1.4' }}>
+                      I confirm that I am a student of &nbsp;
+                      <strong style={{color: 'var(--neon-blue)'}}>Government College of Engineering Kannur</strong>
+                  </span>
+              </div>
+            </div>
 
             <div className="terms-check">
-  <label className="checkbox-container">
-    <input 
-      type="checkbox" 
-      name="termsAccepted" 
-      checked={formData.termsAccepted} 
-      onChange={handleChange} 
-    />
-    <span className="checkmark"></span>
-    <span style={{ fontSize: '12px', lineHeight: '1.5' }}>
-      I have read, understood, and agree to the{' '}
-      <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms</a>,{' '}
-      <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy</a>,{' '}
-      <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{' '}
-      <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer">Code of Conduct</a>.
-    </span>
-  </label>
-</div>
+              <label className="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  name="termsAccepted" 
+                  checked={formData.termsAccepted} 
+                  onChange={handleChange} 
+                />
+                <span className="checkmark"></span>
+                <span style={{ fontSize: '12px', lineHeight: '1.5' }}>
+                  I have read, understood, and agree to the{' '}
+                  <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Terms</a>,{' '}
+                  <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy</a>,{' '}
+                  <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and{' '}
+                  <a href="/code-of-conduct" target="_blank" rel="noopener noreferrer">Code of Conduct</a>.
+                </span>
+              </label>
+            </div>
 
             <button 
               type="submit" 
@@ -392,28 +405,26 @@ const Signup = () => {
               </div>
 
               {/* --- Updated Payment Display (Step 2) --- */}
-<div className="qr-section">
-    <p className="instruction">
-       {isMobile ? "Scan QR or Tap Button" : "Scan QR to Pay"}
-    </p>
+              <div className="qr-section">
+                  <p className="instruction">
+                     {isMobile ? "Scan QR or Tap Button" : "Scan QR to Pay"}
+                  </p>
 
-    {/* 1. Always show the QR Code (Desktop & Mobile) */}
-    <div className="qr-wrapper" style={{background:'white', padding:'10px', borderRadius:'10px', display:'inline-block'}}>
-        <QRCode value={upiUrl} size={150} />
-    </div>
+                  <div className="qr-wrapper" style={{background:'white', padding:'10px', borderRadius:'10px', display:'inline-block'}}>
+                      <QRCode value={upiUrl} size={150} />
+                  </div>
 
-    {/* 2. Show Button ONLY on Mobile */}
-    {isMobile && (
-        <div style={{marginTop: '15px', width: '100%'}}>
-           <a href={upiUrl} className="upi-button">
-              <Smartphone size={18}/> Pay via UPI App
-           </a>
-           <small className="sub-instruction">
-              (If the button doesn't work, screenshot the QR and scan it from your gallery using your UPI app)
-           </small>
-        </div>
-    )}
-</div>
+                  {isMobile && (
+                      <div style={{marginTop: '15px', width: '100%'}}>
+                         <a href={upiUrl} className="upi-button">
+                            <Smartphone size={18}/> Pay via UPI App
+                         </a>
+                         <small className="sub-instruction">
+                            (If the button doesn't work, screenshot the QR and scan it from your gallery using your UPI app)
+                         </small>
+                      </div>
+                  )}
+              </div>
               
               <div className="input-group">
                   <label>Transaction ID (UTR)</label>
@@ -444,7 +455,7 @@ const Signup = () => {
                 <CheckCircle size={80} color="#34d399"/>
                 <h3>Application Sent!</h3>
                 <p>We've sent a verification email to <strong>{formData.email}</strong>. Please confirm your email address, The admin will approve your membership shortly</p>
-                <a href="/login" className="signup-btn neon-blue">Go to Login</a>
+                {/* <a href="/login" className="signup-btn neon-blue">Go to Login</a> */}
             </div>
         )}
       </div>
