@@ -57,7 +57,6 @@ const EventRegistration = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         setCurrentUser(session.user);
-        setIsMember(true);
         
         // 🔒 NEW: Check Duplicates using Secure RPC (No RLS needed)
         const { data: isDup } = await supabase.rpc('check_duplicate_registration', {
@@ -73,10 +72,17 @@ const EventRegistration = () => {
         }
 
         // Fetch Profile Data...
-        if (!savedData) {
-            const { data: memberData } = await supabase
-            .from('members').select('*').eq('user_id', session.user.id).maybeSingle();
+        const { data: memberData } = await supabase
+          .from('members').select('*').eq('user_id', session.user.id).maybeSingle();
 
+        // Check if member is approved and valid
+        let approvedAndValid = false;
+        if (memberData && memberData.status === 'approved' && new Date(memberData.valid_till) >= new Date()) {
+          approvedAndValid = true;
+        }
+        setIsMember(approvedAndValid);
+
+        if (!savedData) {
             setFormData(prev => ({
             ...prev,
             email: session.user.email,
@@ -114,7 +120,7 @@ const EventRegistration = () => {
 
   const handleNextAction = async () => {
     // Extra Duplicate Check for Guests (by Email) before proceeding
-    if (!isMember) {
+    if (!currentUser) { // Check if not logged in instead of just isMember
         // 👇 FIXED: Use RPC instead of direct select to bypass RLS issues
         const { data: isDup, error } = await supabase.rpc('check_duplicate_registration', {
             check_event_id: id,
@@ -124,7 +130,6 @@ const EventRegistration = () => {
 
         if (error) {
             console.error("Duplicate check failed:", error);
-            
         }
 
         if (isDup === true) {
@@ -133,7 +138,7 @@ const EventRegistration = () => {
         }
     }
 
-    if (event.is_paid) {
+    if (event.is_paid && !isMember) {
         setStep(2.5); 
     } else {
         handleFinalSubmit();
@@ -141,25 +146,20 @@ const EventRegistration = () => {
   };
 
   const handleFinalSubmit = async () => {
-    const status = event.is_paid ? 'pending' : 'confirmed';
-    
-    const submissionData = {
-      event_id: id,
-      user_id: currentUser ? currentUser.id : null,
-      full_name: formData.full_name,
-      email: formData.email,
-      phone_number: formData.phone_number,
-      branch: formData.branch,
-      year: formData.year,
-      payment_status: status,
-      payment_ref: event.is_paid ? formData.paymentRef : null,
-      amount_paid: event.is_paid ? event.fee_amount : 0
-    };
+    // 🔒 SECURE: Use RPC instead of direct insert
+    const { data: result, error } = await supabase.rpc('register_for_event', {
+      p_event_id: id,
+      p_user_id: currentUser ? currentUser.id : null,
+      p_full_name: formData.full_name,
+      p_email: formData.email,
+      p_phone_number: formData.phone_number,
+      p_branch: formData.branch,
+      p_year: formData.year,
+      p_payment_ref: event.is_paid && !isMember ? formData.paymentRef : null
+    });
 
-    const { error } = await supabase.from('registrations').insert([submissionData]);
-
-    if (error) {
-      alert("Registration failed: " + error.message);
+    if (error || (result && !result.success)) {
+      alert("Registration failed: " + (error?.message || result?.error || "Unknown error"));
     } else {
       localStorage.removeItem(`reg_form_${id}`); // Clear storage on success
       setStep(3); 
@@ -213,9 +213,9 @@ const EventRegistration = () => {
             <div className="success-icon">
               <CheckCircle size={60} color="#10b981" />
             </div>
-            <h2>{event.is_paid ? "Payment Submitted!" : "You're In! 🎉"}</h2>
+            <h2>{event.is_paid && !isMember ? "Payment Submitted!" : "You're In! 🎉"}</h2>
             <p>
-               {event.is_paid 
+               {event.is_paid && !isMember
                  ? "We have received your payment details. Verification usually takes 2-4 hours." 
                  : `Registration confirmed for ${event.title}.`}
             </p>
@@ -298,7 +298,7 @@ const EventRegistration = () => {
                 <div className="form-actions">
                   <button onClick={() => setStep(1)} className="edit-btn"><Edit3 size={18} /> Edit</button>
                   <button onClick={handleNextAction} className="submit-reg-btn">
-                    {event.is_paid ? `Proceed to Payment (₹${event.fee_amount || 0})` : "Confirm & Submit"} <ArrowRight size={18} />
+                    {event.is_paid && !isMember ? `Proceed to Payment (₹${event.fee_amount || 0})` : "Confirm & Submit"} <ArrowRight size={18} />
                   </button>
                 </div>
               </div>

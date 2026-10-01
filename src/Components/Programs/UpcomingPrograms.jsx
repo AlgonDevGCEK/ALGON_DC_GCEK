@@ -10,9 +10,23 @@ const UpcomingPrograms = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const [isMember, setIsMember] = useState(false);
+
   useEffect(() => {
     fetchPrograms();
+    checkMembership();
   }, []);
+
+  const checkMembership = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data: memberData } = await supabase
+        .from('members').select('*').eq('user_id', session.user.id).maybeSingle();
+      if (memberData && memberData.status === 'approved' && new Date(memberData.valid_till) >= new Date()) {
+        setIsMember(true);
+      }
+    }
+  };
 
   // Sticky Scroll Fix
   useEffect(() => {
@@ -135,7 +149,7 @@ const UpcomingPrograms = () => {
                   
                   {isPaid && (
                     <span className="paid-badge">
-                        <Banknote size={12} /> ₹{program.fee_amount}
+                        <Banknote size={12} /> {isMember ? 'Free for Members' : `₹${program.fee_amount}`}
                     </span>
                   )}
 
@@ -244,7 +258,7 @@ const UpcomingPrograms = () => {
                 <p>{selectedProgram.full_details || selectedProgram.description}</p>
                 {selectedProgram.is_paid && (
                     <div className="fee-notice">
-                        <strong>Registration Fee:</strong> ₹{selectedProgram.fee_amount}
+                        <strong>Registration Fee:</strong> {isMember ? <><del style={{opacity: 0.6, marginRight: '6px'}}>₹{selectedProgram.fee_amount}</del> <span style={{color: '#10b981', fontWeight: 'bold'}}>₹0 (Member Pass)</span></> : `₹${selectedProgram.fee_amount}`}
                     </div>
                 )}
               </div>
