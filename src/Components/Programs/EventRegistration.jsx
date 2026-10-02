@@ -174,7 +174,7 @@ const EventRegistration = () => {
 
   const upiUrl = useMemo(() => {
     if (!event) return "";
-    return `upi://pay?pa=anciaalusb@oksbi&pn=ALGON_DC_GCEK&am=${event.fee_amount}&cu=INR&tn=${event.title}`;
+    return `upi://pay?pa=jemsheera19-1@oksbi&pn=ALGON_DC_GCEK&am=${event.fee_amount}&cu=INR&tn=${event.title}`;
   }, [event]);
 
   if (loading) return <div className="loading-screen">Loading details...</div>;
