@@ -26,6 +26,7 @@ const AdminPrograms = () => {
   const [formData, setFormData] = useState({
     title: '', 
     date: '', 
+    end_date: '',
     time: '', 
     location: '', 
     description: '',
@@ -199,6 +200,7 @@ const AdminPrograms = () => {
     setFormData({
       title: prog.title,
       date: prog.date,
+      end_date: prog.end_date || '',
       time: prog.time,
       location: prog.location,
       description: prog.description || '',
@@ -281,9 +283,10 @@ const AdminPrograms = () => {
       image_url: imageUrl,
       whatsapp_link: formData.whatsapp_link || null,
       external_link: formData.external_link || null,
+      end_date: formData.end_date || null, // 👈 Convert empty string to null
       display_order: parseInt(formData.display_order),
-      is_paid: formData.is_paid,           // 👈 Save Paid Status
-      fee_amount: formData.is_paid ? formData.fee_amount : 0 // 👈 Save Fee (0 if free)
+      is_paid: formData.is_paid,           
+      fee_amount: formData.is_paid ? formData.fee_amount : 0 
     };
 
     if (view === 'create') {
@@ -418,13 +421,19 @@ const AdminPrograms = () => {
 
         <div className="form-row">
           <div className="form-group">
-            <label>Date</label>
+            <label>Start Date</label>
             <input type="date" name="date" value={formData.date} onChange={handleInputChange} required />
+          </div>
+          <div className="form-group">
+            <label>End Date (Optional)</label>
+            <input type="date" name="end_date" value={formData.end_date} onChange={handleInputChange} />
           </div>
           <div className="form-group">
             <label>Time</label>
             <input type="text" name="time" placeholder="e.g. 10:00 AM" value={formData.time} onChange={handleInputChange} required />
           </div>
+        </div>
+        <div className="form-row">
           <div className="form-group" style={{maxWidth: '100px'}}>
              <label title="Lower numbers show first">Priority</label>
              <input type="number" name="display_order" value={formData.display_order} onChange={handleInputChange} />
