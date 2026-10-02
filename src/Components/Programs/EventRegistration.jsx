@@ -47,11 +47,9 @@ const EventRegistration = () => {
       }
       setEvent(eventData);
 
-      // B. Load Local Storage (Prevention of data loss)
+      // B. Load Local Storage Safely
       const savedData = localStorage.getItem(`reg_form_${id}`);
-      if (savedData) {
-        setFormData(JSON.parse(savedData));
-      }
+      let currentFormState = savedData ? JSON.parse(savedData) : { ...initialForm };
 
       // C. Get User & Check Duplicates
       const { data: { session } } = await supabase.auth.getSession();
@@ -82,17 +80,25 @@ const EventRegistration = () => {
         }
         setIsMember(approvedAndValid);
 
-        if (!savedData) {
-            setFormData(prev => ({
-            ...prev,
-            email: session.user.email,
-            full_name: memberData?.name || '',
-            branch: memberData?.department || '',
-            year: memberData?.year || '1st Year',
-            phone_number: memberData?.phone || ''
-            }));
+        // FIX: Always apply authoritative database data, overwriting local storage empties
+        currentFormState = {
+            ...currentFormState,
+            email: session.user.email, // Always guarantee email is correct
+        };
+
+        if (memberData) {
+            currentFormState = {
+                ...currentFormState,
+                full_name: memberData.name || currentFormState.full_name,
+                branch: memberData.department || currentFormState.branch,
+                year: memberData.year || currentFormState.year,
+                phone_number: memberData.phone || currentFormState.phone_number
+            };
         }
       }
+      
+      // Commit the final merged state
+      setFormData(currentFormState);
       setLoading(false);
     };
 
@@ -120,7 +126,7 @@ const EventRegistration = () => {
 
   const handleNextAction = async () => {
     // Extra Duplicate Check for Guests (by Email) before proceeding
-    if (!currentUser) { // Check if not logged in instead of just isMember
+    if (!currentUser) { 
         // 👇 FIXED: Use RPC instead of direct select to bypass RLS issues
         const { data: isDup, error } = await supabase.rpc('check_duplicate_registration', {
             check_event_id: id,
@@ -237,7 +243,7 @@ const EventRegistration = () => {
               {event.is_paid && <span className="fee-badge">Fee: ₹{event.fee_amount}</span>}
             </div>
 
-            {/* --- STEP 2.5: PAYMENT SCREEN (Updated Styles) --- */}
+            {/* --- STEP 2.5: PAYMENT SCREEN --- */}
             {step === 2.5 && (
                 <div className="payment-section animate-fade-in">
                     <h3>Complete Payment</h3>
