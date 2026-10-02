@@ -84,14 +84,47 @@ const UpcomingPrograms = () => {
     }
   };
 
-  const getEventStatus = (dateStr) => {
+  const getEventStatus = (dateStr, endDateStr) => {
     const eventDate = new Date(dateStr);
+    const endDate = endDateStr ? new Date(endDateStr) : eventDate;
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (eventDate < today) return { label: 'Ended', style: 'badge-ended' };
-    if (eventDate.toDateString() === today.toDateString()) return { label: 'Happening Now', style: 'badge-live' };
+    if (endDate < today) return { label: 'Ended', style: 'badge-ended' };
+    if (today >= eventDate && today <= endDate) return { label: 'Happening Now', style: 'badge-live' };
+    
     return { label: 'Upcoming', style: 'badge-upcoming' };
+  };
+
+  const formatEventDate = (startStr, endStr) => {
+    if (!startStr) return '';
+    
+    // If it's not a standard date format, just return it as is
+    if (isNaN(new Date(startStr).getTime())) return startStr;
+
+    const startDate = new Date(startStr);
+    const startDay = startDate.getDate();
+    const startMonth = startDate.toLocaleString('default', { month: 'long' });
+    const startYear = startDate.getFullYear();
+
+    if (!endStr || isNaN(new Date(endStr).getTime())) {
+      // Fallback for single-day events (e.g., 5 October 2026)
+      return `${startDay} ${startMonth} ${startYear}`;
+    }
+
+    const endDate = new Date(endStr);
+    const endDay = endDate.getDate();
+    const endMonth = endDate.toLocaleString('default', { month: 'long' });
+    const endYear = endDate.getFullYear();
+
+    if (startYear === endYear && startMonth === endMonth) {
+      return `${startDay}–${endDay} ${startMonth} ${startYear}`;
+    } else if (startYear === endYear) {
+      return `${startDay} ${startMonth} – ${endDay} ${endMonth} ${startYear}`;
+    } else {
+      return `${startDay} ${startMonth} ${startYear} – ${endDay} ${endMonth} ${endYear}`;
+    }
   };
 
   //  Seat Color Logic 
@@ -130,10 +163,11 @@ const UpcomingPrograms = () => {
 
         <div className="upcoming-grid">
           {programs.map((program, index) => {
-            const status = getEventStatus(program.date);
+            const status = getEventStatus(program.date, program.end_date);
             const isPaid = program.is_paid;
             const isFull = program.seats_left === 0;
             const seatColor = getSeatColor(program.seats_left, program.total_seats);
+            const displayDate = formatEventDate(program.date, program.end_date);
 
             return (
               <div 
@@ -175,7 +209,7 @@ const UpcomingPrograms = () => {
                   <p className="program-description">{program.description}</p>
 
                   <div className="program-meta">
-                    <div className="meta-item"><Calendar size={16}/><span>{program.date}</span></div>
+                    <div className="meta-item"><Calendar size={16}/><span>{displayDate}</span></div>
                     <div className="meta-item"><Clock size={16}/><span>{program.time}</span></div>
                   </div>
 
@@ -234,7 +268,7 @@ const UpcomingPrograms = () => {
               
               <div className="modal-grid">
                 <div className="modal-info">
-                  <div className="info-row"><Calendar className="icon"/><span>{selectedProgram.date}</span></div>
+                  <div className="info-row"><Calendar className="icon"/><span>{formatEventDate(selectedProgram.date, selectedProgram.end_date)}</span></div>
                   <div className="info-row"><Clock className="icon"/><span>{selectedProgram.time}</span></div>
                   <div className="info-row"><MapPin className="icon"/><span>{selectedProgram.location}</span></div>
                  {/*
@@ -247,9 +281,9 @@ const UpcomingPrograms = () => {
                   */}
                 </div>
                 
-                <div className={`status-box ${getEventStatus(selectedProgram.date).style}`}>
+                <div className={`status-box ${getEventStatus(selectedProgram.date, selectedProgram.end_date).style}`}>
                   <strong>Status</strong>
-                  <span>{getEventStatus(selectedProgram.date).label}</span>
+                  <span>{getEventStatus(selectedProgram.date, selectedProgram.end_date).label}</span>
                 </div>
               </div>
 
@@ -267,11 +301,11 @@ const UpcomingPrograms = () => {
                 <button 
                   className="modal-register-btn"
                   onClick={() => navigate(`/register/${selectedProgram.id}`)}
-                  disabled={getEventStatus(selectedProgram.date).label === 'Ended' || selectedProgram.seats_left === 0}
+                  disabled={getEventStatus(selectedProgram.date, selectedProgram.end_date).label === 'Ended' || selectedProgram.seats_left === 0}
                 >
                   {selectedProgram.seats_left === 0 
                      ? 'Registrations Closed (House Full)' 
-                     : (getEventStatus(selectedProgram.date).label === 'Ended' 
+                     : (getEventStatus(selectedProgram.date, selectedProgram.end_date).label === 'Ended' 
                         ? 'Event Closed' 
                         : (selectedProgram.is_paid ? `Proceed to Registration` : 'Proceed to Registration')
                        )
