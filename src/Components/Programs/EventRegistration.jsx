@@ -18,6 +18,7 @@ const EventRegistration = () => {
   const [isMember, setIsMember] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [alreadyRegistered, setAlreadyRegistered] = useState(false); 
+  const [blockedMessage, setBlockedMessage] = useState(null); // 🛑 NEW: For "Full" or "Ended" messages
   
   const [step, setStep] = useState(1); 
   const [isMobile, setIsMobile] = useState(false);
@@ -51,8 +52,9 @@ const EventRegistration = () => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (eventEndDate < today) {
-        alert("Registrations are closed. This event has already ended!");
-        navigate('/upcoming-programs');
+        setBlockedMessage("This event has already ended.");
+        setEvent(eventData);
+        setLoading(false);
         return;
       }
 
@@ -63,8 +65,9 @@ const EventRegistration = () => {
         .eq('event_id', id);
         
       if (bookedCount >= eventData.total_seats) {
-        alert("Sorry, registrations are closed. This event is House Full!");
-        navigate('/upcoming-programs');
+        setBlockedMessage("Sorry, this event is House Full!");
+        setEvent(eventData);
+        setLoading(false);
         return;
       }
 
@@ -205,6 +208,26 @@ const EventRegistration = () => {
              <h2>Already Registered</h2>
              <p>
                 You have already submitted your details for <br/>
+                <span className="highlight-event">{event?.title}</span>
+             </p>
+             <div className="status-actions">
+                <button onClick={() => navigate('/upcoming-programs')} className="primary-action-btn">
+                    Back to Events
+                </button>
+             </div>
+          </div>
+      </div>
+  );
+
+  if (blockedMessage) return (
+      <div className="reg-page-wrapper">
+          <div className="status-card error-glow animate-scale-in">
+             <div className="status-icon-wrapper red-theme">
+                <Ban size={48} />
+             </div>
+             <h2>Registrations Closed</h2>
+             <p>
+                {blockedMessage} <br/>
                 <span className="highlight-event">{event?.title}</span>
              </p>
              <div className="status-actions">
