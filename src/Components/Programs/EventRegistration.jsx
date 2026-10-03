@@ -174,7 +174,8 @@ const EventRegistration = () => {
 
   const upiUrl = useMemo(() => {
     if (!event) return "";
-    return `upi://pay?pa=akshayrajeesh771@oksbi&pn=ALGON_DC_GCEK&am=${event.fee_amount}&cu=INR&tn=${event.title}`;
+    {/*return `upi://pay?pa=akshayrajeesh771@oksbi&pn=ALGON_DC_GCEK&am=${event.fee_amount}&cu=INR&tn=${event.title}`;*/}
+    return "Registration Closed ,Sorry for the inconvenience";
   }, [event]);
 
   if (loading) return <div className="loading-screen">Loading details...</div>;
