@@ -45,6 +45,29 @@ const EventRegistration = () => {
         navigate('/upcoming-programs');
         return;
       }
+
+      // 🛑 NEW: Check if event has ended
+      const eventEndDate = eventData.end_date ? new Date(eventData.end_date) : new Date(eventData.date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (eventEndDate < today) {
+        alert("Registrations are closed. This event has already ended!");
+        navigate('/upcoming-programs');
+        return;
+      }
+
+      // 🛑 NEW: Check if event is full
+      const { count: bookedCount } = await supabase
+        .from('registrations')
+        .select('*', { count: 'exact', head: true })
+        .eq('event_id', id);
+        
+      if (bookedCount >= eventData.total_seats) {
+        alert("Sorry, registrations are closed. This event is House Full!");
+        navigate('/upcoming-programs');
+        return;
+      }
+
       setEvent(eventData);
 
       // B. Load Local Storage (Prevention of data loss)
